@@ -43,8 +43,12 @@
   </div>
 </nav> -->
 <!-- PUBLIC NAV -->
-<nav>
-  <div class="nav-logo" onclick="showTab('landing')">
+<!-- MAIN NAVIGATION -->
+<nav class="main-nav">
+
+  <div
+    class="nav-logo"
+    onclick="showTab('landing')">
     Browse <span>A</span> Teacher
   </div>
 
@@ -62,6 +66,12 @@
     </li>
 
     <li>
+      <a href="#" onclick="showTab('notes'); return false;">
+        Notes
+      </a>
+    </li>
+
+    <li>
       <a href="#" onclick="showTab('consult'); return false;">
         Consult
       </a>
@@ -69,22 +79,19 @@
   </ul>
 
   <div class="nav-cta">
-    <button class="btn-ghost"
+    <button
+      class="btn-ghost"
       onclick="window.location.href='./login.html'">
       Login
     </button>
 
-    <!-- <button class="btn-primary"
-      onclick="showTab('courses')">
-      Get Started
-    </button> -->
-
-    <button class="btn-primary"
+    <button
+      class="btn-primary"
       onclick="showTab('courses')">
       Get Started
     </button>
-
   </div>
+
 </nav>
 
 
@@ -128,9 +135,9 @@
     <span class="hero-sparkle" style="color:var(--pastel-mint)">✿</span>
     <span class="hero-sparkle" style="color:var(--pastel-peach)">🌟</span>
     <span class="deco-float" style="top:40%;right:12%;animation-delay:1s;font-size:16px">🎀</span>
-    <span class="deco-float" style="top:25%;right:44%;animation-delay:3s;font-size:13px">💛</span>
+   <span class="deco-float" style="top:25%;right:44%;animation-delay:3s;font-size:13px">📚</span>
     <span class="deco-float" style="top:60%;right:35%;animation-delay:5s;font-size:12px">🌼</span>
-    <div class="hero-tag fade-in"><span></span>Est. 2024 · Premium Learning ✨</div>
+    <div class="hero-tag fade-in"><span></span>Est. 2020 · Premium Learning ✨</div>
     <h1 class="fade-in-2">Learn Smarter<br>with <em>Browse</em><br>A Teacher.</h1>
     <p class="hero-sub fade-in-3">Connect with expert educators, access premium learning resources, and book personalised consultation sessions — all in one place.</p>
     <div class="hero-actions fade-in-4">
@@ -592,6 +599,237 @@
       </div>
     </div>
   </section>
+</div>
+
+<!-- ===== NOTES PAGE ===== -->
+<div id="page-notes" class="page-view">
+
+  <section class="notes-page">
+
+    <div class="section-label">
+      Study Notes 📚
+    </div>
+
+    <div class="section-title">
+      Visual notes for<br>
+      smarter revision.
+    </div>
+
+    <p class="section-sub">
+      Browse quick image-based study notes with simple explanations.
+      Select a subject and open any note to view the full image.
+    </p>
+
+    <div class="notes-filter-row">
+
+      <button
+        class="notes-filter-btn active"
+        onclick="filterNotes('all', this)">
+        All
+      </button>
+
+      <button
+        class="notes-filter-btn"
+        onclick="filterNotes('mathematics', this)">
+        Mathematics
+      </button>
+
+      <button
+        class="notes-filter-btn"
+        onclick="filterNotes('physics', this)">
+        Physics
+      </button>
+
+      <button
+        class="notes-filter-btn"
+        onclick="filterNotes('chemistry', this)">
+        Chemistry
+      </button>
+
+      <button
+        class="notes-filter-btn"
+        onclick="filterNotes('biology', this)">
+        Biology
+      </button>
+
+    </div>
+
+
+    <div class="notes-grid">
+
+      <!-- NOTE 1 -->
+      <div class="note-card" data-subject="mathematics">
+
+        <img
+          class="note-image"
+          src="https://placehold.co/900x600/171717/FFD400?text=Integration+Formula+Map"
+          alt="Integration Formula Map">
+
+        <div class="note-body">
+
+          <div class="note-subject">
+            Mathematics
+          </div>
+
+          <div class="note-title">
+            Integration Formula Map
+          </div>
+
+          <p class="note-description">
+            A quick visual summary of important integration formulas
+            and when to use them.
+          </p>
+
+          <button
+            class="note-view-btn"
+            onclick="openNoteImage(
+              'https://placehold.co/1200x900/171717/FFD400?text=Integration+Formula+Map',
+              'Integration Formula Map'
+            )">
+            View Note
+          </button>
+
+        </div>
+      </div>
+
+
+      <!-- NOTE 2 -->
+      <div class="note-card" data-subject="physics">
+
+        <img
+          class="note-image"
+          src="https://placehold.co/900x600/171717/D4BBFF?text=Waves+and+Oscillations"
+          alt="Waves and Oscillations">
+
+        <div class="note-body">
+
+          <div class="note-subject">
+            Physics
+          </div>
+
+          <div class="note-title">
+            Waves and Oscillations
+          </div>
+
+          <p class="note-description">
+            Understand amplitude, frequency, wavelength,
+            and period using a simple diagram.
+          </p>
+
+          <button
+            class="note-view-btn"
+            onclick="openNoteImage(
+              'https://placehold.co/1200x900/171717/D4BBFF?text=Waves+and+Oscillations',
+              'Waves and Oscillations'
+            )">
+            View Note
+          </button>
+
+        </div>
+      </div>
+
+
+      <!-- NOTE 3 -->
+      <div class="note-card" data-subject="chemistry">
+
+        <img
+          class="note-image"
+          src="https://placehold.co/900x600/171717/FFB3C6?text=Organic+Chemistry+Reactions"
+          alt="Organic Chemistry Reactions">
+
+        <div class="note-body">
+
+          <div class="note-subject">
+            Chemistry
+          </div>
+
+          <div class="note-title">
+            Organic Chemistry Reactions
+          </div>
+
+          <p class="note-description">
+            A simple reaction pathway summary for quick revision
+            before an exam.
+          </p>
+
+          <button
+            class="note-view-btn"
+            onclick="openNoteImage(
+              'https://placehold.co/1200x900/171717/FFB3C6?text=Organic+Chemistry+Reactions',
+              'Organic Chemistry Reactions'
+            )">
+            View Note
+          </button>
+
+        </div>
+      </div>
+
+
+      <!-- NOTE 4 -->
+      <div class="note-card" data-subject="biology">
+
+        <img
+          class="note-image"
+          src="https://placehold.co/900x600/171717/B5EAD7?text=Cell+Structure+Summary"
+          alt="Cell Structure Summary">
+
+        <div class="note-body">
+
+          <div class="note-subject">
+            Biology
+          </div>
+
+          <div class="note-title">
+            Cell Structure Summary
+          </div>
+
+          <p class="note-description">
+            A clear diagram showing the major cell organelles
+            and their functions.
+          </p>
+
+          <button
+            class="note-view-btn"
+            onclick="openNoteImage(
+              'https://placehold.co/1200x900/171717/B5EAD7?text=Cell+Structure+Summary',
+              'Cell Structure Summary'
+            )">
+            View Note
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+</div>
+
+
+<!-- ===== NOTE IMAGE POPUP ===== -->
+<div id="note-modal" class="note-modal">
+
+  <div class="note-modal-card">
+
+    <button
+      class="note-modal-close"
+      onclick="closeNoteImage()">
+      ✕
+    </button>
+
+    <div
+      id="note-modal-title"
+      class="note-modal-title">
+      Note Preview
+    </div>
+
+    <img
+      id="note-modal-image"
+      class="note-modal-image"
+      src=""
+      alt="Note preview">
+
+  </div>
 </div>
 
 <!-- ===== WHATSAPP BUTTON ===== -->

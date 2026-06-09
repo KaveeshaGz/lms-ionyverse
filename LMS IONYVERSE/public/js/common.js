@@ -136,7 +136,7 @@ window.showTab = function(tabName) {
       button.classList.remove("active");
     });
 
-    const publicTabs = ["landing", "courses", "consult"];
+    const publicTabs = ["landing", "courses", "notes", "consult"];
 
     if (publicTabs.includes(tabName)) {
       window.history.replaceState(null, "", "#" + tabName);
@@ -163,10 +163,11 @@ window.showTab = function(tabName) {
   }
 
   if (
-    tabName === "landing" ||
-    tabName === "courses" ||
-    tabName === "consult"
-  ) {
+  tabName === "landing" ||
+  tabName === "courses" ||
+  tabName === "notes" ||
+  tabName === "consult"
+) {
     window.location.href = "./index.html#" + tabName;
   }
 };
@@ -538,3 +539,47 @@ window.addEventListener(
 */
 window.getTeacherBanners = getTeacherBanners;
 window.saveTeacherBanners = saveTeacherBanners;
+
+/* ======================================================
+   NOTES PAGE
+====================================================== */
+
+window.filterNotes = function (subject, clickedButton) {
+  const buttons = document.querySelectorAll(".notes-filter-btn");
+  const cards = document.querySelectorAll(".note-card");
+
+  buttons.forEach(function (button) {
+    button.classList.remove("active");
+  });
+
+  clickedButton.classList.add("active");
+
+  cards.forEach(function (card) {
+    const cardSubject = card.dataset.subject;
+
+    if (subject === "all" || cardSubject === subject) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+};
+
+
+window.openNoteImage = function (imageUrl, title) {
+  const modal = document.getElementById("note-modal");
+  const image = document.getElementById("note-modal-image");
+  const titleText = document.getElementById("note-modal-title");
+
+  image.src = imageUrl;
+  titleText.textContent = title;
+
+  modal.style.display = "flex";
+};
+
+
+window.closeNoteImage = function () {
+  const modal = document.getElementById("note-modal");
+
+  modal.style.display = "none";
+};

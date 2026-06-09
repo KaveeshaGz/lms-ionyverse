@@ -2891,3 +2891,60 @@ function escapeAdminBannerText(value) {
 
 window.toggleTeacherBanner = toggleTeacherBanner;
 window.removeTeacherBanner = removeTeacherBanner;
+
+/* ======================================================
+   START ADMIN DASHBOARD
+====================================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+  const role = sessionStorage.getItem("lmsRole");
+
+  if (role !== "admin") {
+    window.location.href = "./login.html";
+    return;
+  }
+
+  const loginGate = document.getElementById("admin-login-gate");
+  const dashboard = document.getElementById("admin-dashboard");
+
+  if (loginGate) {
+    loginGate.style.display = "none";
+  }
+
+  if (dashboard) {
+    dashboard.style.display = "block";
+  }
+
+  /*
+    IMPORTANT ORDER:
+    1. Create the normal pages
+    2. Create the banner page and its sidebar button
+    3. Connect sidebar clicks only after all sidebar buttons exist
+  */
+
+  if (typeof createAdminPages === "function") {
+    createAdminPages();
+  }
+
+  if (typeof setupBannerManager === "function") {
+    setupBannerManager();
+  }
+
+  if (typeof connectAdminSidebar === "function") {
+    connectAdminSidebar();
+  }
+
+  if (typeof setupDashboardExtras === "function") {
+    setupDashboardExtras();
+  }
+
+  if (typeof initializeDashboardChart === "function") {
+    initializeDashboardChart();
+  }
+
+  if (typeof setupDashboardCardMouseAnimation === "function") {
+    setupDashboardCardMouseAnimation();
+  }
+
+  console.log("Admin dashboard connected successfully.");
+});
