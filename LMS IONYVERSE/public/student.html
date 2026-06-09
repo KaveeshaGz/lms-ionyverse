@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Login | Browse A Teacher</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=Caveat:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="dashboard-page">
+
+
+<!-- NAVIGATION BAR -->
+<nav>
+  <div class="nav-logo" onclick="window.location.href='./index.html'">
+    Browse <span>A</span> Teacher
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="./index.html#landing">Home</a></li>
+    <li><a href="./index.html#courses">Courses</a></li>
+    <li><a href="./index.html#consult">Consult</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    <button class="btn-ghost"
+      onclick="window.location.href='./student.html'">
+      Login
+    </button>
+
+    <button class="btn-primary"
+      onclick="window.location.href='./index.html#landing'">
+      Get Started
+    </button>
+  </div>
+</nav>
+
+
+
+<!-- PAGE TABS
+<div class="page-tabs">
+  <button class="tab-btn"
+    onclick="showTab('landing')">
+    Landing
+  </button>
+
+  <button class="tab-btn"
+    onclick="showTab('courses')">
+    Course Library
+  </button>
+
+  <button class="tab-btn"
+    onclick="showTab('consult')">
+    Consultation
+  </button>
+
+  
+
+
+</div> -->
+
+
+
+<!-- ===== Login AND DASHBOARD ===== -->
+<div id="page-student" class="page-view active">
+  <!-- LOGIN GATE -->
+  <div id="student-login-gate" style="min-height:calc(100vh - 128px);display:flex;align-items:center;justify-content:center;padding:48px">
+    <div style="width:100%;max-width:420px">
+      <div class="section-label" style="margin-bottom:12px">Login Portal 🎀</div>
+      <div style="font-family:var(--serif);font-size:32px;letter-spacing:-0.02em;margin-bottom:4px;color:var(--ivory)">Sign In</div>
+      <div style="font-family:var(--hand);font-size:17px;color:var(--yellow);opacity:0.7;margin-bottom:24px">welcome back ✦ 🌸</div>
+      <p style="font-size:13px;color:var(--ivory-dim);font-weight:300;margin-bottom:40px">Sign in to access your dashboard.</p>
+      <div style="background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius);padding:36px" class="login-card-glow">
+        <div class="form-group" style="margin-bottom:20px">
+          <label class="form-label">Username</label>
+          <input class="form-input" id="stu-username" type="text" placeholder="your.username">
+        </div>
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="stu-password" type="password" placeholder="••••••••">
+        </div>
+        <button class="btn-large btn-yellow" style="width:100%" onclick="studentLogin()">Sign In to Dashboard</button>
+        <p style="font-size:12px;color:var(--ivory-dim);text-align:center;margin-top:20px;font-weight:300">Don't have access? <a href="#" onclick="whatsappSupport()" style="color:var(--yellow);text-decoration:none">Contact us on WhatsApp</a></p>
+      </div>
+    </div>
+  </div>
+  <!-- DASHBOARD (hidden until login) -->
+  <div id="student-dashboard" style="display:none">
+  <div class="db-body" style="min-height:calc(100vh - 64px)">
+    <div class="db-sidebar">
+      <div class="db-sidebar-logo">Browse <span>A</span> Teacher</div>
+      <div class="db-nav-label">Overview</div>
+
+<div class="db-nav-item active"
+  onclick="openStudentPanel('dashboard')">
+  🏠 Dashboard
+</div>
+
+<div class="db-nav-item"
+  onclick="openStudentPanel('my-courses')">
+  📖 My Courses
+</div>
+
+<div class="db-nav-item"
+  onclick="openStudentPanel('videos')">
+  🎬 Videos
+</div>
+
+<div class="db-nav-label">Resources</div>
+
+<div class="db-nav-item"
+  onclick="openStudentPanel('pdf-library')">
+  📄 PDF Library
+</div>
+
+<div class="db-nav-item"
+  onclick="openStudentPanel('request-pdf')">
+  ✉️ Request PDF
+</div>
+
+<div class="db-nav-label">Sessions</div>
+
+<div class="db-nav-item"
+  onclick="openStudentPanel('book-consultation')">
+  📅 Book Consultation
+</div>
+
+<div class="db-nav-item"
+  onclick="openStudentPanel('my-sessions')">
+  🌟 My Sessions
+</div>
+
+<div class="db-nav-label">Account</div>
+
+<div class="db-nav-item"
+  onclick="openStudentPanel('notifications')">
+  🔔 Notifications
+</div>
+      <div class="db-nav-item" onclick="studentLogout()" style="color:#EF9A9A;cursor:pointer">🚪 Sign Out</div>
+    </div>
+    <div class="db-content">
+      <div class="db-greeting">
+        <div class="db-name">Good morning, Sithara 🌸✦</div>
+        <div class="db-date" id="live-date">Friday, 06 Jun 2025</div>
+        <div style="font-family:var(--hand);font-size:17px;color:var(--pastel-pink);opacity:0.6;margin-top:4px">let's pick up where you left off 🌸→</div>
+      </div>
+      <div class="db-stats">
+        <div class="db-stat"><div class="db-stat-val" style="color:var(--yellow)">4</div><div class="db-stat-key">Enrolled</div></div>
+        <div class="db-stat"><div class="db-stat-val">12</div><div class="db-stat-key">Videos Watched</div></div>
+        <div class="db-stat"><div class="db-stat-val">3</div><div class="db-stat-key">PDFs Access</div></div>
+        <div class="db-stat"><div class="db-stat-val">1</div><div class="db-stat-key">Sessions</div></div>
+      </div>
+
+      <div class="db-recent">Continue Watching</div>
+      <div>
+        <div class="db-course-row"
+  onclick="openStudentPanel('videos')">
+          <div class="db-course-info">
+            <div class="db-course-dot"></div>
+            <div><div class="db-course-name">Advanced Integration Techniques</div><div class="db-course-sub">Mathematics · Module 4 of 8</div></div>
+          </div>
+          <div class="db-prog-wrap">
+            <div class="db-prog-bar"><div class="db-prog-fill" style="width:62%"></div></div>
+            <div class="db-prog-pct">62%</div>
+          </div>
+        </div>
+        <div class="db-course-row"
+  onclick="openStudentPanel('videos')">
+          <div class="db-course-info">
+            <div class="db-course-dot"></div>
+            <div><div class="db-course-name">Organic Chemistry Reactions</div><div class="db-course-sub">Chemistry · Module 2 of 6</div></div>
+          </div>
+          <div class="db-prog-wrap">
+            <div class="db-prog-bar"><div class="db-prog-fill" style="width:30%"></div></div>
+            <div class="db-prog-pct">30%</div>
+          </div>
+        </div>
+        <div class="db-course-row"
+  onclick="openStudentPanel('videos')">
+          <div class="db-course-info">
+            <div class="db-course-dot"></div>
+            <div><div class="db-course-name">Waves & Oscillations</div><div class="db-course-sub">Physics · Module 1 of 5</div></div>
+          </div>
+          <div class="db-prog-wrap">
+            <div class="db-prog-bar"><div class="db-prog-fill" style="width:88%"></div></div>
+            <div class="db-prog-pct">88%</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px">
+        <div class="db-recent">Upcoming Consultation</div>
+        <div style="border:1px solid rgba(255,212,0,0.2);background:rgba(255,212,0,0.04);padding:20px 24px;border-radius:2px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:14px;font-weight:500;margin-bottom:4px">Exam Prep · Mathematics</div>
+            <div style="font-size:12px;color:var(--gray);font-family:var(--mono)">Mon 10 Jun · 4:00 PM · Mr. Perera</div>
+          </div>
+          <span class="badge badge-yellow">Confirmed</span>
+        </div>
+      </div>
+
+      <div style="margin-top:32px">
+        <div class="db-recent">Notifications</div>
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <div class="student-dashboard-notification"
+  onclick="openStudentPanel('notifications')"
+  style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
+            <div style="width:6px;height:6px;background:var(--yellow);border-radius:50%;flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:13px;margin-bottom:2px">PDF request approved</div><div style="font-size:11px;color:var(--gray);font-family:var(--mono)">2 hours ago · Chemistry Notes 2024</div></div>
+          </div>
+          <div class="student-dashboard-notification"
+  onclick="openStudentPanel('notifications')"
+  style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
+            <div style="width:6px;height:6px;background:var(--border);border-radius:50%;flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:13px;margin-bottom:2px">New video added to your course</div><div style="font-size:11px;color:var(--gray);font-family:var(--mono)">Yesterday · Module 5: Differentiation</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end db-body -->
+  </div><!-- end student-dashboard -->
+</div>
+
+<!-- ===== WHATSAPP BUTTON ===== -->
+<div class="wa-float">
+  <div class="wa-tooltip">Chat on WhatsApp</div>
+  <button class="wa-btn" onclick="whatsappSupport()" aria-label="Contact us on WhatsApp">
+    <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+  </button>
+</div>
+
+
+<script src="./js/common.js"></script>
+
+<script src="./js/student.js?v=5"></script>
+
+</body>
+</html>

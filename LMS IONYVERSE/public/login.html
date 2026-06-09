@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Login | Browse A Teacher</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=Caveat:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-logo"
+      onclick="window.location.href='./index.html'">
+      Browse <span>A</span> Teacher
+    </div>
+
+    <div class="nav-cta">
+      <button class="btn-ghost"
+        onclick="window.location.href='./index.html'">
+        Back to Home
+      </button>
+    </div>
+  </nav>
+
+  <div style="
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:100px 24px 48px;
+  ">
+
+    <div style="width:100%;max-width:420px">
+
+      <div class="section-label"
+        style="margin-bottom:12px">
+        Secure Portal 🎀
+      </div>
+
+      <div style="
+        font-family:var(--serif);
+        font-size:34px;
+        margin-bottom:4px;
+        color:var(--ivory);
+      ">
+        Sign In
+      </div>
+
+      <div style="
+        font-family:var(--hand);
+        font-size:18px;
+        color:var(--yellow);
+        opacity:0.7;
+        margin-bottom:24px;
+      ">
+        welcome back ✦ 🌸
+      </div>
+
+      <p style="
+        font-size:13px;
+        color:var(--ivory-dim);
+        margin-bottom:32px;
+      ">
+        Enter your account details. You will be redirected to
+        the correct dashboard automatically.
+      </p>
+
+      <form id="login-form"
+        class="login-card-glow"
+        style="
+          background:var(--card-bg);
+          border:1px solid var(--ivory-border);
+          border-radius:var(--radius);
+          padding:36px;
+        ">
+
+        <div class="form-group" style="margin-bottom:20px">
+          <label class="form-label">Email</label>
+
+          <input
+            id="login-email"
+            class="form-input"
+            type="email"
+            placeholder="your@email.com"
+            required>
+        </div>
+
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label">Password</label>
+
+          <input
+            id="login-password"
+            class="form-input"
+            type="password"
+            placeholder="••••••••"
+            required>
+        </div>
+
+        <button
+          class="btn-large btn-yellow"
+          type="submit"
+          style="width:100%">
+          Sign In
+        </button>
+
+        <p id="login-message"
+          style="
+            font-size:12px;
+            color:#EF9A9A;
+            text-align:center;
+            margin-top:18px;
+          ">
+        </p>
+
+      </form>
+    </div>
+  </div>
+
+  <script src="./js/login.js"></script>
+</body>
+</html>

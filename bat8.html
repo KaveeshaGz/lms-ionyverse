@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browse A Teacher</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#0A0A0A;
+  --yellow:#FFD400;
+  --yellow-dim:#E6BF00;
+  --white:#FFFFFF;
+  --off-white:#F7F5F0;
+  --ivory:#F0EAD6;
+  --ivory-soft:#EDE3C8;
+  --ivory-dim:rgba(240,234,214,0.55);
+  --ivory-glow:rgba(240,234,214,0.07);
+  --ivory-border:rgba(240,234,214,0.14);
+  --ivory-card:rgba(240,234,214,0.03);
+  --gray:#8A8A8A;
+  --gray-light:#2A2A2A;
+  --gray-mid:#1A1A1A;
+  --card-bg:#111111;
+  --border:#252525;
+  --serif:'DM Serif Display',serif;
+  --sans:'DM Sans',sans-serif;
+  --mono:'Space Mono',monospace;
+  --hand:'Caveat',cursive;
+  --radius:14px;
+  --radius-sm:8px;
+  --radius-pill:99px;
+  /* ✿ Pinterest Pastel Palette ✿ */
+  --pastel-pink:#FFB3C6;
+  --pastel-lilac:#D4BBFF;
+  --pastel-mint:#B5EAD7;
+  --pastel-peach:#FFCBA4;
+  --pastel-sky:#B5D5FF;
+  --pastel-lemon:#FFF3A3;
+  --pastel-rose:#FFD6E0;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--ivory);font-family:var(--sans);overflow-x:hidden;font-size:15px;line-height:1.6}
+
+/* subtle grain overlay on the whole page */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ivory-border);background:rgba(10,10,10,0.93);backdrop-filter:blur(16px)}
+.nav-logo{font-family:var(--serif);font-size:20px;letter-spacing:-0.02em;color:var(--ivory);cursor:pointer}
+.nav-logo span{color:var(--yellow)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--ivory-dim);font-size:13px;font-weight:400;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover{color:var(--ivory)}
+.nav-cta{display:flex;gap:12px;align-items:center}
+.btn-ghost{background:transparent;border:1px solid var(--ivory-border);color:var(--ivory);padding:8px 20px;border-radius:var(--radius-pill);font-family:var(--sans);font-size:13px;cursor:pointer;transition:all 0.2s;letter-spacing:0.02em}
+.btn-ghost:hover{border-color:var(--yellow);color:var(--yellow)}
+.btn-primary{background:var(--yellow);border:none;color:var(--black);padding:8px 20px;border-radius:var(--radius-pill);font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;letter-spacing:0.02em}
+.btn-primary:hover{background:var(--yellow-dim)}
+
+/* SECTIONS */
+section{padding:96px 48px}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:120px;padding-bottom:64px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:700px;height:700px;background:radial-gradient(circle,rgba(255,212,0,0.07) 0%,transparent 68%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-120px;left:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(212,187,255,0.06) 0%,transparent 70%);pointer-events:none}
+/* extra pastel blobs */
+.hero-blob-pink{position:absolute;top:30%;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(255,179,198,0.05) 0%,transparent 68%);pointer-events:none;border-radius:50%}
+.hero-blob-mint{position:absolute;bottom:10%;right:5%;width:300px;height:300px;background:radial-gradient(circle,rgba(181,234,215,0.05) 0%,transparent 68%);pointer-events:none;border-radius:50%}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ivory-border);padding:6px 16px;border-radius:var(--radius-pill);font-size:11px;font-family:var(--mono);letter-spacing:0.08em;color:var(--ivory-dim);margin-bottom:40px;width:fit-content;background:var(--ivory-glow)}
+.hero-tag span{width:6px;height:6px;background:var(--yellow);border-radius:50%;display:inline-block}
+.hero h1{font-family:var(--serif);font-size:clamp(52px,7vw,96px);line-height:0.95;letter-spacing:-0.03em;max-width:800px;margin-bottom:32px;color:var(--ivory)}
+.hero h1 em{font-style:italic;color:var(--yellow)}
+.hero-sub{font-size:16px;color:var(--ivory-dim);max-width:480px;line-height:1.75;margin-bottom:48px;font-weight:300}
+.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.btn-large{padding:14px 32px;font-size:14px;border-radius:var(--radius-pill);font-weight:500;cursor:pointer;transition:all 0.2s;font-family:var(--sans);letter-spacing:0.02em}
+.btn-yellow{background:var(--yellow);color:var(--black);border:none}
+.btn-yellow:hover{background:var(--yellow-dim);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--ivory);border:1px solid var(--ivory-border)}
+.btn-outline:hover{border-color:rgba(240,234,214,0.35);background:var(--ivory-glow)}
+.hero-stats{display:flex;gap:48px;margin-top:80px;padding-top:48px;border-top:1px solid var(--ivory-border)}
+.stat-num{font-family:var(--mono);font-size:28px;color:var(--ivory);font-weight:700}
+.stat-label{font-size:12px;color:var(--ivory-dim);letter-spacing:0.04em;text-transform:uppercase;margin-top:4px}
+
+/* floating sparkles in hero (CSS-only) */
+.hero-sparkle{position:absolute;pointer-events:none;font-size:14px;opacity:0;animation:sparkle-float 6s ease-in-out infinite}
+.hero-sparkle:nth-child(1){top:22%;right:18%;animation-delay:0s}
+.hero-sparkle:nth-child(2){top:55%;right:8%;animation-delay:1.4s}
+.hero-sparkle:nth-child(3){top:35%;right:38%;animation-delay:2.8s;font-size:10px}
+.hero-sparkle:nth-child(4){top:70%;right:28%;animation-delay:0.7s;font-size:11px}
+.hero-sparkle:nth-child(5){top:15%;right:52%;animation-delay:2s;font-size:9px}
+@keyframes sparkle-float{0%,100%{opacity:0;transform:translateY(0) scale(0.8)}40%,60%{opacity:0.55;transform:translateY(-8px) scale(1)}}
+
+/* MARQUEE */
+.marquee-wrap{border-top:1px solid var(--ivory-border);border-bottom:1px solid var(--ivory-border);padding:18px 0;overflow:hidden;background:linear-gradient(90deg,var(--card-bg) 0%,rgba(20,18,14,1) 50%,var(--card-bg) 100%)}
+.marquee-track{display:flex;gap:56px;animation:scroll 22s linear infinite;width:max-content}
+.marquee-item{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:var(--ivory);opacity:0.32;white-space:nowrap;display:flex;align-items:center;gap:10px}
+.marquee-dot{color:var(--yellow);opacity:1}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* FEATURES */
+.section-label{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:var(--yellow);text-transform:uppercase;margin-bottom:16px}
+.section-title{font-family:var(--serif);font-size:clamp(36px,4vw,52px);line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px;color:var(--ivory)}
+.section-sub{font-size:15px;color:var(--ivory-dim);max-width:520px;line-height:1.75;font-weight:300}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+.feature-card{background:var(--card-bg);border:1px solid var(--ivory-border);padding:36px 28px;transition:all 0.3s;cursor:default;border-radius:var(--radius)}
+.feature-card:hover{background:rgba(240,234,214,0.04);border-color:rgba(255,179,198,0.35);transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,179,198,0.06)}
+.feature-icon{width:40px;height:40px;margin-bottom:24px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.feature-num{font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:0.08em;margin-bottom:16px}
+.feature-title{font-size:16px;font-weight:500;margin-bottom:10px;letter-spacing:-0.01em;color:var(--ivory)}
+.feature-desc{font-size:13px;color:var(--ivory-dim);line-height:1.7;font-weight:300}
+
+/* COURSES */
+.courses-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px}
+.courses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.course-card{background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.25s}
+.course-card:hover{border-color:rgba(240,234,214,0.28);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.course-thumb{height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.course-thumb-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:42px;letter-spacing:-0.02em}
+.course-badge{position:absolute;top:12px;left:12px;background:var(--yellow);color:var(--black);font-size:10px;font-family:var(--mono);letter-spacing:0.08em;padding:4px 12px;border-radius:var(--radius-pill);font-weight:700}
+.course-body{padding:20px 22px 22px}
+.course-subject{font-size:11px;font-family:var(--mono);color:var(--yellow);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px}
+.course-title{font-size:15px;font-weight:500;line-height:1.4;margin-bottom:12px;letter-spacing:-0.01em;color:var(--ivory)}
+.course-meta{display:flex;justify-content:space-between;align-items:center}
+.course-teacher{font-size:12px;color:var(--ivory-dim);font-weight:300}
+.course-price{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--ivory)}
+.course-progress{height:2px;background:var(--border);margin-top:16px;border-radius:1px}
+.course-progress-fill{height:100%;background:var(--yellow);border-radius:1px}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--card-bg);border-top:1px solid var(--ivory-border);border-bottom:1px solid var(--ivory-border)}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.testimonial-card{border:1px solid var(--ivory-border);padding:32px;border-radius:var(--radius);background:var(--ivory-card);transition:all 0.25s}
+.testimonial-card:hover{border-color:rgba(240,234,214,0.24);transform:translateY(-2px)}
+.quote-mark{font-family:var(--serif);font-size:48px;color:var(--yellow);line-height:1;margin-bottom:16px;opacity:0.75}
+.testimonial-text{font-size:14px;color:var(--ivory-dim);line-height:1.75;font-weight:300;margin-bottom:24px;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:12px}
+.author-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--mono);flex-shrink:0}
+.author-name{font-size:13px;font-weight:500;color:var(--ivory)}
+.author-grade{font-size:11px;color:var(--ivory-dim)}
+
+/* FAQ */
+.faq-list{margin-top:48px;border-top:1px solid var(--ivory-border)}
+.faq-item{border-bottom:1px solid var(--ivory-border)}
+.faq-q{padding:24px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:15px;font-weight:400;letter-spacing:-0.01em;color:rgba(240,234,214,0.85)}
+.faq-q:hover{color:var(--yellow)}
+.faq-toggle{font-family:var(--mono);font-size:18px;color:var(--yellow);transition:transform 0.3s;display:inline-block}
+.faq-item.open .faq-toggle{transform:rotate(45deg)}
+.faq-a{font-size:13px;color:var(--ivory-dim);line-height:1.75;font-weight:300;max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s}
+.faq-item.open .faq-a{max-height:200px;padding-bottom:24px}
+
+/* DASHBOARD */
+.dashboard-preview{background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius);overflow:hidden;margin-top:56px}
+.db-header{background:var(--gray-mid);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ivory-border)}
+.db-dots{display:flex;gap:6px}
+.db-dot{width:10px;height:10px;border-radius:50%}
+.db-title{font-family:var(--mono);font-size:11px;color:var(--ivory-dim);letter-spacing:0.06em}
+.db-body{display:grid;grid-template-columns:220px 1fr;min-height:480px}
+.db-sidebar{background:var(--black);border-right:1px solid var(--ivory-border);padding:24px 0}
+.db-sidebar-logo{padding:0 24px 24px;font-family:var(--serif);font-size:16px;border-bottom:1px solid var(--ivory-border);margin-bottom:24px;color:var(--ivory)}
+.db-sidebar-logo span{color:var(--yellow)}
+.db-nav-item{padding:10px 24px;font-size:13px;color:var(--ivory-dim);cursor:pointer;display:flex;align-items:center;gap:10px;transition:all 0.2s;font-weight:300}
+.db-nav-item:hover,.db-nav-item.active{color:var(--ivory);background:var(--gray-mid)}
+.db-nav-item.active::before{content:'';width:2px;height:100%;background:var(--yellow);position:absolute;left:0}
+.db-nav-item{position:relative}
+.db-nav-label{font-family:var(--mono);font-size:10px;color:var(--ivory-dim);letter-spacing:0.08em;padding:16px 24px 8px;text-transform:uppercase;opacity:0.5}
+.db-content{padding:28px;overflow:hidden}
+.db-greeting{margin-bottom:24px}
+.db-name{font-family:var(--serif);font-size:22px;letter-spacing:-0.02em;margin-bottom:4px;color:var(--ivory)}
+.db-date{font-size:12px;color:var(--ivory-dim);font-family:var(--mono)}
+.db-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.db-stat{background:var(--black);border:1px solid var(--ivory-border);padding:16px;border-radius:var(--radius-sm)}
+.db-stat-val{font-family:var(--mono);font-size:22px;font-weight:700;margin-bottom:4px;color:var(--ivory)}
+.db-stat-key{font-size:11px;color:var(--ivory-dim);text-transform:uppercase;letter-spacing:0.06em}
+.db-recent{font-size:11px;font-family:var(--mono);color:var(--ivory-dim);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:16px;opacity:0.6}
+.db-course-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--ivory-border)}
+.db-course-info{display:flex;align-items:center;gap:12px}
+.db-course-dot{width:8px;height:8px;background:var(--yellow);border-radius:50%;flex-shrink:0}
+.db-course-name{font-size:13px;font-weight:400;color:var(--ivory)}
+.db-course-sub{font-size:11px;color:var(--ivory-dim)}
+.db-prog-wrap{width:80px}
+.db-prog-bar{height:2px;background:var(--border);border-radius:1px}
+.db-prog-fill{height:100%;background:var(--yellow);border-radius:1px}
+.db-prog-pct{font-family:var(--mono);font-size:10px;color:var(--ivory-dim);text-align:right;margin-top:3px}
+
+/* WHATSAPP */
+.wa-float{position:fixed;bottom:32px;right:32px;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.wa-tooltip{background:var(--yellow);color:var(--black);font-size:12px;font-weight:600;padding:8px 16px;border-radius:var(--radius-pill);font-family:var(--sans);opacity:0;transform:translateX(8px);transition:all 0.2s;pointer-events:none}
+.wa-float:hover .wa-tooltip{opacity:1;transform:translateX(0)}
+.wa-btn{width:52px;height:52px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;transition:transform 0.2s,background 0.2s}
+.wa-btn:hover{transform:scale(1.08);background:var(--yellow-dim)}
+.wa-icon{width:26px;height:26px;fill:var(--black)}
+
+/* FOOTER */
+footer{background:var(--card-bg);border-top:1px solid var(--ivory-border);padding:64px 48px 40px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-brand{font-family:var(--serif);font-size:22px;letter-spacing:-0.02em;margin-bottom:16px;color:var(--ivory)}
+.footer-brand span{color:var(--yellow)}
+.footer-desc{font-size:13px;color:var(--ivory-dim);line-height:1.75;font-weight:300;max-width:280px}
+.footer-col-title{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:16px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:var(--ivory-dim);text-decoration:none;transition:color 0.2s;font-weight:300}
+.footer-links a:hover{color:var(--ivory)}
+.footer-bottom{border-top:1px solid var(--ivory-border);padding-top:24px;display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:var(--ivory-dim);font-family:var(--mono);opacity:0.5}
+
+/* TABS */
+.page-tabs{display:flex;gap:0;border-bottom:1px solid var(--ivory-border);position:sticky;top:64px;background:var(--black);z-index:90;padding:0 48px}
+.tab-btn{padding:16px 20px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--ivory-dim);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s}
+.tab-btn:hover{color:var(--ivory)}
+.tab-btn.active{color:var(--yellow);border-bottom-color:var(--yellow)}
+
+/* PAGE VIEWS */
+.page-view{display:none}
+.page-view.active{display:block}
+
+/* ADMIN */
+.admin-wrap{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 128px)}
+.admin-side{background:var(--card-bg);border-right:1px solid var(--border);padding:28px 0;position:sticky;top:128px;height:calc(100vh - 128px);overflow-y:auto}
+.admin-main{padding:40px 48px;background:var(--black)}
+.admin-logo{padding:0 24px 28px;font-family:var(--serif);font-size:18px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.admin-logo span{color:var(--yellow)}
+.admin-nav-group{margin-bottom:8px}
+.admin-nav-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--gray);padding:8px 24px 6px;text-transform:uppercase}
+.admin-nav-item{padding:10px 24px;font-size:13px;display:flex;align-items:center;gap:10px;color:var(--gray);cursor:pointer;transition:all 0.2s;font-weight:300;border-left:2px solid transparent}
+.admin-nav-item:hover{color:var(--white);background:var(--gray-mid)}
+.admin-nav-item.active{color:var(--white);background:var(--gray-mid);border-left-color:var(--yellow)}
+.admin-nav-dot{width:6px;height:6px;background:var(--border);border-radius:50%;flex-shrink:0}
+.admin-nav-item.active .admin-nav-dot{background:var(--yellow)}
+/* ADMIN */
+.admin-wrap{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 128px)}
+.admin-side{background:var(--card-bg);border-right:1px solid var(--ivory-border);padding:28px 0;position:sticky;top:128px;height:calc(100vh - 128px);overflow-y:auto}
+.admin-main{padding:40px 48px;background:var(--black)}
+.admin-logo{padding:0 24px 28px;font-family:var(--serif);font-size:18px;border-bottom:1px solid var(--ivory-border);margin-bottom:24px;color:var(--ivory)}
+.admin-logo span{color:var(--yellow)}
+.admin-nav-group{margin-bottom:8px}
+.admin-nav-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--ivory-dim);padding:8px 24px 6px;text-transform:uppercase;opacity:0.5}
+.admin-nav-item{padding:10px 24px;font-size:13px;display:flex;align-items:center;gap:10px;color:var(--ivory-dim);cursor:pointer;transition:all 0.2s;font-weight:300;border-left:2px solid transparent}
+.admin-nav-item:hover{color:var(--ivory);background:var(--gray-mid)}
+.admin-nav-item.active{color:var(--ivory);background:var(--gray-mid);border-left-color:var(--yellow)}
+.admin-nav-dot{width:6px;height:6px;background:var(--border);border-radius:50%;flex-shrink:0}
+.admin-nav-item.active .admin-nav-dot{background:var(--yellow)}
+.section-head{margin-bottom:32px}
+.page-title{font-family:var(--serif);font-size:28px;letter-spacing:-0.02em;margin-bottom:6px;color:var(--ivory)}
+.page-subtitle{font-size:13px;color:var(--ivory-dim);font-weight:300}
+.analytics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.ana-card{background:var(--card-bg);border:1px solid var(--ivory-border);padding:20px 24px;border-radius:var(--radius-sm)}
+.ana-card:first-child{border-color:rgba(255,212,0,0.25);background:rgba(255,212,0,0.04)}
+.ana-label{font-size:11px;font-family:var(--mono);color:var(--ivory-dim);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;opacity:0.6}
+.ana-val{font-family:var(--mono);font-size:28px;font-weight:700;line-height:1;color:var(--ivory)}
+.ana-card:first-child .ana-val{color:var(--yellow)}
+.ana-delta{font-size:11px;color:#81C784;margin-top:6px;font-family:var(--mono)}
+.table-wrap{background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius-sm);overflow:hidden}
+.table-head-row{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--ivory-border)}
+.table-title{font-size:13px;font-weight:500;color:var(--ivory)}
+.table-search{background:var(--black);border:1px solid var(--ivory-border);color:var(--ivory);padding:7px 14px;font-size:12px;font-family:var(--mono);border-radius:var(--radius-sm);outline:none;width:180px}
+.table-search:focus{border-color:var(--yellow)}
+.table-search::placeholder{color:var(--ivory-dim)}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ivory-dim);padding:14px 24px;text-align:left;border-bottom:1px solid var(--ivory-border);background:rgba(0,0,0,0.3)}
+td{padding:14px 24px;font-size:13px;font-weight:300;border-bottom:1px solid var(--ivory-border);color:var(--ivory)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--ivory-glow)}
+.badge{display:inline-block;padding:3px 12px;border-radius:var(--radius-pill);font-size:10px;font-family:var(--mono);letter-spacing:0.06em;font-weight:700}
+.badge-green{background:rgba(76,175,80,0.15);color:#81C784}
+.badge-yellow{background:rgba(255,212,0,0.15);color:#FFD400}
+.badge-red{background:rgba(244,67,54,0.15);color:#EF9A9A}
+.badge-gray{background:rgba(240,234,214,0.08);color:var(--ivory-dim)}
+.action-row{display:flex;gap:8px}
+.act-btn{background:transparent;border:1px solid var(--ivory-border);color:var(--ivory-dim);padding:5px 14px;font-size:11px;font-family:var(--mono);cursor:pointer;border-radius:var(--radius-pill);transition:all 0.2s}
+.act-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+.act-btn.danger:hover{border-color:#EF9A9A;color:#EF9A9A}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-label{font-size:11px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--ivory-dim)}
+.form-input{background:var(--black);border:1px solid var(--ivory-border);color:var(--ivory);padding:10px 14px;font-size:13px;font-family:var(--sans);border-radius:var(--radius-sm);outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--yellow)}
+.form-input::placeholder{color:var(--ivory-dim)}
+.form-select{background:var(--black);border:1px solid var(--ivory-border);color:var(--ivory);padding:10px 14px;font-size:13px;font-family:var(--sans);border-radius:var(--radius-sm);outline:none;appearance:none;cursor:pointer}
+select option{background:var(--black)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.chart-mock{background:var(--black);border:1px solid var(--ivory-border);border-radius:var(--radius-sm);padding:24px;height:180px;display:flex;align-items:flex-end;gap:8px;overflow:hidden}
+.chart-bar{flex:1;background:rgba(240,234,214,0.08);border-radius:4px 4px 0 0;transition:background 0.2s;min-height:8px}
+.chart-bar:hover{background:var(--yellow)}
+.chart-bar.highlight{background:rgba(255,212,0,0.35)}
+
+/* BOOKING */
+.booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px}
+.booking-form-wrap{background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius);padding:40px}
+.booking-info{padding:40px 0}
+.consultation-types{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.cons-type{display:flex;align-items:center;gap:14px;padding:16px 20px;border:1px solid var(--ivory-border);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s}
+.cons-type:hover,.cons-type.active{border-color:var(--yellow);background:rgba(255,212,0,0.04)}
+.cons-dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background 0.2s}
+.cons-type.active .cons-dot{background:var(--yellow)}
+.cons-title{font-size:14px;font-weight:500;color:var(--ivory)}
+.cons-sub{font-size:12px;color:var(--ivory-dim);font-weight:300}
+
+/* PDF VIEWER */
+.pdf-viewer{background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius);overflow:hidden;margin-top:48px}
+.pdf-toolbar{background:var(--gray-mid);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ivory-border)}
+.pdf-tools{display:flex;gap:8px;align-items:center}
+.pdf-tool-btn{background:transparent;border:1px solid var(--ivory-border);color:var(--ivory-dim);padding:6px 14px;font-size:11px;font-family:var(--mono);cursor:pointer;border-radius:var(--radius-pill);transition:all 0.2s}
+.pdf-tool-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+.pdf-page-area{min-height:400px;background:#1A1A18;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pdf-page-mock{width:320px;background:#FAFAFA;border-radius:var(--radius-sm);padding:40px;position:relative;min-height:260px}
+.pdf-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-family:var(--mono);font-size:12px;color:rgba(255,212,0,0.12);white-space:nowrap;pointer-events:none;letter-spacing:0.1em;font-weight:700;text-transform:uppercase}
+.pdf-text-line{height:8px;background:#E0E0E0;border-radius:2px;margin-bottom:8px}
+.pdf-text-line.short{width:60%}
+.pdf-text-line.medium{width:80%}
+.pdf-secure-badge{position:absolute;bottom:12px;right:12px;background:rgba(255,212,0,0.9);color:var(--black);font-size:9px;font-family:var(--mono);padding:4px 10px;border-radius:var(--radius-pill);font-weight:700;letter-spacing:0.06em}
+
+.course-thumb:hover .play-hover{opacity:1!important}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ✦ PINTEREST / CUTE TEEN AESTHETIC ✦ */
+/* hand-written accent labels */
+.hand-note{font-family:var(--hand);font-size:18px;color:var(--yellow);opacity:0.7;letter-spacing:0.02em;line-height:1}
+.hand-note-ivory{font-family:var(--hand);font-size:17px;color:var(--ivory);opacity:0.45;letter-spacing:0.01em}
+
+/* sticky-note style pull-quote in testimonials */
+.pin-note{position:relative;background:rgba(240,234,214,0.04);border:1px solid var(--ivory-border);border-radius:var(--radius);padding:20px 22px 20px 28px;margin-top:32px}
+.pin-note::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--yellow);border-radius:var(--radius) 0 0 var(--radius);opacity:0.7}
+.pin-note-text{font-family:var(--hand);font-size:19px;color:var(--ivory);opacity:0.7;line-height:1.5}
+
+/* decorative section divider */
+.deco-divider{display:flex;align-items:center;gap:16px;margin-bottom:40px;opacity:0.35}
+.deco-divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--ivory),transparent)}
+.deco-divider-star{font-size:12px;color:var(--yellow)}
+
+/* cute pill tags on course cards */
+.free-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(240,234,214,0.08);border:1px solid var(--ivory-border);color:var(--ivory);font-size:10px;font-family:var(--mono);padding:3px 10px;border-radius:var(--radius-pill);letter-spacing:0.06em}
+.free-pill span{width:5px;height:5px;background:var(--yellow);border-radius:50%;display:inline-block}
+
+/* soft glow on active/hover for login cards */
+.login-card-glow{box-shadow:0 0 60px rgba(240,234,214,0.03),0 0 120px rgba(255,212,0,0.03)}
+
+/* Pinterest-style "mood board" label dots in hero stats */
+.stat-dot{display:inline-block;width:4px;height:4px;background:var(--yellow);border-radius:50%;margin-right:6px;vertical-align:middle;opacity:0.7}
+
+/* quote mark gets a Caveat feel */
+.quote-mark{font-family:var(--hand)!important;font-size:56px!important;color:var(--yellow);line-height:0.9;margin-bottom:16px;opacity:0.6}
+
+/* cute hover on nav logo */
+.nav-logo:hover em,.nav-logo em{font-style:normal}
+.nav-logo:hover span{letter-spacing:0.02em;transition:letter-spacing 0.3s}
+
+/* ✿ PINTEREST CUTE ICON STICKERS ✿ */
+.pin-sticker{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:18px;flex-shrink:0;transition:transform 0.25s}
+.pin-sticker:hover{transform:rotate(-8deg) scale(1.15)}
+.pin-sticker-sm{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:14px;flex-shrink:0}
+
+/* pastel pill badges */
+.pastel-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:var(--radius-pill);font-size:10px;font-family:var(--mono);letter-spacing:0.06em;font-weight:600}
+.pastel-pill-pink{background:rgba(255,179,198,0.18);color:var(--pastel-pink);border:1px solid rgba(255,179,198,0.3)}
+.pastel-pill-lilac{background:rgba(212,187,255,0.18);color:var(--pastel-lilac);border:1px solid rgba(212,187,255,0.3)}
+.pastel-pill-mint{background:rgba(181,234,215,0.18);color:var(--pastel-mint);border:1px solid rgba(181,234,215,0.3)}
+.pastel-pill-peach{background:rgba(255,203,164,0.18);color:var(--pastel-peach);border:1px solid rgba(255,203,164,0.3)}
+
+/* floating deco icons */
+.deco-float{position:absolute;pointer-events:none;font-size:20px;opacity:0;animation:deco-bob 7s ease-in-out infinite}
+@keyframes deco-bob{0%,100%{opacity:0;transform:translateY(0) rotate(0deg)}35%,65%{opacity:0.45;transform:translateY(-10px) rotate(6deg)}}
+
+/* cute feature icon circles */
+.feature-icon-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;transition:transform 0.25s}
+.feature-icon-circle:hover{transform:scale(1.1) rotate(-5deg)}
+.fic-pink{background:rgba(255,179,198,0.15);border:1px solid rgba(255,179,198,0.25)}
+.fic-lilac{background:rgba(212,187,255,0.15);border:1px solid rgba(212,187,255,0.25)}
+.fic-mint{background:rgba(181,234,215,0.15);border:1px solid rgba(181,234,215,0.25)}
+.fic-peach{background:rgba(255,203,164,0.15);border:1px solid rgba(255,203,164,0.25)}
+.fic-sky{background:rgba(181,213,255,0.15);border:1px solid rgba(181,213,255,0.25)}
+.fic-yellow{background:rgba(255,212,0,0.12);border:1px solid rgba(255,212,0,0.25)}
+
+/* cute star-rating row */
+.star-row{display:flex;gap:2px;margin-bottom:14px}
+.star-row span{font-size:13px}
+
+/* section corner deco */
+.corner-deco{font-size:22px;opacity:0.35;display:inline-block;margin-left:10px;vertical-align:middle}
+
+/* cute marquee dot colours */
+.mdot-pink{color:var(--pastel-pink)!important;opacity:1!important}
+.mdot-lilac{color:var(--pastel-lilac)!important;opacity:1!important}
+.mdot-mint{color:var(--pastel-mint)!important;opacity:1!important}
+.mdot-peach{color:var(--pastel-peach)!important;opacity:1!important}
+
+/* hero tag pastel glow */
+.hero-tag{border-color:rgba(255,179,198,0.28)!important;background:rgba(255,179,198,0.05)!important}
+
+/* testimonial card pastel left border accents */
+.testimonial-card:nth-child(1){border-left:3px solid rgba(255,179,198,0.4)}
+.testimonial-card:nth-child(2){border-left:3px solid rgba(212,187,255,0.4)}
+.testimonial-card:nth-child(3){border-left:3px solid rgba(181,234,215,0.4)}
+
+/* cute author avatar pastel colours */
+.av-pink{background:rgba(255,179,198,0.18)!important;color:var(--pastel-pink)!important}
+.av-lilac{background:rgba(212,187,255,0.18)!important;color:var(--pastel-lilac)!important}
+.av-mint{background:rgba(181,234,215,0.18)!important;color:var(--pastel-mint)!important}
+
+/* page views slide in */
+.page-view.active{animation:fadeUp 0.35s ease forwards}
+.fade-in{animation:fadeUp 0.6s ease forwards}
+.fade-in-2{animation:fadeUp 0.6s ease 0.1s forwards;opacity:0}
+.fade-in-3{animation:fadeUp 0.6s ease 0.2s forwards;opacity:0}
+.fade-in-4{animation:fadeUp 0.6s ease 0.3s forwards;opacity:0}
+
+
+/* ✿ Pastel page glow blobs for all pages ✿ */
+#page-courses section, #page-freevideos section, #page-consult section {
+  position:relative;overflow:hidden;
+}
+#page-courses section::before{content:'';position:absolute;top:-80px;right:-120px;width:400px;height:400px;background:radial-gradient(circle,rgba(212,187,255,0.05) 0%,transparent 68%);pointer-events:none;border-radius:50%;z-index:0}
+#page-courses section::after{content:'';position:absolute;bottom:-60px;left:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(181,234,215,0.05) 0%,transparent 68%);pointer-events:none;border-radius:50%;z-index:0}
+#page-freevideos section::before{content:'';position:absolute;top:-60px;right:-80px;width:360px;height:360px;background:radial-gradient(circle,rgba(255,203,164,0.05) 0%,transparent 68%);pointer-events:none;border-radius:50%;z-index:0}
+#page-consult section::before{content:'';position:absolute;top:-60px;left:-80px;width:360px;height:360px;background:radial-gradient(circle,rgba(255,179,198,0.06) 0%,transparent 68%);pointer-events:none;border-radius:50%;z-index:0}
+
+/* ✿ Cute pastel accent on booking form wrap ✿ */
+.booking-form-wrap{border-top:3px solid rgba(255,179,198,0.35)!important}
+.consultation-types .cons-type:nth-child(1):hover,.consultation-types .cons-type:nth-child(1).active{border-color:rgba(255,179,198,0.5)!important;background:rgba(255,179,198,0.05)!important}
+.consultation-types .cons-type:nth-child(2):hover,.consultation-types .cons-type:nth-child(2).active{border-color:rgba(212,187,255,0.5)!important;background:rgba(212,187,255,0.05)!important}
+.consultation-types .cons-type:nth-child(3):hover,.consultation-types .cons-type:nth-child(3).active{border-color:rgba(181,234,215,0.5)!important;background:rgba(181,234,215,0.05)!important}
+.consultation-types .cons-type:nth-child(4):hover,.consultation-types .cons-type:nth-child(4).active{border-color:rgba(255,203,164,0.5)!important;background:rgba(255,203,164,0.05)!important}
+
+/* ✿ Pastel tint on admin analytics cards ✿ */
+.analytics-grid .ana-card:nth-child(2){border-color:rgba(212,187,255,0.2);background:rgba(212,187,255,0.03)}
+.analytics-grid .ana-card:nth-child(2) .ana-val{color:var(--pastel-lilac)}
+.analytics-grid .ana-card:nth-child(3){border-color:rgba(181,234,215,0.2);background:rgba(181,234,215,0.03)}
+.analytics-grid .ana-card:nth-child(3) .ana-val{color:var(--pastel-mint)}
+.analytics-grid .ana-card:nth-child(4){border-color:rgba(255,203,164,0.2);background:rgba(255,203,164,0.03)}
+.analytics-grid .ana-card:nth-child(4) .ana-val{color:var(--pastel-peach)}
+
+/* ✿ Pastel tint on DB stat cards ✿ */
+.db-stats .db-stat:nth-child(2){border-color:rgba(255,179,198,0.2)}
+.db-stats .db-stat:nth-child(2) .db-stat-val{color:var(--pastel-pink)}
+.db-stats .db-stat:nth-child(3){border-color:rgba(212,187,255,0.2)}
+.db-stats .db-stat:nth-child(3) .db-stat-val{color:var(--pastel-lilac)}
+.db-stats .db-stat:nth-child(4){border-color:rgba(181,234,215,0.2)}
+.db-stats .db-stat:nth-child(4) .db-stat-val{color:var(--pastel-mint)}
+
+/* ✿ Cute login card pink top accent ✿ */
+.login-card-glow{border-top:3px solid rgba(255,179,198,0.4)!important}
+
+/* ✿ Pastel course card subject glow on hover ✿ */
+.course-card:hover .course-subject{opacity:1}
+
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  section{padding:64px 20px}
+  .hero h1{font-size:42px}
+  .features-grid{grid-template-columns:1fr}
+  .courses-grid{grid-template-columns:1fr}
+  .testimonials-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .db-body{grid-template-columns:1fr}
+  .db-sidebar{display:none}
+  .admin-wrap{grid-template-columns:1fr}
+  .admin-side{display:none}
+  .analytics-grid{grid-template-columns:1fr 1fr}
+  .booking-grid{grid-template-columns:1fr}
+  .page-tabs{padding:0 20px;overflow-x:auto}
+  .hero-stats{gap:24px}
+  .courses-header{flex-direction:column;align-items:flex-start;gap:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Browse <span>A</span> Teacher</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showTab('landing')">Home</a></li>
+    <li><a href="#" onclick="showTab('courses')">Courses</a></li>
+    <li><a href="#" onclick="showTab('consult')">Consult</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn-ghost" onclick="showTab('student')">Login</button>
+    <button class="btn-primary" onclick="showTab('landing')">Get Started</button>
+  </div>
+</nav>
+
+<!-- PAGE TABS -->
+<div class="page-tabs">
+  <button class="tab-btn active" onclick="showTab('landing')">Landing</button>
+  <button class="tab-btn" onclick="showTab('courses')">Course Library</button>
+  <button class="tab-btn" onclick="showTab('consult')">Consultation</button>
+  <button class="tab-btn" onclick="showTab('student')">Login</button>
+  <button class="tab-btn" onclick="showTab('admin')">Admin Login</button>
+</div>
+
+<!-- ====== LANDING ====== -->
+<div id="page-landing" class="page-view active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-blob-pink"></div>
+    <div class="hero-blob-mint"></div>
+    <span class="hero-sparkle" style="color:var(--pastel-pink)">🌸</span>
+    <span class="hero-sparkle" style="color:var(--pastel-lilac)">✦</span>
+    <span class="hero-sparkle" style="color:var(--yellow)">⭐</span>
+    <span class="hero-sparkle" style="color:var(--pastel-mint)">✿</span>
+    <span class="hero-sparkle" style="color:var(--pastel-peach)">🌟</span>
+    <span class="deco-float" style="top:40%;right:12%;animation-delay:1s;font-size:16px">🎀</span>
+    <span class="deco-float" style="top:25%;right:44%;animation-delay:3s;font-size:13px">💛</span>
+    <span class="deco-float" style="top:60%;right:35%;animation-delay:5s;font-size:12px">🌼</span>
+    <div class="hero-tag fade-in"><span></span>Est. 2024 · Premium Learning ✨</div>
+    <h1 class="fade-in-2">Learn Smarter<br>with <em>Browse</em><br>A Teacher.</h1>
+    <p class="hero-sub fade-in-3">Connect with expert educators, access premium learning resources, and book personalised consultation sessions — all in one place.</p>
+    <div class="hero-actions fade-in-4">
+      <button class="btn-large btn-yellow" onclick="showTab('courses')">Browse Courses</button>
+      <button class="btn-large btn-outline" onclick="showTab('consult')">Request Consultation</button>
+    </div>
+    <div class="hero-stats fade-in-4">
+      <div><div class="stat-num" style="color:var(--yellow)">2,400+</div><div class="stat-label">Students Enrolled</div></div>
+      <div><div class="stat-num" style="color:var(--pastel-pink)">180+</div><div class="stat-label">Video Lessons</div></div>
+      <div><div class="stat-num" style="color:var(--pastel-lilac)">48</div><div class="stat-label">Expert Teachers</div></div>
+      <div><div class="stat-num" style="color:var(--pastel-mint)">98%</div><div class="stat-label">Satisfaction Rate</div></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item"><span class="marquee-dot mdot-pink">🌸</span>Mathematics</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-lilac">✦</span>Physics</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-mint">🌿</span>Chemistry</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-peach">🌼</span>Biology</span>
+      <span class="marquee-item"><span class="marquee-dot" style="color:var(--pastel-sky)">📚</span>English Literature</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-pink">✿</span>History</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-lilac">💻</span>Computer Science</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-mint">📊</span>Economics</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-pink">🌸</span>Mathematics</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-lilac">✦</span>Physics</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-mint">🌿</span>Chemistry</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-peach">🌼</span>Biology</span>
+      <span class="marquee-item"><span class="marquee-dot" style="color:var(--pastel-sky)">📚</span>English Literature</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-pink">✿</span>History</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-lilac">💻</span>Computer Science</span>
+      <span class="marquee-item"><span class="marquee-dot mdot-mint">📊</span>Economics</span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section>
+    <div class="section-label">Why Browse A Teacher 🌸</div>
+    <div class="section-title">Everything you need<br>to <em style="font-style:italic;color:var(--yellow)">actually</em> learn. <span style="color:var(--yellow);font-style:normal;font-size:0.55em;vertical-align:middle;letter-spacing:0.02em;opacity:0.7">✦</span></div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-pink">🎬</div>
+        <div class="feature-num">01</div>
+        <div class="feature-title">Video Learning</div>
+        <div class="feature-desc">HD lessons organised by subject and topic. Resume anytime, track your progress, and never miss a beat.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-lilac">📄</div>
+        <div class="feature-num">02</div>
+        <div class="feature-title">PDF Resources</div>
+        <div class="feature-desc">Secure, watermarked study materials delivered right to your dashboard. Request access in seconds.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-mint">🌟</div>
+        <div class="feature-num">03</div>
+        <div class="feature-title">1-on-1 Consultation</div>
+        <div class="feature-desc">Book personal sessions with expert teachers for targeted exam prep, subject guidance, and career advice.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-peach">🔒</div>
+        <div class="feature-num">04</div>
+        <div class="feature-title">Secure Environment</div>
+        <div class="feature-desc">JWT-protected access, role-based controls, and anti-download measures keep your learning safe.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-sky">🎓</div>
+        <div class="feature-num">05</div>
+        <div class="feature-title">Expert Teachers</div>
+        <div class="feature-desc">Hand-picked educators with proven track records. Real expertise, real results, real guidance.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-yellow">💬</div>
+        <div class="feature-num">06</div>
+        <div class="feature-title">WhatsApp Support</div>
+        <div class="feature-desc">Get help instantly. Purchase courses, ask questions, and book sessions — all via WhatsApp.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-label">Student Stories 💛 ✦</div>
+    <div class="section-title">Real results,<br>real students.</div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="star-row"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
+        <div class="quote-mark">"</div>
+        <p class="testimonial-text">My A/L Chemistry grade jumped from a C to an A after just two months. The way topics are broken down here is genuinely different.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar av-pink">SK</div>
+          <div><div class="author-name">Sithara K.</div><div class="author-grade">A/Levels · Chemistry</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="star-row"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
+        <div class="quote-mark">"</div>
+        <p class="testimonial-text">The consultation sessions are what set this apart. My teacher actually remembered my weak points from last week and built on them.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar av-lilac">AM</div>
+          <div><div class="author-name">Amara M.</div><div class="author-grade">O/Levels · Mathematics</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="star-row"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
+        <div class="quote-mark">"</div>
+        <p class="testimonial-text">I love that I can learn at my own pace and still get real teacher support. It feels premium but also super approachable.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar av-mint">DL</div>
+          <div><div class="author-name">Dilshan L.</div><div class="author-grade">A/Levels · Physics</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="section-label">Questions 💭</div>
+    <div class="section-title">Frequently asked.</div>
+    <div style="margin-top:8px;margin-bottom:4px"><span class="hand-note-ivory">everything you've been wondering ✦</span></div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>How do I purchase a course?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">Simply click "Purchase" on any course, and you'll be connected to our team via WhatsApp. Share your details, confirm payment, and you're enrolled — usually within the hour.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Can I download the PDF materials?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">PDFs are provided in a secure viewer only. Downloading, printing, and copying are disabled to protect teacher content. Every page is watermarked with your name.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>How do consultation sessions work?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">Fill in the booking form with your subject, preferred date, and time. Your request goes to the admin team who will confirm via WhatsApp within 24 hours.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Is there a free trial?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">Some introductory lessons are available for free. Message us on WhatsApp to find out what's currently available for your subject area.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Which subjects are available?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">We cover Maths, Science (Physics, Chemistry, Biology), English, History, Economics, and Computer Science. More subjects are added regularly.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Browse <span>A</span> Teacher</div>
+        <p class="footer-desc">Premium learning resources and expert consultation for students who are serious about results.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#">Browse Courses</a></li>
+          <li><a href="#">Consultation</a></li>
+          <li><a href="#">PDF Library</a></li>
+          <li><a href="#">Student Dashboard</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Teachers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <ul class="footer-links">
+          <li><a href="#">WhatsApp Support</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 Browse A Teacher · All rights reserved</div>
+      <div class="footer-copy">Made with care in Sri Lanka 🌸 ✦</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ====== Login + DASHBOARD ====== -->
+<div id="page-student" class="page-view">
+  <!-- LOGIN GATE -->
+  <div id="student-login-gate" style="min-height:calc(100vh - 128px);display:flex;align-items:center;justify-content:center;padding:48px">
+    <div style="width:100%;max-width:420px">
+      <div class="section-label" style="margin-bottom:12px">Student Portal 🎀</div>
+      <div style="font-family:var(--serif);font-size:32px;letter-spacing:-0.02em;margin-bottom:4px;color:var(--ivory)">Sign In</div>
+      <div style="font-family:var(--hand);font-size:17px;color:var(--yellow);opacity:0.7;margin-bottom:24px">welcome back ✦ 🌸</div>
+      <p style="font-size:13px;color:var(--ivory-dim);font-weight:300;margin-bottom:40px">Access your enrolled courses, videos, and PDF resources.</p>
+      <div style="background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius);padding:36px" class="login-card-glow">
+        <div class="form-group" style="margin-bottom:20px">
+          <label class="form-label">Username</label>
+          <input class="form-input" id="stu-username" type="text" placeholder="your.username">
+        </div>
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="stu-password" type="password" placeholder="••••••••">
+        </div>
+        <button class="btn-large btn-yellow" style="width:100%" onclick="studentLogin()">Sign In to Dashboard</button>
+        <p style="font-size:12px;color:var(--ivory-dim);text-align:center;margin-top:20px;font-weight:300">Don't have access? <a href="#" onclick="whatsappSupport()" style="color:var(--yellow);text-decoration:none">Contact us on WhatsApp</a></p>
+      </div>
+    </div>
+  </div>
+  <!-- DASHBOARD (hidden until login) -->
+  <div id="student-dashboard" style="display:none">
+  <div class="db-body" style="min-height:calc(100vh - 128px)">
+    <div class="db-sidebar">
+      <div class="db-sidebar-logo">Browse <span>A</span> Teacher</div>
+      <div class="db-nav-label">Overview</div>
+      <div class="db-nav-item active">🏠 Dashboard</div>
+      <div class="db-nav-item">📖 My Courses</div>
+      <div class="db-nav-item">🎬 Videos</div>
+      <div class="db-nav-label">Resources</div>
+      <div class="db-nav-item">📄 PDF Library</div>
+      <div class="db-nav-item">✉️ Request PDF</div>
+      <div class="db-nav-label">Sessions</div>
+      <div class="db-nav-item">📅 Book Consultation</div>
+      <div class="db-nav-item">🌟 My Sessions</div>
+      <div class="db-nav-label">Account</div>
+      <div class="db-nav-item">🔔 Notifications</div>
+      <div class="db-nav-item" onclick="studentLogout()" style="color:#EF9A9A;cursor:pointer">🚪 Sign Out</div>
+    </div>
+    <div class="db-content">
+      <div class="db-greeting">
+        <div class="db-name">Good morning, Sithara 🌸✦</div>
+        <div class="db-date" id="live-date">Friday, 06 Jun 2025</div>
+        <div style="font-family:var(--hand);font-size:17px;color:var(--pastel-pink);opacity:0.6;margin-top:4px">let's pick up where you left off 🌸→</div>
+      </div>
+      <div class="db-stats">
+        <div class="db-stat"><div class="db-stat-val" style="color:var(--yellow)">4</div><div class="db-stat-key">Enrolled</div></div>
+        <div class="db-stat"><div class="db-stat-val">12</div><div class="db-stat-key">Videos Watched</div></div>
+        <div class="db-stat"><div class="db-stat-val">3</div><div class="db-stat-key">PDFs Access</div></div>
+        <div class="db-stat"><div class="db-stat-val">1</div><div class="db-stat-key">Sessions</div></div>
+      </div>
+
+      <div class="db-recent">Continue Watching</div>
+      <div>
+        <div class="db-course-row">
+          <div class="db-course-info">
+            <div class="db-course-dot"></div>
+            <div><div class="db-course-name">Advanced Integration Techniques</div><div class="db-course-sub">Mathematics · Module 4 of 8</div></div>
+          </div>
+          <div class="db-prog-wrap">
+            <div class="db-prog-bar"><div class="db-prog-fill" style="width:62%"></div></div>
+            <div class="db-prog-pct">62%</div>
+          </div>
+        </div>
+        <div class="db-course-row">
+          <div class="db-course-info">
+            <div class="db-course-dot"></div>
+            <div><div class="db-course-name">Organic Chemistry Reactions</div><div class="db-course-sub">Chemistry · Module 2 of 6</div></div>
+          </div>
+          <div class="db-prog-wrap">
+            <div class="db-prog-bar"><div class="db-prog-fill" style="width:30%"></div></div>
+            <div class="db-prog-pct">30%</div>
+          </div>
+        </div>
+        <div class="db-course-row">
+          <div class="db-course-info">
+            <div class="db-course-dot"></div>
+            <div><div class="db-course-name">Waves & Oscillations</div><div class="db-course-sub">Physics · Module 1 of 5</div></div>
+          </div>
+          <div class="db-prog-wrap">
+            <div class="db-prog-bar"><div class="db-prog-fill" style="width:88%"></div></div>
+            <div class="db-prog-pct">88%</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px">
+        <div class="db-recent">Upcoming Consultation</div>
+        <div style="border:1px solid rgba(255,212,0,0.2);background:rgba(255,212,0,0.04);padding:20px 24px;border-radius:2px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:14px;font-weight:500;margin-bottom:4px">Exam Prep · Mathematics</div>
+            <div style="font-size:12px;color:var(--gray);font-family:var(--mono)">Mon 10 Jun · 4:00 PM · Mr. Perera</div>
+          </div>
+          <span class="badge badge-yellow">Confirmed</span>
+        </div>
+      </div>
+
+      <div style="margin-top:32px">
+        <div class="db-recent">Notifications</div>
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <div style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
+            <div style="width:6px;height:6px;background:var(--yellow);border-radius:50%;flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:13px;margin-bottom:2px">PDF request approved</div><div style="font-size:11px;color:var(--gray);font-family:var(--mono)">2 hours ago · Chemistry Notes 2024</div></div>
+          </div>
+          <div style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
+            <div style="width:6px;height:6px;background:var(--border);border-radius:50%;flex-shrink:0;margin-top:5px"></div>
+            <div><div style="font-size:13px;margin-bottom:2px">New video added to your course</div><div style="font-size:11px;color:var(--gray);font-family:var(--mono)">Yesterday · Module 5: Differentiation</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end db-body -->
+  </div><!-- end student-dashboard -->
+</div>
+
+<!-- ====== ADMIN PANEL ====== -->
+<div id="page-admin" class="page-view">
+  <!-- ADMIN LOGIN GATE -->
+  <div id="admin-login-gate" style="min-height:calc(100vh - 128px);display:flex;align-items:center;justify-content:center;padding:48px">
+    <div style="width:100%;max-width:420px">
+      <div class="section-label" style="margin-bottom:12px">Admin Portal 🔐</div>
+      <div style="font-family:var(--serif);font-size:32px;letter-spacing:-0.02em;margin-bottom:4px;color:var(--ivory)">Admin Login</div>
+      <div style="font-family:var(--hand);font-size:16px;color:var(--pastel-lilac);opacity:0.55;margin-bottom:24px">authorised personnel only 🔒</div>
+      <p style="font-size:13px;color:var(--ivory-dim);font-weight:300;margin-bottom:40px">Restricted access. Platform management tools.</p>
+      <div style="background:var(--card-bg);border:1px solid rgba(255,212,0,0.2);border-radius:var(--radius);padding:36px">
+        <div class="form-group" style="margin-bottom:20px">
+          <label class="form-label">Admin Username</label>
+          <input class="form-input" id="adm-username" type="text" placeholder="admin">
+        </div>
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="adm-password" type="password" placeholder="••••••••">
+        </div>
+        <button class="btn-large btn-yellow" style="width:100%" onclick="adminLogin()">Access Admin Panel</button>
+      </div>
+    </div>
+  </div>
+  <!-- ADMIN DASHBOARD (hidden until login) -->
+  <div id="admin-dashboard" style="display:none">
+  <div class="admin-wrap">
+    <div class="admin-side">
+      <div class="admin-logo">Browse <span>A</span> Teacher<br><span style="font-family:var(--mono);font-size:10px;color:var(--gray);font-family:var(--mono)">Admin Panel</span></div>
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Overview</div>
+        <div class="admin-nav-item active"><div class="admin-nav-dot"></div>🏠 Dashboard</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>📊 Analytics</div>
+      </div>
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Users</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>👩‍🎓 Students</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>👩‍🏫 Teachers</div>
+      </div>
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Content</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>🎬 Upload Video</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>▶ Videos</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>📄 PDFs</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>📥 PDF Requests</div>
+      </div>
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Sessions</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>🌟 Consultations</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>🔔 Notifications</div>
+      </div>
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Account</div>
+        <div class="admin-nav-item" onclick="adminLogout()" style="color:#EF9A9A;cursor:pointer"><div class="admin-nav-dot" style="background:#EF9A9A"></div>🚪 Sign Out</div>
+      </div>
+    </div>
+    <div class="admin-main">
+      <div class="section-head">
+        <div class="page-title">Admin Dashboard</div>
+        <div class="page-subtitle">Overview of platform activity and management</div>
+      </div>
+
+      <div class="analytics-grid">
+        <div class="ana-card">
+          <div class="ana-label">Total Students</div>
+          <div class="ana-val">2,418</div>
+          <div class="ana-delta">+124 this month</div>
+        </div>
+        <div class="ana-card">
+          <div class="ana-label">Total Videos</div>
+          <div class="ana-val">186</div>
+          <div class="ana-delta">+8 this week</div>
+        </div>
+        <div class="ana-card">
+          <div class="ana-label">🌟 Consultations</div>
+          <div class="ana-val">34</div>
+          <div class="ana-delta">12 pending review</div>
+        </div>
+        <div class="ana-card">
+          <div class="ana-label">📥 PDF Requests</div>
+          <div class="ana-val">21</div>
+          <div class="ana-delta">5 awaiting approval</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:32px">
+        <div>
+          <div class="db-recent" style="margin-bottom:16px">Monthly Enrollments</div>
+          <div class="chart-mock">
+            <div class="chart-bar" style="height:40%"></div>
+            <div class="chart-bar" style="height:55%"></div>
+            <div class="chart-bar" style="height:48%"></div>
+            <div class="chart-bar" style="height:72%"></div>
+            <div class="chart-bar" style="height:65%"></div>
+            <div class="chart-bar highlight" style="height:88%"></div>
+            <div class="chart-bar" style="height:78%"></div>
+            <div class="chart-bar" style="height:90%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="db-recent" style="margin-bottom:16px">Recent Activity</div>
+          <div style="border:1px solid var(--border);border-radius:2px;background:var(--card-bg)">
+            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center">
+              <div style="width:6px;height:6px;background:var(--yellow);border-radius:50%;flex-shrink:0"></div>
+              <div><div style="font-size:12px">PDF request from Sithara K.</div><div style="font-size:10px;color:var(--gray);font-family:var(--mono)">2 mins ago</div></div>
+            </div>
+            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center">
+              <div style="width:6px;height:6px;background:var(--border);border-radius:50%;flex-shrink:0"></div>
+              <div><div style="font-size:12px">New student enrolled: Amara M.</div><div style="font-size:10px;color:var(--gray);font-family:var(--mono)">18 mins ago</div></div>
+            </div>
+            <div style="padding:12px 16px;display:flex;gap:10px;align-items:center">
+              <div style="width:6px;height:6px;background:var(--border);border-radius:50%;flex-shrink:0"></div>
+              <div><div style="font-size:12px">Consultation booked: Physics Prep</div><div style="font-size:10px;color:var(--gray);font-family:var(--mono)">1 hour ago</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-head-row">
+          <div class="table-title">Student Management</div>
+          <input class="table-search" type="text" placeholder="Search students...">
+        </div>
+        <table>
+          <thead><tr><th>Student</th><th>Subject</th><th>Enrolled</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td>Sithara Kumari</td><td>Chemistry, Maths</td><td>14 Feb 2024</td><td><span class="badge badge-green">Active</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn danger">Deactivate</button></div></td></tr>
+            <tr><td>Amara Mendis</td><td>Mathematics</td><td>02 Mar 2024</td><td><span class="badge badge-green">Active</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn danger">Deactivate</button></div></td></tr>
+            <tr><td>Dilshan Liyanage</td><td>Physics</td><td>20 Mar 2024</td><td><span class="badge badge-yellow">Pending</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn">Activate</button></div></td></tr>
+            <tr><td>Nuwani Silva</td><td>English, History</td><td>05 Apr 2024</td><td><span class="badge badge-gray">Inactive</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn">Activate</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:32px">
+        <div class="db-recent" style="margin-bottom:16px">Consultation Requests</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Student</th><th>Subject</th><th>Date & Time</th><th>Type</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td>Sithara K.</td><td>Mathematics</td><td>10 Jun · 4:00 PM</td><td>Exam Prep</td><td><span class="badge badge-yellow">Pending</span></td><td><div class="action-row"><button class="act-btn" style="color:var(--yellow);border-color:rgba(255,212,0,0.3)">Approve</button><button class="act-btn danger">Reject</button></div></td></tr>
+              <tr><td>Dilshan L.</td><td>Physics</td><td>12 Jun · 2:00 PM</td><td>Subject Help</td><td><span class="badge badge-green">Approved</span></td><td><div class="action-row"><button class="act-btn">Notes</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-top:40px">
+        <div class="db-recent" style="margin-bottom:16px">Upload Video</div>
+        <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:2px;padding:36px;max-width:640px">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.08em;margin-bottom:24px">NEW VIDEO UPLOAD</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Video Title</label>
+              <input class="form-input" type="text" placeholder="e.g. Integration Techniques — Part 1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subject</label>
+              <select class="form-select form-input"><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>English</option><option>Economics</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Teacher</label>
+              <input class="form-input" type="text" placeholder="e.g. Mr. R. Perera">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Access Level</label>
+              <select class="form-select form-input"><option value="free">Free — All Students</option><option value="paid">Paid Students Only</option></select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:24px">
+            <label class="form-label">Video URL / Embed Link</label>
+            <input class="form-input" type="url" placeholder="https://youtube.com/embed/...">
+          </div>
+          <div class="form-group" style="margin-bottom:28px">
+            <label class="form-label">Description (optional)</label>
+            <textarea class="form-input" rows="3" placeholder="Brief description of this lesson..." style="resize:none"></textarea>
+          </div>
+          <div style="display:flex;gap:12px">
+            <button class="btn-large btn-yellow">Publish Video</button>
+            <button class="btn-ghost btn-large" style="padding:14px 28px">Save as Draft</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end admin-dashboard -->
+</div>
+
+<!-- ====== COURSE LIBRARY ====== -->
+<div id="page-courses" class="page-view">
+  <section>
+    <div class="courses-header">
+      <div>
+        <div class="section-label">All Subjects 📚</div>
+        <div class="section-title">Course <em style="font-style:italic;color:var(--pastel-pink)">Library</em> <span style="font-size:0.45em;vertical-align:middle">📚</span></div>
+        <div style="margin-top:4px"><span class="hand-note-ivory">your next favourite subject is here 🌸✦</span></div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn-ghost" style="font-size:12px;padding:8px 16px">✦ All</button>
+        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:var(--yellow);color:var(--yellow)">📐 Mathematics</button>
+        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:rgba(181,213,255,0.4);color:var(--pastel-sky)">⚛ Physics</button>
+        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:rgba(255,179,198,0.4);color:var(--pastel-pink)">⚗ Chemistry</button>
+        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:rgba(181,234,215,0.4);color:var(--pastel-mint)">🌿 Biology</button>
+      </div>
+    </div>
+
+    <!-- Library Sub-Tabs -->
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--ivory-border);margin-bottom:40px">
+      <button id="lib-tab-videos" class="lib-tab active-lib" onclick="switchLib('videos')" style="padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--yellow);background:none;border:none;cursor:pointer;border-bottom:2px solid var(--yellow);margin-bottom:-1px">▶ Video Courses</button>
+      <button id="lib-tab-pdfs" class="lib-tab" onclick="switchLib('pdfs')" style="padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--ivory-dim);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px">📄 PDF Resources</button>
+    </div>
+
+    <!-- VIDEOS SECTION -->
+    <div id="lib-videos">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;padding:14px 18px;background:rgba(240,234,214,0.04);border:1px solid var(--ivory-border);border-radius:var(--radius-sm)">
+        <span class="free-pill"><span></span>Free Access</span>
+        <div style="font-size:12px;color:var(--ivory-dim);font-weight:300">All video courses are freely viewable — no login or payment required.</div>
+        <span style="font-family:var(--hand);font-size:16px;color:var(--yellow);opacity:0.75;margin-left:auto;white-space:nowrap">watch anytime 🎬✦</span>
+      </div>
+      <div class="courses-grid">
+        <div class="course-card">
+          <div class="course-thumb" style="background:#111810;cursor:pointer" onclick="openVideoModal('Advanced A/L Mathematics — Integration &amp; Calculus','Mr. R. Perera','Mathematics')">
+            <div class="course-thumb-inner" style="color:var(--yellow)">∑</div>
+            <span class="course-badge">NEW</span>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;background:rgba(0,0,0,0.45)" class="play-hover"><div style="width:44px;height:44px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--black)">▶</div></div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject" style="color:var(--yellow)">📐 Mathematics</div>
+            <div class="course-title">Advanced A/L Mathematics — Integration & Calculus</div>
+            <div class="course-meta"><span class="course-teacher">Mr. R. Perera</span><span class="course-price">LKR 4,500</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px" onclick="openVideoModal('Advanced A/L Mathematics — Integration &amp; Calculus','Mr. R. Perera','Mathematics')">▶ Watch Free</button>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb" style="background:#110A00;cursor:pointer" onclick="openVideoModal('Organic Chemistry Mastery — A/L Complete','Ms. D. Fernando','Chemistry')">
+            <div class="course-thumb-inner" style="color:#FF8C42">⚗</div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;background:rgba(0,0,0,0.45)" class="play-hover"><div style="width:44px;height:44px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--black)">▶</div></div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject" style="color:var(--pastel-pink)">⚗ Chemistry</div>
+            <div class="course-title">Organic Chemistry Mastery — A/L Complete</div>
+            <div class="course-meta"><span class="course-teacher">Ms. D. Fernando</span><span class="course-price">LKR 5,000</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px" onclick="openVideoModal('Organic Chemistry Mastery — A/L Complete','Ms. D. Fernando','Chemistry')">▶ Watch Free</button>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb" style="background:#080D16;cursor:pointer" onclick="openVideoModal('Waves, Mechanics &amp; Thermodynamics — Full Course','Mr. K. Jayawardena','Physics')">
+            <div class="course-thumb-inner" style="color:#64B5F6">⚛</div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;background:rgba(0,0,0,0.45)" class="play-hover"><div style="width:44px;height:44px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--black)">▶</div></div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject" style="color:var(--pastel-sky)">⚛ Physics</div>
+            <div class="course-title">Waves, Mechanics & Thermodynamics — Full Course</div>
+            <div class="course-meta"><span class="course-teacher">Mr. K. Jayawardena</span><span class="course-price">LKR 4,800</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px" onclick="openVideoModal('Waves, Mechanics &amp; Thermodynamics — Full Course','Mr. K. Jayawardena','Physics')">▶ Watch Free</button>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb" style="background:#0D0A10;cursor:pointer" onclick="openVideoModal('Cell Biology &amp; Genetics — A/L Biology','Ms. P. Wickramasinghe','Biology')">
+            <div class="course-thumb-inner" style="color:#CE93D8">🧬</div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;background:rgba(0,0,0,0.45)" class="play-hover"><div style="width:44px;height:44px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--black)">▶</div></div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject" style="color:var(--pastel-mint)">🌿 Biology</div>
+            <div class="course-title">Cell Biology & Genetics — A/L Biology</div>
+            <div class="course-meta"><span class="course-teacher">Ms. P. Wickramasinghe</span><span class="course-price">LKR 4,200</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px" onclick="openVideoModal('Cell Biology &amp; Genetics — A/L Biology','Ms. P. Wickramasinghe','Biology')">▶ Watch Free</button>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb" style="background:#0A100A;cursor:pointer" onclick="openVideoModal('A/L English Literature — Essay &amp; Analysis','Ms. N. Cooke','English')">
+            <div class="course-thumb-inner" style="color:#81C784">£</div>
+            <span class="course-badge">HOT</span>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;background:rgba(0,0,0,0.45)" class="play-hover"><div style="width:44px;height:44px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--black)">▶</div></div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject" style="color:var(--pastel-lilac)">📖 English</div>
+            <div class="course-title">A/L English Literature — Essay & Analysis</div>
+            <div class="course-meta"><span class="course-teacher">Ms. N. Cooke</span><span class="course-price">LKR 3,800</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px" onclick="openVideoModal('A/L English Literature — Essay &amp; Analysis','Ms. N. Cooke','English')">▶ Watch Free</button>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb" style="background:#100E08;cursor:pointer" onclick="openVideoModal('Micro &amp; Macro Economics — Complete A/L','Mr. A. Silva','Economics')">
+            <div class="course-thumb-inner" style="color:#FFD54F">$</div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;background:rgba(0,0,0,0.45)" class="play-hover"><div style="width:44px;height:44px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--black)">▶</div></div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject">Economics</div>
+            <div class="course-title">Micro & Macro Economics — Complete A/L</div>
+            <div class="course-meta"><span class="course-teacher">Mr. A. Silva</span><span class="course-price">LKR 4,000</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px" onclick="openVideoModal('Micro &amp; Macro Economics — Complete A/L','Mr. A. Silva','Economics')">▶ Watch Free</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PDFS SECTION -->
+    <div id="lib-pdfs" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding:12px 16px;background:rgba(239,154,154,0.06);border:1px solid rgba(239,154,154,0.18);border-radius:2px">
+        <div style="width:7px;height:7px;background:#EF9A9A;border-radius:50%;flex-shrink:0"></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);font-weight:300">PDFs require purchase. You can browse all available materials and buy via WhatsApp — access is granted by admin after payment.</div>
+      </div>
+      <div class="courses-grid">
+        <div class="course-card" style="opacity:0.92">
+          <div class="course-thumb" style="background:#0A0E14;flex-direction:column;gap:6px;position:relative">
+            <div style="font-size:36px;filter:blur(0px)">📄</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.1em">PDF</div>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,10,0.62);gap:6px">
+              <div style="font-size:22px">🔒</div>
+              <div style="font-family:var(--mono);font-size:9px;color:#EF9A9A;letter-spacing:0.1em;text-transform:uppercase">Purchase to Access</div>
+            </div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject" style="color:var(--pastel-pink)">⚗ Chemistry</div>
+            <div class="course-title">Organic Chemistry Notes 2024 — Full Revision Guide</div>
+            <div class="course-meta"><span class="course-teacher">Ms. D. Fernando</span><span class="course-price">LKR 800</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px;background:transparent;border:1px solid var(--yellow);color:var(--yellow)" onclick="openPdfModal('Organic Chemistry Notes 2024','Ms. D. Fernando','LKR 800','Chemistry')">🔒 Unlock via WhatsApp</button>
+          </div>
+        </div>
+        <div class="course-card" style="opacity:0.92">
+          <div class="course-thumb" style="background:#0A100A;flex-direction:column;gap:6px;position:relative">
+            <div style="font-size:36px">📄</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.1em">PDF</div>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,10,0.62);gap:6px">
+              <div style="font-size:22px">🔒</div>
+              <div style="font-family:var(--mono);font-size:9px;color:#EF9A9A;letter-spacing:0.1em;text-transform:uppercase">Purchase to Access</div>
+            </div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject" style="color:var(--yellow)">📐 Mathematics</div>
+            <div class="course-title">Integration & Differentiation — Worked Examples</div>
+            <div class="course-meta"><span class="course-teacher">Mr. R. Perera</span><span class="course-price">LKR 650</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px;background:transparent;border:1px solid var(--yellow);color:var(--yellow)" onclick="openPdfModal('Integration & Differentiation Workbook','Mr. R. Perera','LKR 650','Mathematics')">🔒 Unlock via WhatsApp</button>
+          </div>
+        </div>
+        <div class="course-card" style="opacity:0.92">
+          <div class="course-thumb" style="background:#100810;flex-direction:column;gap:6px;position:relative">
+            <div style="font-size:36px">📄</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.1em">PDF</div>
+            <span class="course-badge" style="position:absolute;top:12px;left:12px">HOT</span>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,10,0.62);gap:6px;margin-top:0">
+              <div style="font-size:22px">🔒</div>
+              <div style="font-family:var(--mono);font-size:9px;color:#EF9A9A;letter-spacing:0.1em;text-transform:uppercase">Purchase to Access</div>
+            </div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject">Physics</div>
+            <div class="course-title">Waves & Optics — Exam Formula Sheet</div>
+            <div class="course-meta"><span class="course-teacher">Mr. K. Jayawardena</span><span class="course-price">LKR 500</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px;background:transparent;border:1px solid var(--yellow);color:var(--yellow)" onclick="openPdfModal('Waves & Optics Formula Sheet','Mr. K. Jayawardena','LKR 500','Physics')">🔒 Unlock via WhatsApp</button>
+          </div>
+        </div>
+        <div class="course-card" style="opacity:0.92">
+          <div class="course-thumb" style="background:#100E08;flex-direction:column;gap:6px;position:relative">
+            <div style="font-size:36px">📄</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.1em">PDF</div>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,10,0.62);gap:6px">
+              <div style="font-size:22px">🔒</div>
+              <div style="font-family:var(--mono);font-size:9px;color:#EF9A9A;letter-spacing:0.1em;text-transform:uppercase">Purchase to Access</div>
+            </div>
+          </div>
+          <div class="course-body">
+            <div class="course-subject" style="color:var(--pastel-peach)">📊 Economics</div>
+            <div class="course-title">Macro Economics — Past Paper Analysis 2019–2023</div>
+            <div class="course-meta"><span class="course-teacher">Mr. A. Silva</span><span class="course-price">LKR 700</span></div>
+            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px;background:transparent;border:1px solid var(--yellow);color:var(--yellow)" onclick="openPdfModal('Economics Past Paper Analysis','Mr. A. Silva','LKR 700','Economics')">🔒 Unlock via WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ====== FREE VIDEOS ====== -->
+<div id="page-freevideos" class="page-view">
+  <section>
+    <div class="section-label">Open Access · No Login Required 🎉</div>
+    <div class="section-title">Free Video<br><em style="font-style:italic;color:var(--pastel-mint)">Lessons.</em> <span style="font-size:0.45em;vertical-align:middle">🎬</span></div>
+    <p class="section-sub" style="margin-bottom:48px">Sample lessons from our expert teachers — available to all students, no account needed. Like what you see? Enrol for the full course.</p>
+    <div class="courses-grid">
+      <div class="course-card">
+        <div class="course-thumb" style="background:#111810;position:relative">
+          <div class="course-thumb-inner" style="color:var(--yellow)">▶</div>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.7);color:var(--white);font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:2px">12:34</div>
+        </div>
+        <div class="course-body">
+          <div class="course-subject" style="color:var(--yellow)">📐 Mathematics · FREE</div>
+          <div class="course-title">Introduction to Calculus — What is a Derivative?</div>
+          <div class="course-meta"><span class="course-teacher">Mr. R. Perera</span><span class="course-price" style="color:var(--yellow)">FREE</span></div>
+          <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px">Watch Now</button>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb" style="background:#110A00;position:relative">
+          <div class="course-thumb-inner" style="color:#FF8C42">▶</div>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.7);color:var(--white);font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:2px">09:18</div>
+        </div>
+        <div class="course-body">
+          <div class="course-subject" style="color:var(--pastel-pink)">⚗ Chemistry · FREE</div>
+          <div class="course-title">What Are Organic Compounds? — Beginner's Overview</div>
+          <div class="course-meta"><span class="course-teacher">Ms. D. Fernando</span><span class="course-price" style="color:var(--yellow)">FREE</span></div>
+          <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px">Watch Now</button>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb" style="background:#080D16;position:relative">
+          <div class="course-thumb-inner" style="color:#64B5F6">▶</div>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.7);color:var(--white);font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:2px">15:02</div>
+        </div>
+        <div class="course-body">
+          <div class="course-subject" style="color:var(--pastel-sky)">⚛ Physics · FREE</div>
+          <div class="course-title">Newton's Laws of Motion — Explained Simply</div>
+          <div class="course-meta"><span class="course-teacher">Mr. K. Jayawardena</span><span class="course-price" style="color:var(--yellow)">FREE</span></div>
+          <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px">Watch Now</button>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb" style="background:#0D0A10;position:relative">
+          <div class="course-thumb-inner" style="color:#CE93D8">▶</div>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.7);color:var(--white);font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:2px">11:45</div>
+        </div>
+        <div class="course-body">
+          <div class="course-subject" style="color:var(--pastel-mint)">🌿 Biology · FREE</div>
+          <div class="course-title">Cell Structure 101 — Eukaryotes vs Prokaryotes</div>
+          <div class="course-meta"><span class="course-teacher">Ms. P. Wickramasinghe</span><span class="course-price" style="color:var(--yellow)">FREE</span></div>
+          <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px">Watch Now</button>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb" style="background:#0A100A;position:relative">
+          <div class="course-thumb-inner" style="color:#81C784">▶</div>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.7);color:var(--white);font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:2px">08:55</div>
+        </div>
+        <div class="course-body">
+          <div class="course-subject" style="color:var(--pastel-lilac)">📖 English · FREE</div>
+          <div class="course-title">How to Write a Band-Level Essay — Tips & Structure</div>
+          <div class="course-meta"><span class="course-teacher">Ms. N. Cooke</span><span class="course-price" style="color:var(--yellow)">FREE</span></div>
+          <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px">Watch Now</button>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb" style="background:#100E08;position:relative">
+          <div class="course-thumb-inner" style="color:#FFD54F">▶</div>
+          <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.7);color:var(--white);font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:2px">13:20</div>
+        </div>
+        <div class="course-body">
+          <div class="course-subject" style="color:var(--pastel-peach)">📊 Economics · FREE</div>
+          <div class="course-title">Supply & Demand — The Foundation of Economics</div>
+          <div class="course-meta"><span class="course-teacher">Mr. A. Silva</span><span class="course-price" style="color:var(--yellow)">FREE</span></div>
+          <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px">Watch Now</button>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:48px;padding:32px 36px;border:1px solid var(--ivory-border);border-radius:var(--radius);background:var(--card-bg);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-20px;right:32px;font-family:var(--hand);font-size:52px;color:var(--yellow);opacity:0.05;pointer-events:none">✦</div>
+      <div>
+        <div style="font-family:var(--serif);font-size:20px;letter-spacing:-0.02em;margin-bottom:4px;color:var(--ivory)">Want the full course?</div>
+        <div style="font-size:13px;color:var(--ivory-dim);font-weight:300">Paid students get access to all modules, PDFs, and one-on-one consultations.</div>
+        <div style="font-family:var(--hand);font-size:16px;color:var(--yellow);opacity:0.75;margin-top:6px">invest in yourself 🌟✦</div>
+      </div>
+      <button class="btn-large btn-yellow" onclick="showTab('student')">Sign In or Enrol</button>
+    </div>
+  </section>
+</div>
+
+<!-- VIDEO PLAYER MODAL -->
+<div id="video-modal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px">
+  <div style="background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius);width:100%;max-width:780px;position:relative">
+    <div style="background:var(--gray-mid);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ivory-border)">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px" id="vmodal-subject"></div>
+        <div style="font-size:14px;font-weight:500" id="vmodal-title"></div>
+      </div>
+      <button onclick="closeVideoModal()" style="background:transparent;border:1px solid var(--border);color:var(--gray);width:32px;height:32px;border-radius:2px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <!-- Video area mockup -->
+    <div style="background:#000;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0a0a0a 0%,#111 100%)"></div>
+      <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:12px">
+        <div style="width:64px;height:64px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--black);cursor:pointer" onclick="this.innerHTML='⏸'">▶</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--gray);letter-spacing:0.06em">CLICK TO PLAY</div>
+      </div>
+      <!-- fake progress bar -->
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px;background:linear-gradient(transparent,rgba(0,0,0,0.8))">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.6)">0:00</div>
+          <div style="flex:1;height:3px;background:rgba(255,255,255,0.15);border-radius:2px;cursor:pointer;position:relative">
+            <div style="width:0%;height:100%;background:var(--yellow);border-radius:2px"></div>
+          </div>
+          <div style="font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.6)" id="vmodal-dur">--:--</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div style="font-size:12px;color:var(--gray);font-weight:300" id="vmodal-teacher"></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:7px;height:7px;background:var(--ivory);border-radius:50%;opacity:0.5"></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--pastel-mint);opacity:0.85;letter-spacing:0.06em">🎉 FREE ACCESS — NO LOGIN REQUIRED</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PDF PURCHASE MODAL -->
+<div id="pdf-modal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:24px">
+  <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:2px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;position:relative">
+    <div style="background:var(--gray-mid);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px">PDF Preview</div>
+        <div id="modal-title" style="font-size:14px;font-weight:500"></div>
+      </div>
+      <button onclick="closePdfModal()" style="background:transparent;border:1px solid var(--border);color:var(--gray);width:32px;height:32px;border-radius:2px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <!-- Secure preview mockup -->
+    <div style="background:#1A1A18;min-height:280px;display:flex;align-items:center;justify-content:center;padding:32px;border-bottom:1px solid var(--border)">
+      <div style="width:300px;background:#FAFAFA;border-radius:2px;padding:36px;position:relative;min-height:220px">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-family:var(--mono);font-size:11px;color:rgba(255,150,0,0.18);white-space:nowrap;pointer-events:none;letter-spacing:0.1em;font-weight:700;text-transform:uppercase">PREVIEW ONLY · BROWSE A TEACHER</div>
+        <div style="height:10px;background:#CCC;border-radius:2px;margin-bottom:14px;width:55%"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px;width:80%"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:14px;width:65%"></div>
+        <div style="height:48px;background:#EBEBEB;border-radius:2px;margin-bottom:14px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:10px;color:#999;font-family:monospace">[ Diagram — Paid Access Only ]</span>
+        </div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px;width:90%"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px"></div>
+        <div style="position:absolute;bottom:10px;right:10px;background:rgba(255,200,0,0.88);color:#111;font-size:8px;font-family:monospace;padding:3px 7px;border-radius:2px;font-weight:700;letter-spacing:0.06em">🔒 SECURED</div>
+      </div>
+    </div>
+    <!-- Purchase info -->
+    <div style="padding:28px 32px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <div>
+          <div id="modal-teacher" style="font-size:12px;color:var(--gray);font-family:var(--mono);margin-bottom:4px"></div>
+          <div id="modal-subject" style="font-size:11px;color:var(--yellow);font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase"></div>
+        </div>
+        <div id="modal-price" style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--yellow)"></div>
+      </div>
+      <div style="background:var(--black);border:1px solid var(--border);border-radius:2px;padding:16px 20px;margin-bottom:24px;font-size:12px;color:var(--gray);line-height:1.7;font-weight:300">
+        🌸 After purchase, admin will grant you secure access to the full PDF. It will appear in your Student Dashboard within a few hours. The document is watermarked and download-protected.
+      </div>
+      <button class="btn-large btn-yellow" style="width:100%" onclick="buyPdfWhatsapp()">Purchase via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CONSULTATION ====== -->
+<div id="page-consult" class="page-view">
+  <section>
+    <div class="section-label">Book a Session 🌟</div>
+    <div class="section-title">One-on-one<br><em style="font-style:italic;color:var(--pastel-lilac)">Consultation.</em> <span style="font-size:0.45em;vertical-align:middle">🌟</span></div>
+    <p class="section-sub">Get targeted help from expert teachers. Whether it's exam prep, a tricky topic, or career guidance — we're here. 🌸</p>
+    <div class="booking-grid">
+      <div class="booking-form-wrap">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:0.08em;margin-bottom:24px">01 / BOOK YOUR SESSION 📅</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" type="text" placeholder="Sithara Kumari">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <select class="form-select form-input">
+              <option>Mathematics</option>
+              <option>Physics</option>
+              <option>Chemistry</option>
+              <option>Biology</option>
+              <option>English</option>
+              <option>Economics</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Date</label>
+            <input class="form-input" type="date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Time</label>
+            <input class="form-input" type="time">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:24px">
+          <label class="form-label">Session Type</label>
+          <select class="form-select form-input">
+            <option>One-on-One Subject Help</option>
+            <option>Exam Preparation</option>
+            <option>Career Guidance</option>
+            <option>Topic Deep-Dive</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label">Message (optional)</label>
+          <textarea class="form-input" rows="3" placeholder="Tell us what you'd like to focus on..." style="resize:none"></textarea>
+        </div>
+        <button class="btn-large btn-yellow" style="width:100%" onclick="whatsappConsult()">Submit via WhatsApp</button>
+      </div>
+      <div class="booking-info">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:0.08em;margin-bottom:24px">02 / SESSION TYPES ✨</div>
+        <div class="consultation-types">
+          <div class="cons-type active">
+            <div class="cons-dot"></div>
+            <div><div class="cons-title">🌟 One-on-One Help</div><div class="cons-sub">Targeted support on any topic or subject</div></div>
+          </div>
+          <div class="cons-type" onclick="this.classList.toggle('active')">
+            <div class="cons-dot"></div>
+            <div><div class="cons-title">📝 Exam Preparation</div><div class="cons-sub">Structured revision and past paper practice</div></div>
+          </div>
+          <div class="cons-type" onclick="this.classList.toggle('active')">
+            <div class="cons-dot"></div>
+            <div><div class="cons-title">🎓 Career Guidance</div><div class="cons-sub">University selection, subject choices, path planning</div></div>
+          </div>
+          <div class="cons-type" onclick="this.classList.toggle('active')">
+            <div class="cons-dot"></div>
+            <div><div class="cons-title">🔍 Topic Deep-Dive</div><div class="cons-sub">Master one difficult topic in a focused session</div></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);padding:24px;border-radius:2px;margin-top:24px">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--ivory-dim);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px">✿ How it works</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:12px;align-items:flex-start"><div style="font-family:var(--mono);font-size:11px;color:var(--yellow);flex-shrink:0;margin-top:2px">01</div><div style="font-size:13px;color:var(--gray);font-weight:300">Fill in your booking form with subject and time preference.</div></div>
+            <div style="display:flex;gap:12px;align-items:flex-start"><div style="font-family:var(--mono);font-size:11px;color:var(--yellow);flex-shrink:0;margin-top:2px">02</div><div style="font-size:13px;color:var(--gray);font-weight:300">Your request is reviewed by our team within 24 hours.</div></div>
+            <div style="display:flex;gap:12px;align-items:flex-start"><div style="font-family:var(--mono);font-size:11px;color:var(--yellow);flex-shrink:0;margin-top:2px">03</div><div style="font-size:13px;color:var(--gray);font-weight:300">Confirmation and session details sent via WhatsApp.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<div class="wa-float">
+  <div class="wa-tooltip">Chat on WhatsApp</div>
+  <button class="wa-btn" onclick="whatsappSupport()" aria-label="Contact us on WhatsApp">
+    <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+function showTab(name){
+  document.querySelectorAll('.page-view').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const tabs=['landing','courses','consult','student','admin'];
+  const idx=tabs.indexOf(name);
+  document.getElementById('page-'+name).classList.add('active');
+  if(idx>=0) document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleFaq(el){
+  el.parentElement.classList.toggle('open');
+}
+function whatsappPurchase(course){
+  const msg=encodeURIComponent('Hello Browse A Teacher. I would like to purchase the '+course+'. Please let me know the payment details. Thank you!');
+  window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+}
+function whatsappConsult(){
+  const msg=encodeURIComponent('Hello Browse A Teacher. I would like to book a consultation session. Please advise on availability. Thank you!');
+  window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+}
+function whatsappSupport(){
+  const msg=encodeURIComponent('Hello Browse A Teacher! I need some help. Could you assist me?');
+  window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+}
+
+// Library sub-tab toggle
+function switchLib(tab){
+  document.getElementById('lib-videos').style.display = tab==='videos' ? 'block' : 'none';
+  document.getElementById('lib-pdfs').style.display   = tab==='pdfs'   ? 'block' : 'none';
+  document.getElementById('lib-tab-videos').style.cssText = tab==='videos'
+    ? 'padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--yellow);background:none;border:none;cursor:pointer;border-bottom:2px solid var(--yellow);margin-bottom:-1px'
+    : 'padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--gray);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px';
+  document.getElementById('lib-tab-pdfs').style.cssText = tab==='pdfs'
+    ? 'padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--yellow);background:none;border:none;cursor:pointer;border-bottom:2px solid var(--yellow);margin-bottom:-1px'
+    : 'padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--gray);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px';
+}
+
+// Video Modal
+function openVideoModal(title, teacher, subject){
+  document.getElementById('vmodal-title').textContent   = title;
+  document.getElementById('vmodal-teacher').textContent = teacher;
+  document.getElementById('vmodal-subject').textContent = subject;
+  const durations = ['14:22','09:45','18:03','11:38','13:57','16:10'];
+  document.getElementById('vmodal-dur').textContent = durations[Math.floor(Math.random()*durations.length)];
+  const m = document.getElementById('video-modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeVideoModal(){
+  document.getElementById('video-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('video-modal').addEventListener('click', function(e){
+  if(e.target===this) closeVideoModal();
+});
+
+// PDF Modal
+let _currentPdf = {};
+function openPdfModal(title, teacher, price, subject){
+  _currentPdf = {title, teacher, price, subject};
+  document.getElementById('modal-title').textContent   = title;
+  document.getElementById('modal-teacher').textContent = teacher;
+  document.getElementById('modal-price').textContent   = price;
+  document.getElementById('modal-subject').textContent = subject;
+  const m = document.getElementById('pdf-modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closePdfModal(){
+  document.getElementById('pdf-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function buyPdfWhatsapp(){
+  const msg = encodeURIComponent('Hello Browse A Teacher. I would like to purchase the PDF: "'+_currentPdf.title+'" ('+_currentPdf.subject+', '+_currentPdf.price+'). Please advise on payment. Thank you!');
+  window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+}
+document.getElementById('pdf-modal').addEventListener('click', function(e){
+  if(e.target===this) closePdfModal();
+});
+
+// Login gate
+function studentLogin(){
+  const u = document.getElementById('stu-username').value.trim();
+  const p = document.getElementById('stu-password').value.trim();
+  if(!u || !p){ alert('Please enter your username and password.'); return; }
+  // Prototype: accept any non-empty credentials
+  document.getElementById('student-login-gate').style.display = 'none';
+  document.getElementById('student-dashboard').style.display  = 'block';
+}
+function studentLogout(){
+  document.getElementById('student-dashboard').style.display  = 'none';
+  document.getElementById('student-login-gate').style.display = 'flex';
+  document.getElementById('stu-username').value = '';
+  document.getElementById('stu-password').value = '';
+}
+
+// Admin login gate
+function adminLogin(){
+  const u = document.getElementById('adm-username').value.trim();
+  const p = document.getElementById('adm-password').value.trim();
+  if(!u || !p){ alert('Please enter admin credentials.'); return; }
+  document.getElementById('admin-login-gate').style.display  = 'none';
+  document.getElementById('admin-dashboard').style.display   = 'block';
+}
+function adminLogout(){
+  document.getElementById('admin-dashboard').style.display   = 'none';
+  document.getElementById('admin-login-gate').style.display  = 'flex';
+  document.getElementById('adm-username').value = '';
+  document.getElementById('adm-password').value = '';
+}
+
+const d=new Date();
+const el=document.getElementById('live-date');
+if(el) el.textContent=d.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'short',year:'numeric'});
+</script>
+</body>
+</html>
