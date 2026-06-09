@@ -72,28 +72,9 @@
 <!-- ===== Login AND DASHBOARD ===== -->
 <div id="page-student" class="page-view active">
   <!-- LOGIN GATE -->
-  <div id="student-login-gate" style="min-height:calc(100vh - 128px);display:flex;align-items:center;justify-content:center;padding:48px">
-    <div style="width:100%;max-width:420px">
-      <div class="section-label" style="margin-bottom:12px">Login Portal 🎀</div>
-      <div style="font-family:var(--serif);font-size:32px;letter-spacing:-0.02em;margin-bottom:4px;color:var(--ivory)">Sign In</div>
-      <div style="font-family:var(--hand);font-size:17px;color:var(--yellow);opacity:0.7;margin-bottom:24px">welcome back ✦ 🌸</div>
-      <p style="font-size:13px;color:var(--ivory-dim);font-weight:300;margin-bottom:40px">Sign in to access your dashboard.</p>
-      <div style="background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius);padding:36px" class="login-card-glow">
-        <div class="form-group" style="margin-bottom:20px">
-          <label class="form-label">Username</label>
-          <input class="form-input" id="stu-username" type="text" placeholder="your.username">
-        </div>
-        <div class="form-group" style="margin-bottom:28px">
-          <label class="form-label">Password</label>
-          <input class="form-input" id="stu-password" type="password" placeholder="••••••••">
-        </div>
-        <button class="btn-large btn-yellow" style="width:100%" onclick="studentLogin()">Sign In to Dashboard</button>
-        <p style="font-size:12px;color:var(--ivory-dim);text-align:center;margin-top:20px;font-weight:300">Don't have access? <a href="#" onclick="whatsappSupport()" style="color:var(--yellow);text-decoration:none">Contact us on WhatsApp</a></p>
-      </div>
-    </div>
-  </div>
+  
   <!-- DASHBOARD (hidden until login) -->
-  <div id="student-dashboard" style="display:none">
+  <div id="student-dashboard" >
   <div class="db-body" style="min-height:calc(100vh - 64px)">
     <div class="db-sidebar">
       <div class="db-sidebar-logo">Browse <span>A</span> Teacher</div>
@@ -247,7 +228,7 @@
 
 <script src="./js/common.js"></script>
 
-<script src="./js/student.js?v=5"></script>
+<script src="./js/student.js?v=6"></script>
 
 </body>
 </html>

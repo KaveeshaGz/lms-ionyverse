@@ -75,88 +75,7 @@ window.studentLogout = function () {
   window.location.href = "./login.html";
 };
 
-<!-- ==========================================
-     STUDY NOTES PAGE
-=========================================== -->
 
-<section
-  id="student-panel-study-notes"
-  class="student-panel">
-
-  <div class="section-head">
-    <div class="page-title">
-      Study Notes
-    </div>
-
-    <div class="page-subtitle">
-      View visual revision notes published by your teachers.
-    </div>
-  </div>
-
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:16px;
-    margin-bottom:24px;
-    flex-wrap:wrap;
-  ">
-
-    <div class="db-recent">
-      Published Notes
-    </div>
-
-    <select
-      id="student-notes-filter"
-      class="form-select"
-      style="width:190px"
-      onchange="renderStudentNotes(this.value)">
-
-      <option value="all">
-        All Subjects
-      </option>
-
-      <option value="mathematics">
-        Mathematics
-      </option>
-
-      <option value="physics">
-        Physics
-      </option>
-
-      <option value="chemistry">
-        Chemistry
-      </option>
-
-      <option value="biology">
-        Biology
-      </option>
-
-      <option value="english">
-        English
-      </option>
-
-      <option value="economics">
-        Economics
-      </option>
-
-      <option value="history">
-        History
-      </option>
-
-      <option value="computer-science">
-        Computer Science
-      </option>
-
-    </select>
-  </div>
-
-  <div
-    id="student-notes-grid"
-    class="notes-grid">
-  </div>
-
-</section>
 
 /* ======================================================
    CREATE STUDENT INTERNAL PAGES
@@ -974,6 +893,9 @@ window.openStudentPanel = function (panelName) {
     "student-panel-" + panelName
   );
 
+  
+
+
   if (!selectedPanel) {
     console.error("Student page does not exist:", panelName);
     return;
@@ -986,6 +908,11 @@ window.openStudentPanel = function (panelName) {
     });
 
   selectedPanel.classList.add("active");
+
+     if (panelName === "study-notes") {
+    window.renderStudentNotes("all");
+    }
+    
 
   const labelMap = {
     "dashboard": "dashboard",
@@ -2044,3 +1971,287 @@ document.addEventListener(
     ensureStudentNotesPanelExists();
   }
 );
+
+/* ======================================================
+   STUDENT STUDY NOTES PAGE
+   Temporary localStorage version
+====================================================== */
+
+function createStudentNotesPage() {
+  const content = document.querySelector(
+    "#student-dashboard .db-content"
+  );
+
+  if (!content) {
+    console.error("Student dashboard content area was not found.");
+    return;
+  }
+
+  if (document.getElementById("student-panel-study-notes")) {
+    return;
+  }
+
+  content.insertAdjacentHTML(
+    "beforeend",
+    `
+    <section
+      id="student-panel-study-notes"
+      class="student-panel">
+
+      <div class="section-head">
+        <div class="section-label">
+          Learning Resources ✦
+        </div>
+
+        <div class="page-title">
+          Study Notes
+        </div>
+
+        <div class="page-subtitle">
+          Browse visual revision notes published by your teachers.
+        </div>
+      </div>
+
+
+      <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:16px;
+        flex-wrap:wrap;
+        margin-bottom:24px;
+        padding:18px 20px;
+        border:1px solid var(--ivory-border);
+        border-radius:var(--radius);
+        background:var(--card-bg);
+      ">
+
+        <div>
+          <div style="
+            color:var(--ivory);
+            font-family:var(--serif);
+            font-size:22px;
+          ">
+            Notes Library
+          </div>
+
+          <div style="
+            color:var(--ivory-dim);
+            font-size:12px;
+            margin-top:3px;
+          ">
+            Open any note to view the full-size image.
+          </div>
+        </div>
+
+
+        <select
+          id="student-notes-filter"
+          class="form-select"
+          style="width:190px"
+          onchange="renderStudentNotes(this.value)">
+
+          <option value="all">All Subjects</option>
+          <option value="mathematics">Mathematics</option>
+          <option value="physics">Physics</option>
+          <option value="chemistry">Chemistry</option>
+          <option value="biology">Biology</option>
+          <option value="english">English</option>
+          <option value="economics">Economics</option>
+          <option value="history">History</option>
+          <option value="computer-science">Computer Science</option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        id="student-notes-grid"
+        class="notes-grid">
+      </div>
+
+    </section>
+    `
+  );
+
+  window.renderStudentNotes("all");
+}
+
+
+/* ------------------------------------------------------
+   DISPLAY PUBLISHED NOTES
+------------------------------------------------------ */
+
+window.renderStudentNotes = function (selectedSubject) {
+  const grid = document.getElementById(
+    "student-notes-grid"
+  );
+
+  if (!grid) {
+    return;
+  }
+
+  let notes = [];
+
+  try {
+    notes = JSON.parse(
+      localStorage.getItem(
+        "browseATeacherStudyNotes"
+      ) || "[]"
+    );
+  } catch (error) {
+    console.error("Could not load study notes:", error);
+  }
+
+  const subject = selectedSubject || "all";
+
+  notes = notes.filter(function (note) {
+    return (
+      note.active !== false &&
+      (
+        subject === "all" ||
+        note.subject === subject
+      )
+    );
+  });
+
+  if (notes.length === 0) {
+    grid.innerHTML = `
+      <div style="
+        grid-column:1/-1;
+        padding:44px 24px;
+        text-align:center;
+        border:1px dashed var(--ivory-border);
+        border-radius:var(--radius);
+        background:var(--card-bg);
+        color:var(--ivory-dim);
+      ">
+        <div style="
+          font-size:30px;
+          margin-bottom:10px;
+        ">
+          📝
+        </div>
+
+        <div style="
+          color:var(--ivory);
+          font-family:var(--serif);
+          font-size:20px;
+          margin-bottom:5px;
+        ">
+          No study notes available yet
+        </div>
+
+        <div style="font-size:12px">
+          Published notes will appear here.
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  grid.innerHTML = notes
+    .map(function (note) {
+      return `
+        <article class="note-card">
+
+          <img
+            class="note-image"
+            src="${escapeStudentNoteText(note.imageUrl)}"
+            alt="${escapeStudentNoteText(note.title)}">
+
+          <div class="note-body">
+
+            <div class="note-subject">
+              ${escapeStudentNoteText(
+                formatStudentNoteSubject(note.subject)
+              )}
+            </div>
+
+            <div class="note-title">
+              ${escapeStudentNoteText(note.title)}
+            </div>
+
+            <p class="note-description">
+              ${escapeStudentNoteText(note.description)}
+            </p>
+
+            <button
+              type="button"
+              class="note-view-btn"
+              data-student-note-id="${escapeStudentNoteText(note.id)}">
+              View Note
+            </button>
+
+          </div>
+
+        </article>
+      `;
+    })
+    .join("");
+
+  grid
+    .querySelectorAll("[data-student-note-id]")
+    .forEach(function (button) {
+      button.addEventListener("click", function () {
+        window.openStudentStudyNote(
+          button.dataset.studentNoteId
+        );
+      });
+    });
+};
+
+
+/* ------------------------------------------------------
+   OPEN FULL NOTE IMAGE
+------------------------------------------------------ */
+
+window.openStudentStudyNote = function (noteId) {
+  let notes = [];
+
+  try {
+    notes = JSON.parse(
+      localStorage.getItem(
+        "browseATeacherStudyNotes"
+      ) || "[]"
+    );
+  } catch (error) {
+    console.error("Could not load study notes:", error);
+  }
+
+  const note = notes.find(function (item) {
+    return item.id === noteId;
+  });
+
+  if (!note) {
+    alert("The study note could not be found.");
+    return;
+  }
+
+  window.open(note.imageUrl, "_blank");
+};
+
+
+/* ------------------------------------------------------
+   SAFE TEXT OUTPUT
+------------------------------------------------------ */
+
+function escapeStudentNoteText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+function formatStudentNoteSubject(subject) {
+  return String(subject || "")
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, function (letter) {
+      return letter.toUpperCase();
+    });
+}
