@@ -540,12 +540,219 @@ window.addEventListener(
 window.getTeacherBanners = getTeacherBanners;
 window.saveTeacherBanners = saveTeacherBanners;
 
+
 /* ======================================================
-   NOTES PAGE
+   PUBLIC NOTES PAGE
+   Temporary localStorage version.
+   Firebase will replace this later.
 ====================================================== */
 
+const STUDY_NOTES_STORAGE_KEY = "browseATeacherStudyNotes";
+
+
+/* Default notes shown before the admin uploads anything */
+const defaultStudyNotes = [
+  {
+    id: "default-note-1",
+    subject: "mathematics",
+    title: "Integration Formula Map",
+    description:
+      "A quick visual summary of important integration formulas and when to use them.",
+    imageUrl:
+      "https://placehold.co/1200x900/171717/FFD400?text=Integration+Formula+Map",
+    active: true
+  },
+  {
+    id: "default-note-2",
+    subject: "physics",
+    title: "Waves and Oscillations",
+    description:
+      "Understand amplitude, frequency, wavelength, and period using a simple diagram.",
+    imageUrl:
+      "https://placehold.co/1200x900/171717/D4BBFF?text=Waves+and+Oscillations",
+    active: true
+  },
+  {
+    id: "default-note-3",
+    subject: "chemistry",
+    title: "Organic Chemistry Reactions",
+    description:
+      "A simple reaction pathway summary for quick revision before an exam.",
+    imageUrl:
+      "https://placehold.co/1200x900/171717/FFB3C6?text=Organic+Chemistry+Reactions",
+    active: true
+  },
+  {
+    id: "default-note-4",
+    subject: "biology",
+    title: "Cell Structure Summary",
+    description:
+      "A clear diagram showing the major cell organelles and their functions.",
+    imageUrl:
+      "https://placehold.co/1200x900/171717/B5EAD7?text=Cell+Structure+Summary",
+    active: true
+  }
+];
+
+
+/* Read notes from browser storage */
+window.getStudyNotes = function () {
+  try {
+    const storedNotes = localStorage.getItem(
+      STUDY_NOTES_STORAGE_KEY
+    );
+
+    if (!storedNotes) {
+      localStorage.setItem(
+        STUDY_NOTES_STORAGE_KEY,
+        JSON.stringify(defaultStudyNotes)
+      );
+
+      return [...defaultStudyNotes];
+    }
+
+    return JSON.parse(storedNotes);
+  } catch (error) {
+    console.error("Could not read study notes:", error);
+
+    return [...defaultStudyNotes];
+  }
+};
+
+
+/* Save notes and refresh the public page */
+window.saveStudyNotes = function (notes) {
+  localStorage.setItem(
+    STUDY_NOTES_STORAGE_KEY,
+    JSON.stringify(notes)
+  );
+
+  window.renderPublicStudyNotes();
+};
+
+
+/* Safely display text entered by admin */
+function escapeStudyNoteText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* Make subject text look neat */
+function formatStudyNoteSubject(subject) {
+  const safeSubject = String(subject || "");
+
+  return safeSubject.charAt(0).toUpperCase() +
+    safeSubject.slice(1);
+}
+
+
+/* Draw the notes on the public Notes page */
+window.renderPublicStudyNotes = function () {
+  const grid = document.querySelector(".notes-grid");
+
+  if (!grid) {
+    return;
+  }
+
+  const activeNotes = window
+    .getStudyNotes()
+    .filter(function (note) {
+      return note.active !== false;
+    });
+
+  if (activeNotes.length === 0) {
+    grid.innerHTML = `
+      <div style="
+        grid-column:1/-1;
+        border:1px solid var(--ivory-border);
+        border-radius:var(--radius);
+        padding:32px;
+        color:var(--ivory-dim);
+        text-align:center;
+      ">
+        No study notes are available yet.
+      </div>
+    `;
+
+    return;
+  }
+
+  grid.innerHTML = activeNotes
+    .map(function (note) {
+      return `
+        <div
+          class="note-card"
+          data-subject="${escapeStudyNoteText(note.subject)}">
+
+          <img
+            class="note-image"
+            src="${escapeStudyNoteText(note.imageUrl)}"
+            alt="${escapeStudyNoteText(note.title)}">
+
+          <div class="note-body">
+
+            <div class="note-subject">
+              ${escapeStudyNoteText(
+                formatStudyNoteSubject(note.subject)
+              )}
+            </div>
+
+            <div class="note-title">
+              ${escapeStudyNoteText(note.title)}
+            </div>
+
+            <p class="note-description">
+              ${escapeStudyNoteText(note.description)}
+            </p>
+
+            <button
+              class="note-view-btn"
+              data-note-id="${escapeStudyNoteText(note.id)}">
+              View Note
+            </button>
+
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  grid
+    .querySelectorAll("[data-note-id]")
+    .forEach(function (button) {
+      button.addEventListener("click", function () {
+        const noteId = button.dataset.noteId;
+
+        const note = window
+          .getStudyNotes()
+          .find(function (item) {
+            return item.id === noteId;
+          });
+
+        if (!note) {
+          return;
+        }
+
+        window.openNoteImage(
+          note.imageUrl,
+          note.title
+        );
+      });
+    });
+};
+
+
+/* Filter notes by subject */
 window.filterNotes = function (subject, clickedButton) {
-  const buttons = document.querySelectorAll(".notes-filter-btn");
+  const buttons = document.querySelectorAll(
+    ".notes-filter-btn"
+  );
+
   const cards = document.querySelectorAll(".note-card");
 
   buttons.forEach(function (button) {
@@ -557,7 +764,10 @@ window.filterNotes = function (subject, clickedButton) {
   cards.forEach(function (card) {
     const cardSubject = card.dataset.subject;
 
-    if (subject === "all" || cardSubject === subject) {
+    if (
+      subject === "all" ||
+      cardSubject === subject
+    ) {
       card.style.display = "block";
     } else {
       card.style.display = "none";
@@ -566,20 +776,44 @@ window.filterNotes = function (subject, clickedButton) {
 };
 
 
+/* Open the large note image popup */
 window.openNoteImage = function (imageUrl, title) {
   const modal = document.getElementById("note-modal");
   const image = document.getElementById("note-modal-image");
-  const titleText = document.getElementById("note-modal-title");
+  const titleText = document.getElementById(
+    "note-modal-title"
+  );
+
+  if (!modal || !image || !titleText) {
+    return;
+  }
 
   image.src = imageUrl;
+  image.alt = title;
   titleText.textContent = title;
 
   modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
 };
 
 
+/* Close popup */
 window.closeNoteImage = function () {
   const modal = document.getElementById("note-modal");
 
+  if (!modal) {
+    return;
+  }
+
   modal.style.display = "none";
+  document.body.style.overflow = "";
 };
+
+
+/* Show stored notes when public page opens */
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
+    window.renderPublicStudyNotes();
+  }
+);

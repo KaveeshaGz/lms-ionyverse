@@ -1167,6 +1167,13 @@ function connectAdminSidebar() {
       });
     }
 
+
+    if (text.includes("study notes")) {
+  item.addEventListener("click", function () {
+    showAdminPanel("notes", item);
+  });
+}
+
     if (text.includes("banner advertisements")) {
       item.addEventListener("click", function () {
         showAdminPanel("banners", item);
@@ -2893,7 +2900,743 @@ window.toggleTeacherBanner = toggleTeacherBanner;
 window.removeTeacherBanner = removeTeacherBanner;
 
 /* ======================================================
-   START ADMIN DASHBOARD
+   ADMIN PANEL — STUDY NOTES MANAGER
+   Temporary localStorage version.
+   Firebase will replace this later.
+====================================================== */
+
+function setupNotesManager() {
+  const adminSidebar = document.querySelector(".admin-side");
+  const adminMain = document.querySelector(".admin-main");
+
+  if (!adminSidebar || !adminMain) {
+    return;
+  }
+
+  if (document.getElementById("admin-panel-notes")) {
+    return;
+  }
+
+  addNotesNavItem(adminSidebar);
+  addNotesManagerPanel(adminMain);
+  connectNotesManagerForm();
+  renderAdminNotesList();
+}
+
+
+/* Add Notes Management to the left sidebar */
+function addNotesNavItem(adminSidebar) {
+  const navigationGroups = adminSidebar.querySelectorAll(
+    ".admin-nav-group"
+  );
+
+  const accountGroup =
+    navigationGroups[navigationGroups.length - 1];
+
+  const notesMenu = document.createElement("div");
+
+  notesMenu.className = "admin-nav-group";
+
+  notesMenu.innerHTML = `
+    <div class="admin-nav-label">
+      Learning Content
+    </div>
+
+    <div class="admin-nav-item">
+      <span class="admin-nav-dot"></span>
+      📝 Study Notes
+    </div>
+  `;
+
+  if (accountGroup) {
+    accountGroup.insertAdjacentElement(
+      "beforebegin",
+      notesMenu
+    );
+  } else {
+    adminSidebar.appendChild(notesMenu);
+  }
+}
+
+
+/* Create the Notes Management page */
+function addNotesManagerPanel(adminMain) {
+  const panel = document.createElement("section");
+
+  panel.id = "admin-panel-notes";
+  panel.className = "admin-panel";
+
+  panel.innerHTML = `
+    <div class="section-head">
+      <div class="section-label">
+        Learning Content ✦
+      </div>
+
+      <h1 class="page-title">
+        Study Notes Management
+      </h1>
+
+      <p class="page-subtitle">
+        Upload image-based study notes with a title,
+        subject, and short description.
+      </p>
+    </div>
+
+
+    <div class="two-col">
+
+      <div class="table-wrap">
+
+        <div class="table-head-row">
+          <div>
+            <div class="table-title">
+              Publish New Note
+            </div>
+
+            <div style="
+              color:var(--ivory-dim);
+              font-size:12px;
+              margin-top:4px;
+            ">
+              Add an image and explanation for students.
+            </div>
+          </div>
+        </div>
+
+
+        <form
+          id="admin-note-form"
+          style="padding:24px">
+
+          <div class="form-group"
+            style="margin-bottom:18px">
+
+            <label class="form-label">
+              Note Title
+            </label>
+
+            <input
+              id="admin-note-title"
+              class="form-input"
+              type="text"
+              placeholder="Example: Integration Formula Map"
+              required>
+          </div>
+
+
+          <div class="form-group"
+            style="margin-bottom:18px">
+
+            <label class="form-label">
+              Subject
+            </label>
+
+            <select
+              id="admin-note-subject"
+              class="form-select"
+              required>
+
+              <option value="">
+                Select a subject
+              </option>
+
+              <option value="mathematics">
+                Mathematics
+              </option>
+
+              <option value="physics">
+                Physics
+              </option>
+
+              <option value="chemistry">
+                Chemistry
+              </option>
+
+              <option value="biology">
+                Biology
+              </option>
+
+              <option value="english">
+                English
+              </option>
+
+              <option value="economics">
+                Economics
+              </option>
+
+              <option value="history">
+                History
+              </option>
+
+              <option value="computer-science">
+                Computer Science
+              </option>
+            </select>
+          </div>
+
+
+          <div class="form-group"
+            style="margin-bottom:18px">
+
+            <label class="form-label">
+              Description
+            </label>
+
+            <textarea
+              id="admin-note-description"
+              class="form-input"
+              rows="5"
+              maxlength="280"
+              placeholder="Add a short explanation for students."
+              required></textarea>
+          </div>
+
+
+          <div class="form-group"
+            style="margin-bottom:20px">
+
+            <label class="form-label">
+              Note Image
+            </label>
+
+            <input
+              id="admin-note-image"
+              class="form-input"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              required>
+
+            <div style="
+              color:var(--ivory-dim);
+              font-size:11px;
+              margin-top:7px;
+            ">
+              Recommended: JPG, PNG, or WebP.
+              Keep the image below 800 KB.
+            </div>
+          </div>
+
+
+          <div style="
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+          ">
+
+            <button
+              class="btn-large btn-yellow"
+              type="submit">
+              Publish Note
+            </button>
+
+            <button
+              class="btn-large btn-outline"
+              type="reset">
+              Clear Form
+            </button>
+
+          </div>
+        </form>
+      </div>
+
+
+      <div style="
+        border:1px solid var(--ivory-border);
+        border-radius:var(--radius);
+        background:var(--card-bg);
+        padding:28px;
+        align-self:start;
+      ">
+
+        <div style="
+          font-size:30px;
+          margin-bottom:14px;
+        ">
+          📝
+        </div>
+
+        <div style="
+          color:var(--yellow);
+          font-family:var(--serif);
+          font-size:22px;
+          margin-bottom:10px;
+        ">
+          Notes Library
+        </div>
+
+        <p style="
+          color:var(--ivory-dim);
+          font-size:13px;
+          line-height:1.75;
+        ">
+          Published notes appear on the public Notes page.
+          You can temporarily hide a note or permanently remove it.
+        </p>
+
+        <div style="
+          margin-top:22px;
+          padding-top:18px;
+          border-top:1px solid var(--ivory-border);
+          color:var(--ivory-dim);
+          font-size:12px;
+          line-height:1.9;
+        ">
+          <div>
+            Storage:
+            <span style="color:var(--ivory)">
+              Browser storage
+            </span>
+          </div>
+
+          <div>
+            Maximum image size:
+            <span style="color:var(--ivory)">
+              800 KB
+            </span>
+          </div>
+
+          <div>
+            Visibility:
+            <span style="color:var(--ivory)">
+              Active notes only
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div
+      class="table-wrap"
+      style="margin-top:28px">
+
+      <div class="table-head-row">
+        <div>
+          <div class="table-title">
+            Published Study Notes
+          </div>
+
+          <div style="
+            color:var(--ivory-dim);
+            font-size:12px;
+            margin-top:4px;
+          ">
+            Manage the visual notes currently stored in the LMS.
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="admin-notes-list"
+        style="
+          display:grid;
+          grid-template-columns:
+            repeat(auto-fit, minmax(240px, 1fr));
+          gap:16px;
+          padding:20px;
+        ">
+      </div>
+
+    </div>
+  `;
+
+  adminMain.appendChild(panel);
+}
+
+
+/* ======================================================
+   CONNECT NOTES UPLOAD FORM
+====================================================== */
+
+function connectNotesManagerForm() {
+  const form = document.getElementById("admin-note-form");
+
+  if (!form) {
+    console.error("Notes upload form was not found.");
+    return;
+  }
+
+  /*
+    Prevent duplicate event listeners when returning
+    to the admin page.
+  */
+  if (form.dataset.connected === "true") {
+    return;
+  }
+
+  form.dataset.connected = "true";
+
+  form.addEventListener("submit", handleStudyNoteUpload);
+
+  console.log("Notes upload form connected successfully.");
+}
+
+/* ======================================================
+   NOTES LOCAL STORAGE
+   Firebase will replace this later.
+====================================================== */
+
+const ADMIN_NOTES_STORAGE_KEY =
+  "browseATeacherStudyNotes";
+
+
+function getSavedStudyNotes() {
+  try {
+    const savedNotes = localStorage.getItem(
+      ADMIN_NOTES_STORAGE_KEY
+    );
+
+    if (!savedNotes) {
+      return [];
+    }
+
+    return JSON.parse(savedNotes);
+  } catch (error) {
+    console.error("Could not read saved notes:", error);
+    return [];
+  }
+}
+
+
+function saveUploadedStudyNotes(notes) {
+  try {
+    localStorage.setItem(
+      ADMIN_NOTES_STORAGE_KEY,
+      JSON.stringify(notes)
+    );
+  } catch (error) {
+    console.error("Could not save study notes:", error);
+
+    throw new Error(
+      "Browser storage is full. Try a smaller image."
+    );
+  }
+
+  /*
+    Refresh public notes immediately when the shared
+    public renderer exists.
+  */
+  if (
+    typeof window.renderPublicStudyNotes === "function"
+  ) {
+    window.renderPublicStudyNotes();
+  }
+}
+/* Make Notes storage helpers available everywhere */
+window.getStudyNotes = getSavedStudyNotes;
+window.saveStudyNotes = saveUploadedStudyNotes;
+
+/* ======================================================
+   HANDLE NOTE IMAGE UPLOAD
+====================================================== */
+
+function handleStudyNoteUpload(event) {
+  event.preventDefault();
+
+  const titleInput =
+    document.getElementById("admin-note-title");
+
+  const subjectInput =
+    document.getElementById("admin-note-subject");
+
+  const descriptionInput =
+    document.getElementById("admin-note-description");
+
+  const imageInput =
+    document.getElementById("admin-note-image");
+
+  if (
+    !titleInput ||
+    !subjectInput ||
+    !descriptionInput ||
+    !imageInput
+  ) {
+    alert("The Notes form is incomplete.");
+    console.error("One or more Notes form fields are missing.");
+    return;
+  }
+
+  const title = titleInput.value.trim();
+  const subject = subjectInput.value;
+  const description = descriptionInput.value.trim();
+  const imageFile = imageInput.files[0];
+
+  if (!title) {
+    alert("Please enter a note title.");
+    return;
+  }
+
+  if (!subject) {
+    alert("Please select a subject.");
+    return;
+  }
+
+  if (!description) {
+    alert("Please enter a short description.");
+    return;
+  }
+
+  if (!imageFile) {
+    alert("Please choose a note image.");
+    return;
+  }
+
+  if (!imageFile.type.startsWith("image/")) {
+    alert("Please choose a valid JPG, PNG, or WebP image.");
+    return;
+  }
+
+  const maximumFileSize = 800 * 1024;
+
+  if (imageFile.size > maximumFileSize) {
+    alert("Please choose an image below 800 KB.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    try {
+      const notes = getSavedStudyNotes();
+
+      notes.unshift({
+        id: "note-" + Date.now(),
+        title: title,
+        subject: subject,
+        description: description,
+        imageUrl: reader.result,
+        active: true
+      });
+
+      saveUploadedStudyNotes(notes);
+
+      document
+        .getElementById("admin-note-form")
+        .reset();
+
+      renderAdminNotesList();
+
+      alert("Study note published successfully.");
+    } catch (error) {
+      console.error("Study note upload error:", error);
+
+      alert(
+        "The note could not be saved. Open the browser Console to see the error."
+      );
+    }
+  };
+
+  reader.onerror = function () {
+    alert("The image could not be read. Please choose another image.");
+  };
+
+  reader.readAsDataURL(imageFile);
+}
+
+
+/* Safely display text entered by admin */
+function escapeAdminNoteText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* Draw uploaded notes in the admin page */
+function renderAdminNotesList() {
+  const list = document.getElementById(
+    "admin-notes-list"
+  );
+
+  if (!list) {
+    return;
+  }
+
+  const notes = window.getStudyNotes();
+
+  if (notes.length === 0) {
+    list.innerHTML = `
+      <div style="
+        grid-column:1/-1;
+        color:var(--ivory-dim);
+        padding:18px 4px;
+      ">
+        No study notes have been uploaded yet.
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML = notes
+    .map(function (note) {
+      const statusText =
+        note.active === false
+          ? "Hidden"
+          : "Active";
+
+      const statusClass =
+        note.active === false
+          ? "badge badge-gray"
+          : "badge badge-green";
+
+      return `
+        <article style="
+          overflow:hidden;
+          border:1px solid var(--ivory-border);
+          border-radius:var(--radius);
+          background:var(--black);
+        ">
+
+          <img
+            src="${escapeAdminNoteText(note.imageUrl)}"
+            alt="${escapeAdminNoteText(note.title)}"
+            style="
+              display:block;
+              width:100%;
+              height:145px;
+              object-fit:cover;
+              background:#171717;
+            ">
+
+          <div style="padding:16px">
+
+            <div style="
+              color:var(--yellow);
+              font-family:var(--mono);
+              font-size:10px;
+              letter-spacing:0.07em;
+              margin-bottom:8px;
+              text-transform:uppercase;
+            ">
+              ${escapeAdminNoteText(note.subject)}
+            </div>
+
+            <div style="
+              color:var(--ivory);
+              font-family:var(--serif);
+              font-size:18px;
+              line-height:1.15;
+              margin-bottom:9px;
+            ">
+              ${escapeAdminNoteText(note.title)}
+            </div>
+
+            <p style="
+              color:var(--ivory-dim);
+              font-size:11px;
+              line-height:1.65;
+              margin-bottom:13px;
+            ">
+              ${escapeAdminNoteText(note.description)}
+            </p>
+
+            <div style="
+              display:flex;
+              align-items:center;
+              justify-content:space-between;
+              gap:10px;
+              margin-bottom:14px;
+            ">
+
+              <span class="${statusClass}">
+                ${statusText}
+              </span>
+
+            </div>
+
+            <div style="
+              display:flex;
+              gap:8px;
+              flex-wrap:wrap;
+            ">
+
+              <button
+                class="act-btn"
+                onclick="
+                  toggleStudyNote(
+                    '${escapeAdminNoteText(note.id)}'
+                  )
+                ">
+                ${
+                  note.active === false
+                    ? "Publish"
+                    : "Hide"
+                }
+              </button>
+
+              <button
+                class="act-btn danger"
+                onclick="
+                  removeStudyNote(
+                    '${escapeAdminNoteText(note.id)}'
+                  )
+                ">
+                Remove
+              </button>
+
+            </div>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+
+/* Hide or publish a note */
+function toggleStudyNote(noteId) {
+  const notes = window.getStudyNotes();
+
+  const updatedNotes = notes.map(function (note) {
+    if (note.id === noteId) {
+      return {
+            ...note,
+            active: note.active === false
+      };
+    }
+
+    return note;
+  });
+
+  window.saveStudyNotes(updatedNotes);
+
+  renderAdminNotesList();
+}
+
+
+/* Remove a note */
+function removeStudyNote(noteId) {
+  const confirmed = confirm(
+    "Remove this study note permanently?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const updatedNotes = window
+    .getStudyNotes()
+    .filter(function (note) {
+      return note.id !== noteId;
+    });
+
+  window.saveStudyNotes(updatedNotes);
+
+  renderAdminNotesList();
+}
+
+
+/* Allow onclick buttons to access these functions */
+window.toggleStudyNote = toggleStudyNote;
+window.removeStudyNote = removeStudyNote;
+
+/* ======================================================
+   START ADMIN DASHBOARD SAFELY
 ====================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -2916,35 +3659,58 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /*
-    IMPORTANT ORDER:
-    1. Create the normal pages
-    2. Create the banner page and its sidebar button
-    3. Connect sidebar clicks only after all sidebar buttons exist
+    Start each feature separately.
+    One broken optional feature will no longer stop the sidebar.
   */
 
-  if (typeof createAdminPages === "function") {
+  try {
     createAdminPages();
+  } catch (error) {
+    console.error("Admin pages error:", error);
   }
 
-  if (typeof setupBannerManager === "function") {
+  try {
     setupBannerManager();
+  } catch (error) {
+    console.error("Banner manager error:", error);
   }
 
-  if (typeof connectAdminSidebar === "function") {
+  try {
+    setupNotesManager();
+  } catch (error) {
+    console.error("Notes manager error:", error);
+  }
+
+  /*
+    IMPORTANT:
+    Connect sidebar clicks after dynamic menu items are created.
+  */
+
+  try {
     connectAdminSidebar();
+  } catch (error) {
+    console.error("Sidebar connection error:", error);
   }
 
-  if (typeof setupDashboardExtras === "function") {
+  try {
     setupDashboardExtras();
+  } catch (error) {
+    console.error("Dashboard extras error:", error);
   }
 
-  if (typeof initializeDashboardChart === "function") {
+  try {
     initializeDashboardChart();
+  } catch (error) {
+    console.error("Dashboard chart error:", error);
   }
 
-  if (typeof setupDashboardCardMouseAnimation === "function") {
+  try {
     setupDashboardCardMouseAnimation();
+  } catch (error) {
+    console.error("Dashboard animation error:", error);
   }
 
-  console.log("Admin dashboard connected successfully.");
+  console.log("Admin dashboard startup completed.");
 });
+
+ 
