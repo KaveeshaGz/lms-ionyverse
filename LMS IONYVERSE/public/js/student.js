@@ -66,12 +66,12 @@ import {
   serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-import {
+  import {
   ref,
   getBlob
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-storage.js";
 
-/* ======================================================
+  /* ======================================================
    START FIREBASE-PROTECTED STUDENT DASHBOARD
 ====================================================== */
 
@@ -905,6 +905,18 @@ function showStudentPanel(panelName, selectedItem) {
 
   selectedPanel.classList.add("active");
 
+  if (panelName === "pdf-library") {
+  loadStudentPdfLibrary();
+}
+
+if (panelName === "request-pdf") {
+  loadStudentPdfRequestHistory();
+}
+
+if (panelName === "study-notes") {
+  window.renderStudentNotes("all");
+}
+
   document
     .querySelectorAll("#student-dashboard .db-nav-item")
     .forEach(function (item) {
@@ -1327,26 +1339,38 @@ window.renderStudentNotes = function (selectedSubject) {
           </div>
         </article>
       `;
-    })
+        })
     .join("");
+
 
   grid
     .querySelectorAll("[data-student-note-id]")
     .forEach(function (button) {
-      button.addEventListener("click", function () {
-        const noteId = button.dataset.studentNoteId;
+      button.addEventListener(
+        "click",
+        function () {
+          const noteId =
+            button.dataset.studentNoteId;
 
-        const note = getStudentVisibleNotes()
-          .find(function (item) {
-            return item.id === noteId;
-          });
+          const note =
+            getStudentVisibleNotes()
+              .find(function (item) {
+                return item.id === noteId;
+              });
 
-        if (note) {
-          openStudentNoteModal(note);
+          if (note) {
+            openStudentNoteModal(note);
+          }
         }
-      });
+      );
     });
 };
+
+
+/* ------------------------------------------------------
+   NOTE PREVIEW POPUP
+------------------------------------------------------ */
+ 
 
 
 /* ------------------------------------------------------
@@ -1890,8 +1914,7 @@ async function loadStudentPdfLibrary() {
       return;
     }
 
-    const accessRequests =
-    await loadCurrentStudentPdfAccessRequests();
+    
 
     grid.innerHTML = pdfResources
       .map(function (resource) {
@@ -1993,6 +2016,21 @@ async function loadStudentPdfLibrary() {
       })
       .join("");
 
+      grid
+  .querySelectorAll(
+    "[data-open-pdf-resource]"
+  )
+  .forEach(function (button) {
+    button.addEventListener(
+      "click",
+      async function () {
+        await openStudentPdfResource(
+          button.dataset.openPdfResource,
+          pdfResources
+        );
+      }
+    );
+  });
 
     grid
   .querySelectorAll(
@@ -2012,22 +2050,7 @@ async function loadStudentPdfLibrary() {
   });
 
 
-    grid
-  .querySelectorAll(
-    "[data-request-pdf-access]"
-  )
-  .forEach(function (button) {
-    button.addEventListener(
-      "click",
-      async function () {
-        await requestStudentPdfAccess(
-          button.dataset.requestPdfAccess,
-          pdfResources,
-          button
-        );
-      }
-    );
-  });
+    
 
   } catch (error) {
     console.error(
@@ -2044,9 +2067,8 @@ async function loadStudentPdfLibrary() {
   }
 }
 
-
 /* ------------------------------------------------------
-   OPEN A FREE PDF RESOURCE
+   OPEN PDF INSIDE PROTECTED VIEWER
 ------------------------------------------------------ */
 
 async function openStudentPdfResource(
@@ -2060,27 +2082,50 @@ async function openStudentPdfResource(
   );
 
   if (!resource) {
-    alert("The PDF resource could not be found.");
+    alert(
+      "The PDF resource could not be found."
+    );
+
     return;
   }
 
-
-  const mayOpenPdf =
-  await canStudentOpenPdfResource(
-    resource
-  );
-
-if (!mayOpenPdf) {
-  alert(
-    "This PDF requires administrator approval."
-  );
-
-  await loadStudentPdfLibrary();
-
-  return;
-}
-
   try {
+    /*
+      Confirm the student has approval before
+      retrieving the PDF file.
+    */
+    const mayOpenPdf =
+      await canStudentOpenPdfResource(
+        resource
+      );
+
+    if (!mayOpenPdf) {
+      alert(
+        "This PDF requires administrator approval."
+      );
+
+      await loadStudentPdfLibrary();
+
+      return;
+    }
+
+    if (!resource.storagePath) {
+      alert(
+        "The PDF storage path is missing. Please contact the administrator."
+      );
+
+      return;
+    }
+
+    openProtectedPdfViewer(
+      resource.title
+    );
+
+    /*
+      Retrieve PDF bytes privately through
+      the Firebase SDK instead of exposing
+      the download URL.
+    */
     const pdfReference = ref(
       storage,
       resource.storagePath
@@ -2091,37 +2136,26 @@ if (!mayOpenPdf) {
         pdfReference
       );
 
-    const pdfUrl =
-      URL.createObjectURL(
-        pdfBlob
-      );
+    const pdfArrayBuffer =
+      await pdfBlob.arrayBuffer();
 
-    window.open(
-      pdfUrl,
-      "_blank"
-    );
-
-    setTimeout(
-      function () {
-        URL.revokeObjectURL(
-          pdfUrl
-        );
-      },
-      60000
+    await renderProtectedPdfPages(
+      pdfArrayBuffer
     );
 
   } catch (error) {
     console.error(
-      "Could not open PDF:",
+      "Protected PDF viewer error:",
       error
     );
+
+    closeProtectedPdfViewer();
 
     alert(
       "The PDF could not be opened. Check the browser Console."
     );
   }
 }
-
 
 /* ------------------------------------------------------
    SAFE TEXT OUTPUT
@@ -2382,8 +2416,10 @@ async function canStudentOpenPdfResource(
     return true;
   }
 
+
   const accessRequests =
     await loadCurrentStudentPdfAccessRequests();
+
 
   const status =
     getStudentPdfAccessStatus(
@@ -2391,5 +2427,278 @@ async function canStudentOpenPdfResource(
       accessRequests
     );
 
+
   return status === "approved";
 }
+
+/* ======================================================
+   PROTECTED PDF CANVAS VIEWER
+====================================================== */
+
+function createProtectedPdfViewer() {
+  if (
+    document.getElementById(
+      "protected-pdf-viewer"
+    )
+  ) {
+    return;
+  }
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
+    <div
+      id="protected-pdf-viewer"
+      class="protected-pdf-viewer">
+
+      <div class="protected-pdf-viewer-head">
+
+        <div>
+          <div class="section-label">
+            Secure PDF Viewer ✦
+          </div>
+
+          <div
+            id="protected-pdf-viewer-title"
+            class="protected-pdf-viewer-title">
+            PDF Resource
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="protected-pdf-close"
+          onclick="closeProtectedPdfViewer()">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="protected-pdf-notice">
+        View-only learning material · Downloading and printing are disabled.
+      </div>
+
+
+      <div
+        id="protected-pdf-pages"
+        class="protected-pdf-pages">
+
+        <div class="protected-pdf-loading">
+          Loading your PDF...
+        </div>
+
+      </div>
+
+    </div>
+    `
+  );
+
+  /*
+    Block easy right-click saving.
+  */
+  document
+    .getElementById("protected-pdf-viewer")
+    .addEventListener(
+      "contextmenu",
+      function (event) {
+        event.preventDefault();
+      }
+    );
+}
+
+
+function openProtectedPdfViewer(title) {
+  createProtectedPdfViewer();
+
+  const viewer =
+    document.getElementById(
+      "protected-pdf-viewer"
+    );
+
+  const titleElement =
+    document.getElementById(
+      "protected-pdf-viewer-title"
+    );
+
+  const pages =
+    document.getElementById(
+      "protected-pdf-pages"
+    );
+
+  titleElement.textContent =
+    title || "PDF Resource";
+
+  pages.innerHTML = `
+    <div class="protected-pdf-loading">
+      Loading your PDF...
+    </div>
+  `;
+
+  viewer.classList.add("open");
+
+  document.body.style.overflow =
+    "hidden";
+}
+
+
+window.closeProtectedPdfViewer =
+  function () {
+    const viewer =
+      document.getElementById(
+        "protected-pdf-viewer"
+      );
+
+    if (viewer) {
+      viewer.classList.remove("open");
+    }
+
+    document.body.style.overflow =
+      "";
+  };
+
+
+async function renderProtectedPdfPages(
+  pdfArrayBuffer
+) {
+  if (!window.pdfjsLib) {
+    throw new Error(
+      "PDF.js library did not load."
+    );
+  }
+
+  window.pdfjsLib
+    .GlobalWorkerOptions
+    .workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+
+  const pagesContainer =
+    document.getElementById(
+      "protected-pdf-pages"
+    );
+
+  pagesContainer.innerHTML = "";
+
+
+  const loadingTask =
+    window.pdfjsLib.getDocument({
+      data: new Uint8Array(
+        pdfArrayBuffer
+      )
+    });
+
+
+  const pdfDocument =
+    await loadingTask.promise;
+
+
+  for (
+    let pageNumber = 1;
+    pageNumber <= pdfDocument.numPages;
+    pageNumber += 1
+  ) {
+    const page =
+      await pdfDocument.getPage(
+        pageNumber
+      );
+
+    const viewport =
+      page.getViewport({
+        scale: 1.4
+      });
+
+
+    const pageWrap =
+      document.createElement("div");
+
+    pageWrap.className =
+      "protected-pdf-page-wrap";
+
+
+    const watermark =
+      document.createElement("div");
+
+    watermark.className =
+      "protected-pdf-watermark";
+
+    watermark.textContent =
+      sessionStorage.getItem(
+        "lmsUserEmail"
+      ) ||
+      "Browse A Teacher Student";
+
+
+    const canvas =
+      document.createElement("canvas");
+
+    canvas.className =
+      "protected-pdf-canvas";
+
+    canvas.width =
+      viewport.width;
+
+    canvas.height =
+      viewport.height;
+
+
+    pageWrap.appendChild(canvas);
+
+    pageWrap.appendChild(watermark);
+
+    pagesContainer.appendChild(
+      pageWrap
+    );
+
+
+    const context =
+      canvas.getContext("2d");
+
+
+    await page
+      .render({
+        canvasContext: context,
+        viewport: viewport
+      })
+      .promise;
+  }
+}
+
+
+/* ------------------------------------------------------
+   BLOCK COMMON SAVE AND PRINT SHORTCUTS
+------------------------------------------------------ */
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+    const viewer =
+      document.getElementById(
+        "protected-pdf-viewer"
+      );
+
+    if (
+      !viewer ||
+      !viewer.classList.contains("open")
+    ) {
+      return;
+    }
+
+    const key =
+      event.key.toLowerCase();
+
+    if (
+      event.ctrlKey &&
+      (
+        key === "s" ||
+        key === "p"
+      )
+    ) {
+      event.preventDefault();
+
+      alert(
+        "Downloading and printing are disabled for this PDF."
+      );
+    }
+  }
+);

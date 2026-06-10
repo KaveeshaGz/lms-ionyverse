@@ -4564,13 +4564,7 @@ async function uploadFirebasePdfResource(event) {
     );
 
 
-    /*
-      Save the downloadable file URL.
-    */
-    const downloadUrl =
-      await getDownloadURL(
-        pdfStorageReference
-      );
+   
 
 
     /*
@@ -4595,8 +4589,7 @@ async function uploadFirebasePdfResource(event) {
         storagePath:
           storagePath,
 
-        downloadUrl:
-          downloadUrl,
+      
 
         status:
           "active",
