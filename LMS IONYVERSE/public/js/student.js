@@ -1868,6 +1868,8 @@ async function loadStudentPdfLibrary() {
       return bTime - aTime;
     });
 
+    const accessRequests =
+    await loadCurrentStudentPdfAccessRequests();
 
     if (pdfResources.length === 0) {
       grid.innerHTML = `
@@ -1888,11 +1890,19 @@ async function loadStudentPdfLibrary() {
       return;
     }
 
+    const accessRequests =
+    await loadCurrentStudentPdfAccessRequests();
 
     grid.innerHTML = pdfResources
       .map(function (resource) {
         const requiresApproval =
           resource.approvalRequired === true;
+
+        const accessStatus =
+        getStudentPdfAccessStatus(
+        resource.id,
+        accessRequests
+        );
 
         return `
           <article class="student-pdf-card">
@@ -1937,28 +1947,46 @@ async function loadStudentPdfLibrary() {
 
 
             ${
-              requiresApproval
-                ? `
-                  <button
-                    class="btn-large btn-outline student-pdf-button"
-                    type="button"
-                    data-request-pdf-access="${escapeStudentPdfText(
-                      resource.id
-                    )}">
-                    Request Access
-                  </button>
-                `
-                : `
-                  <button
-                    class="btn-large btn-yellow student-pdf-button"
-                    type="button"
-                    data-open-pdf-resource="${escapeStudentPdfText(
-                      resource.id
-                    )}">
-                    Open PDF
-                  </button>
-                `
-            }
+  !requiresApproval ||
+  accessStatus === "approved"
+
+    ? `
+      <button
+        class="btn-large btn-yellow student-pdf-button"
+        type="button"
+        data-open-pdf-resource="${escapeStudentPdfText(
+          resource.id
+        )}">
+        Open PDF
+      </button>
+    `
+
+    : accessStatus === "pending"
+
+      ? `
+        <button
+          class="btn-large btn-outline student-pdf-button"
+          type="button"
+          disabled>
+          Pending Approval
+        </button>
+      `
+
+      : `
+        <button
+          class="btn-large btn-outline student-pdf-button"
+          type="button"
+          data-request-pdf-access="${escapeStudentPdfText(
+            resource.id
+          )}">
+          ${
+            accessStatus === "rejected"
+              ? "Request Again"
+              : "Request Access"
+          }
+        </button>
+      `
+}
 
           </article>
         `;
@@ -1967,36 +1995,39 @@ async function loadStudentPdfLibrary() {
 
 
     grid
-      .querySelectorAll(
-        "[data-open-pdf-resource]"
-      )
-      .forEach(function (button) {
-        button.addEventListener(
-          "click",
-          function () {
-            openStudentPdfResource(
-              button.dataset.openPdfResource,
-              pdfResources
-            );
-          }
+  .querySelectorAll(
+    "[data-request-pdf-access]"
+  )
+  .forEach(function (button) {
+    button.addEventListener(
+      "click",
+      async function () {
+        await requestStudentPdfAccess(
+          button.dataset.requestPdfAccess,
+          pdfResources,
+          button
         );
-      });
+      }
+    );
+  });
 
 
     grid
-      .querySelectorAll(
-        "[data-request-pdf-access]"
-      )
-      .forEach(function (button) {
-        button.addEventListener(
-          "click",
-          function () {
-            alert(
-              "PDF access request connection will be added in the next step."
-            );
-          }
+  .querySelectorAll(
+    "[data-request-pdf-access]"
+  )
+  .forEach(function (button) {
+    button.addEventListener(
+      "click",
+      async function () {
+        await requestStudentPdfAccess(
+          button.dataset.requestPdfAccess,
+          pdfResources,
+          button
         );
-      });
+      }
+    );
+  });
 
   } catch (error) {
     console.error(
@@ -2034,14 +2065,20 @@ async function openStudentPdfResource(
   }
 
 
-  if (resource.approvalRequired === true) {
-    alert(
-      "This PDF requires administrator approval."
-    );
+  const mayOpenPdf =
+  await canStudentOpenPdfResource(
+    resource
+  );
 
-    return;
-  }
+if (!mayOpenPdf) {
+  alert(
+    "This PDF requires administrator approval."
+  );
 
+  await loadStudentPdfLibrary();
+
+  return;
+}
 
   try {
     const pdfReference = ref(
@@ -2097,4 +2134,262 @@ function escapeStudentPdfText(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+/* ======================================================
+   STUDENT PDF LIBRARY ACCESS REQUESTS
+====================================================== */
+
+async function loadCurrentStudentPdfAccessRequests() {
+  const user = auth.currentUser;
+
+  if (!user) {
+    return [];
+  }
+
+  try {
+    const requestQuery = query(
+      collection(db, "pdfRequests"),
+      where("studentUid", "==", user.uid)
+    );
+
+    const snapshot =
+      await getDocs(requestQuery);
+
+    const requests = [];
+
+    snapshot.forEach(function (requestDocument) {
+      const request =
+        requestDocument.data();
+
+      if (
+        request.requestType ===
+        "library-access"
+      ) {
+        requests.push({
+          id: requestDocument.id,
+          ...request
+        });
+      }
+    });
+
+    return requests;
+
+  } catch (error) {
+    console.error(
+      "Could not load PDF access requests:",
+      error
+    );
+
+    return [];
+  }
+}
+
+
+/* ------------------------------------------------------
+   CHECK STATUS FOR ONE PDF RESOURCE
+------------------------------------------------------ */
+
+function getStudentPdfAccessStatus(
+  resourceId,
+  accessRequests
+) {
+  const matchingRequests =
+    accessRequests.filter(
+      function (request) {
+        return (
+          request.resourceId === resourceId
+        );
+      }
+    );
+
+  if (
+    matchingRequests.some(
+      function (request) {
+        return request.status === "approved";
+      }
+    )
+  ) {
+    return "approved";
+  }
+
+  if (
+    matchingRequests.some(
+      function (request) {
+        return request.status === "pending";
+      }
+    )
+  ) {
+    return "pending";
+  }
+
+  if (
+    matchingRequests.some(
+      function (request) {
+        return request.status === "rejected";
+      }
+    )
+  ) {
+    return "rejected";
+  }
+
+  return "not-requested";
+}
+
+
+/* ------------------------------------------------------
+   SEND ACCESS REQUEST
+------------------------------------------------------ */
+
+async function requestStudentPdfAccess(
+  resourceId,
+  resources,
+  button
+) {
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Please sign in again.");
+
+    window.location.href =
+      "./login.html";
+
+    return;
+  }
+
+  const resource = resources.find(
+    function (item) {
+      return item.id === resourceId;
+    }
+  );
+
+  if (!resource) {
+    alert(
+      "The PDF resource could not be found."
+    );
+
+    return;
+  }
+
+  button.disabled = true;
+
+  button.textContent =
+    "Sending Request...";
+
+  try {
+    const existingRequests =
+      await loadCurrentStudentPdfAccessRequests();
+
+    const currentStatus =
+      getStudentPdfAccessStatus(
+        resourceId,
+        existingRequests
+      );
+
+    if (currentStatus === "approved") {
+      alert(
+        "You already have access to this PDF."
+      );
+
+      await loadStudentPdfLibrary();
+
+      return;
+    }
+
+    if (currentStatus === "pending") {
+      alert(
+        "Your access request is already pending."
+      );
+
+      await loadStudentPdfLibrary();
+
+      return;
+    }
+
+    await addDoc(
+      collection(
+        db,
+        "pdfRequests"
+      ),
+      {
+        studentUid:
+          user.uid,
+
+        studentName:
+          sessionStorage.getItem(
+            "lmsUserName"
+          ) ||
+          user.displayName ||
+          "Student",
+
+        studentEmail:
+          user.email || "",
+
+        pdfName:
+          resource.title,
+
+        subject:
+          resource.subject,
+
+        reason:
+          "Requested access from the PDF Library.",
+
+        status:
+          "pending",
+
+        requestType:
+          "library-access",
+
+        resourceId:
+          resource.id,
+
+        createdAt:
+          serverTimestamp()
+      }
+    );
+
+    alert(
+      "PDF access request sent successfully."
+    );
+
+    await loadStudentPdfLibrary();
+
+  } catch (error) {
+    console.error(
+      "PDF access request failed:",
+      error
+    );
+
+    alert(
+      "The access request could not be sent. Check the Console."
+    );
+
+  } finally {
+    button.disabled = false;
+  }
+}
+
+
+/* ------------------------------------------------------
+   CHECK WHETHER STUDENT MAY OPEN PDF
+------------------------------------------------------ */
+
+async function canStudentOpenPdfResource(
+  resource
+) {
+  if (
+    resource.approvalRequired !== true
+  ) {
+    return true;
+  }
+
+  const accessRequests =
+    await loadCurrentStudentPdfAccessRequests();
+
+  const status =
+    getStudentPdfAccessStatus(
+      resource.id,
+      accessRequests
+    );
+
+  return status === "approved";
 }
