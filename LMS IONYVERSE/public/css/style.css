@@ -2547,3 +2547,114 @@ body,
     width: 100%;
   }
 }
+
+/* ======================================================
+   CLEAN PASSWORD EYE ICON
+====================================================== */
+
+.password-field-wrap {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.password-field-wrap .form-input {
+  width: 100% !important;
+  display: block;
+  padding-right: 54px !important;
+}
+
+
+/* Eye button inside field */
+
+.password-toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(-50%);
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+  color: var(--ivory-dim);
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.password-toggle-btn:hover {
+  color: var(--yellow);
+
+  background:
+    rgba(255, 212, 0, 0.1);
+
+  transform:
+    translateY(-50%)
+    scale(1.08);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(255, 212, 0, 0.05);
+}
+
+.password-toggle-btn.is-visible {
+  color: var(--pastel-lilac);
+
+  background:
+    rgba(212, 187, 255, 0.12);
+}
+
+
+/* SVG icon */
+
+.password-toggle-icon {
+  width: 19px;
+  height: 19px;
+
+  display: block;
+
+  fill: none;
+  stroke: currentColor;
+
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* Authentication page helper text */
+
+.auth-switch-text {
+  margin-top: 18px;
+
+  color: var(--ivory-dim);
+
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.auth-switch-text a {
+  color: var(--yellow);
+  text-decoration: none;
+}
+
+.auth-switch-text a:hover {
+  text-decoration: underline;
+}

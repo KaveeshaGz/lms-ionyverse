@@ -56,9 +56,14 @@ import {
 
 import {
   doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
+  getDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 /* ======================================================
    START FIREBASE-PROTECTED STUDENT DASHBOARD
@@ -159,7 +164,22 @@ document.addEventListener("DOMContentLoaded", function () {
         connectStudentSidebar();
         connectStudentDashboardRows();
         connectStudentButtons();
+
+        const refreshPdfRequestsButton =
+        document.getElementById(
+        "refresh-student-pdf-requests"
+        );
+
+        if (refreshPdfRequestsButton) {
+            refreshPdfRequestsButton.addEventListener(
+            "click",
+            loadStudentPdfRequestHistory
+           );
+        }
+
       }
+
+      
 
       console.log(
         "Firebase student dashboard connected."
@@ -499,6 +519,7 @@ function createStudentPages() {
             </label>
 
             <input
+              id="student-pdf-request-name"
               class="form-input"
               type="text"
               placeholder="Example: Physics Formula Sheet"
@@ -510,7 +531,9 @@ function createStudentPages() {
               Subject
             </label>
 
-            <select class="form-select">
+            <select
+              id="student-pdf-request-subject"
+              class="form-select">
               <option>Mathematics</option>
               <option>Physics</option>
               <option>Chemistry</option>
@@ -527,6 +550,7 @@ function createStudentPages() {
           </label>
 
           <textarea
+            id="student-pdf-request-reason"
             class="form-input"
             rows="5"
             placeholder="Enter a short message"
@@ -540,6 +564,40 @@ function createStudentPages() {
         </button>
 
       </form>
+
+      <div
+  class="table-wrap"
+  style="margin-top:28px">
+
+  <div class="table-head-row">
+    <div class="table-title">
+      My PDF Requests
+    </div>
+
+    <button
+      id="refresh-student-pdf-requests"
+      class="act-btn"
+      type="button">
+      Refresh
+    </button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>PDF Resource</th>
+        <th>Subject</th>
+        <th>Requested Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody id="student-pdf-request-history">
+    </tbody>
+  </table>
+
+</div>
+
     </section>
 
 
@@ -570,7 +628,9 @@ function createStudentPages() {
               Subject
             </label>
 
-            <select class="form-select">
+            <select
+              id="student-pdf-request-subject"
+              class="form-select">
               <option>Mathematics</option>
               <option>Physics</option>
               <option>Chemistry</option>
@@ -933,13 +993,10 @@ function connectStudentButtons() {
   );
 
   if (pdfForm) {
-    pdfForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      alert("PDF request sent to the admin.");
-
-      pdfForm.reset();
-    });
+    pdfForm.addEventListener(
+    "submit",
+    submitFirebasePdfRequest
+  );
   }
 
 
@@ -1017,6 +1074,10 @@ window.openStudentPanel = function (panelName) {
     });
 
   selectedPanel.classList.add("active");
+
+    if (panelName === "request-pdf") {
+        loadStudentPdfRequestHistory();
+      }
 
   const labelMap = {
     "dashboard": "dashboard",
@@ -1402,3 +1463,380 @@ window.addEventListener("storage", function (event) {
     window.renderStudentNotes("all");
   }
 });
+
+/* ======================================================
+   FIREBASE STUDENT PDF REQUESTS
+====================================================== */
+
+async function submitFirebasePdfRequest(event) {
+  event.preventDefault();
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Please sign in again.");
+    window.location.href = "./login.html";
+    return;
+  }
+
+  const pdfName = document
+    .getElementById("student-pdf-request-name")
+    .value
+    .trim();
+
+  const subject = document
+    .getElementById("student-pdf-request-subject")
+    .value;
+
+  const reason = document
+    .getElementById("student-pdf-request-reason")
+    .value
+    .trim();
+
+  if (!pdfName || !subject || !reason) {
+    alert("Please complete every PDF request field.");
+    return;
+  }
+
+  const form = document.getElementById(
+    "student-pdf-request-form"
+  );
+
+  const button = form.querySelector(
+    'button[type="submit"]'
+  );
+
+  button.disabled = true;
+  button.textContent = "Sending Request...";
+
+  try {
+    await addDoc(
+      collection(db, "pdfRequests"),
+      {
+        studentUid: user.uid,
+
+        studentName:
+          sessionStorage.getItem("lmsUserName") ||
+          user.displayName ||
+          "Student",
+
+        studentEmail:
+          user.email || "",
+
+        pdfName: pdfName,
+        subject: subject,
+        reason: reason,
+
+        status: "pending",
+
+        createdAt: serverTimestamp()
+      }
+    );
+
+    form.reset();
+
+    alert("PDF request sent successfully.");
+
+    await loadStudentPdfRequestHistory();
+
+  } catch (error) {
+    console.error(
+      "PDF request submission failed:",
+      error
+    );
+
+    alert(
+      "The PDF request could not be sent. Check the browser Console."
+    );
+
+  } finally {
+    button.disabled = false;
+    button.textContent = "Send PDF Request";
+  }
+}
+
+
+/* ------------------------------------------------------
+   LOAD THIS STUDENT'S PDF REQUESTS
+------------------------------------------------------ */
+
+async function loadStudentPdfRequestHistory() {
+  const tableBody = document.getElementById(
+    "student-pdf-request-history"
+  );
+
+  const user = auth.currentUser;
+
+  if (!tableBody || !user) {
+    return;
+  }
+
+  tableBody.innerHTML = `
+    <tr>
+      <td colspan="4">
+        Loading requests...
+      </td>
+    </tr>
+  `;
+
+  try {
+    const requestQuery = query(
+      collection(db, "pdfRequests"),
+      where("studentUid", "==", user.uid)
+    );
+
+    const snapshot =
+      await getDocs(requestQuery);
+
+    const requests = [];
+
+    snapshot.forEach(function (requestDocument) {
+      requests.push({
+        id: requestDocument.id,
+        ...requestDocument.data()
+      });
+    });
+
+    /*
+      Sort newest first without requiring
+      a Firestore composite index.
+    */
+    requests.sort(function (a, b) {
+      const aTime =
+        a.createdAt?.seconds || 0;
+
+      const bTime =
+        b.createdAt?.seconds || 0;
+
+      return bTime - aTime;
+    });
+
+
+    if (requests.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="4">
+            You have not submitted any PDF requests yet.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    tableBody.innerHTML = requests
+      .map(function (request) {
+        return `
+          <tr>
+
+            <td>
+              ${escapePdfRequestText(
+                request.pdfName
+              )}
+            </td>
+
+            <td>
+              ${escapePdfRequestText(
+                request.subject
+              )}
+            </td>
+
+            <td>
+              ${formatPdfRequestDate(
+                request.createdAt
+              )}
+            </td>
+
+            <td>
+              ${createPdfRequestBadge(
+                request.status
+              )}
+            </td>
+
+          </tr>
+        `;
+      })
+      .join("");
+
+  } catch (error) {
+    console.error(
+      "Could not load student PDF requests:",
+      error
+    );
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="4">
+          Requests could not be loaded.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+
+/* ------------------------------------------------------
+   STUDENT PDF REQUEST HELPERS
+------------------------------------------------------ */
+
+function createPdfRequestBadge(status) {
+  if (status === "approved") {
+    return `
+      <span class="badge badge-green">
+        Approved
+      </span>
+    `;
+  }
+
+  if (status === "rejected") {
+    return `
+      <span class="badge badge-red">
+        Rejected
+      </span>
+    `;
+  }
+
+  return `
+    <span class="badge badge-yellow">
+      Pending
+    </span>
+  `;
+}
+
+
+function formatPdfRequestDate(timestamp) {
+  if (!timestamp || !timestamp.toDate) {
+    return "Just now";
+  }
+
+  return timestamp
+    .toDate()
+    .toLocaleDateString("en-GB");
+}
+
+
+function escapePdfRequestText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/* ======================================================
+   SEND PDF REQUEST TO FIRESTORE
+====================================================== */
+
+async function submitFirebasePdfRequest(event) {
+  event.preventDefault();
+
+  console.log("PDF request submit started.");
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Please log in again.");
+    window.location.href = "./login.html";
+    return;
+  }
+
+  const nameInput = document.getElementById(
+    "student-pdf-request-name"
+  );
+
+  const subjectInput = document.getElementById(
+    "student-pdf-request-subject"
+  );
+
+  const reasonInput = document.getElementById(
+    "student-pdf-request-reason"
+  );
+
+  if (!nameInput || !subjectInput || !reasonInput) {
+    console.error(
+      "PDF request form fields were not found."
+    );
+
+    alert(
+      "The PDF request form is incomplete. Check the Console."
+    );
+
+    return;
+  }
+
+  const pdfName = nameInput.value.trim();
+
+  const subject = subjectInput.value;
+
+  const reason = reasonInput.value.trim();
+
+  if (!pdfName || !subject || !reason) {
+    alert("Please complete all PDF request fields.");
+    return;
+  }
+
+  const form = document.getElementById(
+    "student-pdf-request-form"
+  );
+
+  const submitButton = form.querySelector(
+    'button[type="submit"]'
+  );
+
+  submitButton.disabled = true;
+
+  submitButton.textContent =
+    "Sending Request...";
+
+  try {
+    const requestReference = await addDoc(
+      collection(db, "pdfRequests"),
+      {
+        studentUid: user.uid,
+
+        studentName:
+          sessionStorage.getItem("lmsUserName") ||
+          user.displayName ||
+          "Student",
+
+        studentEmail:
+          user.email || "",
+
+        pdfName: pdfName,
+        subject: subject,
+        reason: reason,
+
+        status: "pending",
+
+        createdAt: serverTimestamp()
+      }
+    );
+
+    console.log(
+      "PDF request created:",
+      requestReference.id
+    );
+
+    form.reset();
+
+    alert("PDF request sent successfully.");
+
+  } catch (error) {
+    console.error(
+      "PDF request Firestore error:",
+      error
+    );
+
+    alert(
+      "The PDF request could not be saved. Check the Console."
+    );
+
+  } finally {
+    submitButton.disabled = false;
+
+    submitButton.textContent =
+      "Send PDF Request";
+  }
+}

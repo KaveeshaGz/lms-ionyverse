@@ -56,9 +56,14 @@ import {
 
 import {
   doc,
-  getDoc
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
 
 
 window.adminLogout = async function () {
@@ -513,55 +518,7 @@ function createAdminPages() {
             </tr>
           </thead>
 
-          <tbody>
-
-            <tr>
-              <td>Sithara K.</td>
-              <td>Integration Revision Notes</td>
-              <td>Mathematics</td>
-              <td>07 Jun 2026</td>
-              <td>
-                <span class="badge badge-yellow request-status">
-                  Pending
-                </span>
-              </td>
-              <td>
-                <div class="action-row">
-                  <button
-                    class="act-btn"
-                    data-action="approve"
-                    style="color:var(--yellow)">
-                    Approve
-                  </button>
-
-                  <button
-                    class="act-btn danger"
-                    data-action="reject">
-                    Reject
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-            <tr>
-              <td>Dilshan L.</td>
-              <td>Physics Formula Sheet</td>
-              <td>Physics</td>
-              <td>06 Jun 2026</td>
-              <td>
-                <span class="badge badge-green request-status">
-                  Approved
-                </span>
-              </td>
-              <td>
-                <div class="action-row">
-                  <button class="act-btn" data-action="view-request">
-                    View
-                  </button>
-                </div>
-              </td>
-            </tr>
-
+          <tbody id="firebase-pdf-requests-body">
           </tbody>
         </table>
 
@@ -705,7 +662,10 @@ function createAdminPages() {
           <input
             class="form-input"
             type="password"
-            placeholder="temporary password"
+            placeholder="Create a strong temporary password"
+            autocomplete="new-password"
+            minlength="8"
+            data-strong-password
             required>
         </div>
 
@@ -1216,6 +1176,10 @@ function showAdminPanel(panelName, selectedSidebarItem) {
   }
 
   selectedPanel.classList.add("active");
+    if (panelName === "pdf-requests") {
+    loadAdminPdfRequests();
+    }
+
     if (panelName === "dashboard") {
   setTimeout(function () {
     initializeDashboardChart();
@@ -3702,6 +3666,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         createAdminPages();
+
+        await setupStudentApprovalManager();
+
       } catch (error) {
         console.error("Admin pages error:", error);
       }
@@ -3754,3 +3721,634 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
  
+/* ======================================================
+   FIREBASE STUDENT APPROVAL MANAGER
+====================================================== */
+
+async function setupStudentApprovalManager() {
+  const studentsPanel = document.getElementById(
+    "admin-panel-students"
+  );
+
+  if (!studentsPanel) {
+    console.error("Students panel was not found.");
+    return;
+  }
+
+  /*
+    Avoid creating the approval table more than once.
+  */
+  if (
+    document.getElementById(
+      "pending-student-approvals"
+    )
+  ) {
+    await loadPendingStudentApprovals();
+    return;
+  }
+
+  const approvalSection =
+    document.createElement("div");
+
+  approvalSection.id =
+    "pending-student-approvals";
+
+  approvalSection.className = "table-wrap";
+
+  approvalSection.style.marginBottom = "28px";
+
+  approvalSection.innerHTML = `
+    <div class="table-head-row">
+
+      <div>
+        <div class="table-title">
+          Pending Student Registrations
+        </div>
+
+        <div style="
+          color:var(--ivory-dim);
+          font-size:12px;
+          margin-top:4px;
+        ">
+          Approve students who registered through the Sign Up page.
+        </div>
+      </div>
+
+      <button
+        id="refresh-pending-students"
+        class="act-btn"
+        type="button">
+        Refresh
+      </button>
+
+    </div>
+
+
+    <table>
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody id="pending-students-table-body">
+      </tbody>
+    </table>
+  `;
+
+  /*
+    Add the approvals table near the top of the Students page.
+  */
+  const sectionHead =
+    studentsPanel.querySelector(".section-head");
+
+  if (sectionHead) {
+    sectionHead.insertAdjacentElement(
+      "afterend",
+      approvalSection
+    );
+  } else {
+    studentsPanel.prepend(approvalSection);
+  }
+
+
+  document
+    .getElementById("refresh-pending-students")
+    .addEventListener(
+      "click",
+      loadPendingStudentApprovals
+    );
+
+
+  approvalSection.addEventListener(
+    "click",
+    async function (event) {
+      const button = event.target.closest(
+        "[data-approve-student]"
+      );
+
+      if (!button) {
+        return;
+      }
+
+      const studentUid =
+        button.dataset.approveStudent;
+
+      await approveStudentAccount(
+        studentUid,
+        button
+      );
+    }
+  );
+
+
+  await loadPendingStudentApprovals();
+}
+
+
+/* ------------------------------------------------------
+   LOAD PENDING STUDENTS FROM FIRESTORE
+------------------------------------------------------ */
+
+async function loadPendingStudentApprovals() {
+  const tableBody = document.getElementById(
+    "pending-students-table-body"
+  );
+
+  if (!tableBody) {
+    return;
+  }
+
+  tableBody.innerHTML = `
+    <tr>
+      <td colspan="4">
+        Loading pending registrations...
+      </td>
+    </tr>
+  `;
+
+  try {
+    /*
+      Load student profiles.
+      Filter pending students after receiving the documents.
+    */
+    const studentQuery = query(
+      collection(db, "users"),
+      where("role", "==", "student")
+    );
+
+    const snapshot =
+      await getDocs(studentQuery);
+
+    const pendingStudents = [];
+
+    snapshot.forEach(function (studentDocument) {
+      const profile = studentDocument.data();
+
+      if (profile.status === "pending") {
+        pendingStudents.push({
+          uid: studentDocument.id,
+          name: profile.name || "Unnamed Student",
+          email: profile.email || "No email"
+        });
+      }
+    });
+
+
+    if (pendingStudents.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="4">
+            No pending student registrations.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    tableBody.innerHTML = pendingStudents
+      .map(function (student) {
+        return `
+          <tr>
+
+            <td>
+              ${escapeApprovalText(student.name)}
+            </td>
+
+            <td>
+              ${escapeApprovalText(student.email)}
+            </td>
+
+            <td>
+              <span class="badge badge-yellow">
+                Pending
+              </span>
+            </td>
+
+            <td>
+              <button
+                class="act-btn"
+                type="button"
+                data-approve-student="${escapeApprovalText(
+                  student.uid
+                )}">
+                Approve
+              </button>
+            </td>
+
+          </tr>
+        `;
+      })
+      .join("");
+
+  } catch (error) {
+    console.error(
+      "Could not load pending students:",
+      error
+    );
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="4">
+          Pending registrations could not be loaded.
+          Check the browser Console.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+
+/* ------------------------------------------------------
+   APPROVE ONE STUDENT
+------------------------------------------------------ */
+
+async function approveStudentAccount(
+  studentUid,
+  button
+) {
+  const confirmed = confirm(
+    "Approve this student account?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Approving...";
+
+  try {
+    const studentReference = doc(
+      db,
+      "users",
+      studentUid
+    );
+
+    await updateDoc(
+      studentReference,
+      {
+        status: "active"
+      }
+    );
+
+    alert(
+      "Student account approved successfully."
+    );
+
+    await loadPendingStudentApprovals();
+
+  } catch (error) {
+    console.error(
+      "Student approval failed:",
+      error
+    );
+
+    alert(
+      "The student could not be approved. Check the browser Console."
+    );
+
+    button.disabled = false;
+    button.textContent = "Approve";
+  }
+}
+
+
+/* ------------------------------------------------------
+   SAFE TEXT OUTPUT
+------------------------------------------------------ */
+
+function escapeApprovalText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* ======================================================
+   FIREBASE ADMIN PDF REQUEST MANAGER
+====================================================== */
+
+async function loadAdminPdfRequests() {
+  const tableBody = document.getElementById(
+    "firebase-pdf-requests-body"
+  );
+
+  if (!tableBody) {
+    return;
+  }
+
+  tableBody.innerHTML = `
+    <tr>
+      <td colspan="6">
+        Loading PDF requests...
+      </td>
+    </tr>
+  `;
+
+  try {
+    const snapshot =
+      await getDocs(
+        collection(db, "pdfRequests")
+      );
+
+    const requests = [];
+
+    snapshot.forEach(function (requestDocument) {
+      requests.push({
+        id: requestDocument.id,
+        ...requestDocument.data()
+      });
+    });
+
+    requests.sort(function (a, b) {
+      const aTime =
+        a.createdAt?.seconds || 0;
+
+      const bTime =
+        b.createdAt?.seconds || 0;
+
+      return bTime - aTime;
+    });
+
+
+    if (requests.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="6">
+            No PDF requests have been submitted yet.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    tableBody.innerHTML = requests
+      .map(function (request) {
+        return `
+          <tr>
+
+            <td>
+              ${escapeAdminPdfRequestText(
+                request.studentName
+              )}
+            </td>
+
+            <td>
+              ${escapeAdminPdfRequestText(
+                request.pdfName
+              )}
+            </td>
+
+            <td>
+              ${escapeAdminPdfRequestText(
+                request.subject
+              )}
+            </td>
+
+            <td>
+              ${formatAdminPdfRequestDate(
+                request.createdAt
+              )}
+            </td>
+
+            <td>
+              ${createAdminPdfRequestBadge(
+                request.status
+              )}
+            </td>
+
+            <td>
+              ${createAdminPdfRequestActions(
+                request
+              )}
+            </td>
+
+          </tr>
+        `;
+      })
+      .join("");
+
+  } catch (error) {
+    console.error(
+      "Could not load admin PDF requests:",
+      error
+    );
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          PDF requests could not be loaded.
+          Check the browser Console.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+
+/* ------------------------------------------------------
+   APPROVE OR REJECT REQUEST
+------------------------------------------------------ */
+
+async function updateFirebasePdfRequestStatus(
+  requestId,
+  newStatus,
+  button
+) {
+  const confirmed = confirm(
+    newStatus === "approved"
+      ? "Approve this PDF request?"
+      : "Reject this PDF request?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  button.disabled = true;
+
+  button.textContent =
+    newStatus === "approved"
+      ? "Approving..."
+      : "Rejecting...";
+
+  try {
+    await updateDoc(
+      doc(
+        db,
+        "pdfRequests",
+        requestId
+      ),
+      {
+        status: newStatus,
+        reviewedAt: serverTimestamp(),
+        reviewedBy:
+          auth.currentUser?.uid || ""
+      }
+    );
+
+    alert(
+      newStatus === "approved"
+        ? "PDF request approved."
+        : "PDF request rejected."
+    );
+
+    await loadAdminPdfRequests();
+
+  } catch (error) {
+    console.error(
+      "PDF request status update failed:",
+      error
+    );
+
+    alert(
+      "The request could not be updated. Check the browser Console."
+    );
+
+    button.disabled = false;
+  }
+}
+
+
+/* ------------------------------------------------------
+   ADMIN REQUEST TABLE HELPERS
+------------------------------------------------------ */
+
+function createAdminPdfRequestActions(request) {
+  if (request.status === "pending") {
+    return `
+      <div class="action-row">
+
+        <button
+          class="act-btn"
+          type="button"
+          data-firebase-pdf-approve="${escapeAdminPdfRequestText(
+            request.id
+          )}">
+          Approve
+        </button>
+
+        <button
+          class="act-btn danger"
+          type="button"
+          data-firebase-pdf-reject="${escapeAdminPdfRequestText(
+            request.id
+          )}">
+          Reject
+        </button>
+
+      </div>
+    `;
+  }
+
+  return `
+    <span style="
+      color:var(--ivory-dim);
+      font-size:12px;
+    ">
+      Reviewed
+    </span>
+  `;
+}
+
+
+function createAdminPdfRequestBadge(status) {
+  if (status === "approved") {
+    return `
+      <span class="badge badge-green">
+        Approved
+      </span>
+    `;
+  }
+
+  if (status === "rejected") {
+    return `
+      <span class="badge badge-red">
+        Rejected
+      </span>
+    `;
+  }
+
+  return `
+    <span class="badge badge-yellow">
+      Pending
+    </span>
+  `;
+}
+
+
+function formatAdminPdfRequestDate(timestamp) {
+  if (!timestamp || !timestamp.toDate) {
+    return "Just now";
+  }
+
+  return timestamp
+    .toDate()
+    .toLocaleDateString("en-GB");
+}
+
+
+function escapeAdminPdfRequestText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* ------------------------------------------------------
+   ADMIN PDF REQUEST BUTTONS
+------------------------------------------------------ */
+
+document.addEventListener(
+  "click",
+  async function (event) {
+    const approveButton =
+      event.target.closest(
+        "[data-firebase-pdf-approve]"
+      );
+
+    if (approveButton) {
+      await updateFirebasePdfRequestStatus(
+        approveButton.dataset
+          .firebasePdfApprove,
+
+        "approved",
+
+        approveButton
+      );
+
+      return;
+    }
+
+
+    const rejectButton =
+      event.target.closest(
+        "[data-firebase-pdf-reject]"
+      );
+
+    if (rejectButton) {
+      await updateFirebasePdfRequestStatus(
+        rejectButton.dataset
+          .firebasePdfReject,
+
+        "rejected",
+
+        rejectButton
+      );
+    }
+  }
+);

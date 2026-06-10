@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Student Sign Up | Browse A Teacher</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=Caveat:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <link
+  rel="stylesheet"
+  href="./css/style.css?v=2">
+</head>
+
+
+<body>
+
+  <nav>
+    <div
+      class="nav-logo"
+      onclick="window.location.href='./index.html'">
+      Browse <span>A</span> Teacher
+    </div>
+
+    <div class="nav-cta">
+      <button
+        class="btn-ghost"
+        onclick="window.location.href='./login.html'">
+        Secure Portal
+      </button>
+    </div>
+  </nav>
+
+
+  <div style="
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:100px 24px 48px;
+  ">
+
+    <div style="
+      width:100%;
+      max-width:460px;
+    ">
+
+      <div
+        class="section-label"
+        style="margin-bottom:12px">
+        Student Registration 📚
+      </div>
+
+      <div style="
+        color:var(--ivory);
+        font-family:var(--serif);
+        font-size:34px;
+        margin-bottom:5px;
+      ">
+        Create your account
+      </div>
+
+      <div style="
+        color:var(--yellow);
+        font-family:var(--hand);
+        font-size:18px;
+        opacity:0.78;
+        margin-bottom:24px;
+      ">
+        begin your learning journey ✦
+      </div>
+
+      <p style="
+        color:var(--ivory-dim);
+        font-size:13px;
+        line-height:1.75;
+        margin-bottom:28px;
+      ">
+        Register as a student. Your account will be available
+        after approval by the administrator.
+      </p>
+
+
+      <form
+        id="signup-form"
+        class="login-card-glow"
+        style="
+          padding:34px;
+          border:1px solid var(--ivory-border);
+          border-radius:var(--radius);
+          background:var(--card-bg);
+        ">
+
+        <div
+          class="form-group"
+          style="margin-bottom:18px">
+
+          <label class="form-label">
+            Full Name
+          </label>
+
+          <input
+            id="signup-name"
+            class="form-input"
+            type="text"
+            placeholder="Your full name"
+            required>
+        </div>
+
+
+        <div
+          class="form-group"
+          style="margin-bottom:18px">
+
+          <label class="form-label">
+            Email
+          </label>
+
+          <input
+            id="signup-email"
+            class="form-input"
+            type="email"
+            placeholder="your@email.com"
+            required>
+        </div>
+
+
+        <div
+          class="form-group"
+          style="margin-bottom:18px">
+
+          <label class="form-label">
+            Password
+          </label>
+
+          <input
+            id="signup-password"
+            class="form-input"
+            type="password"
+            placeholder="Create a strong password"
+            autocomplete="new-password"
+            minlength="8"
+            data-strong-password
+            required>
+        </div>
+
+
+        <div
+          class="form-group"
+          style="margin-bottom:26px">
+
+          <label class="form-label">
+            Confirm Password
+          </label>
+
+          <input
+            id="signup-confirm-password"
+            class="form-input"
+            type="password"
+            placeholder="Type the password again"
+            autocomplete="new-password"
+            minlength="8"
+            required>
+        </div>
+
+
+        <button
+          id="signup-submit-button"
+          class="btn-large btn-yellow"
+          type="submit"
+          style="width:100%">
+          Create Student Account
+        </button>
+
+
+        <p
+          id="signup-message"
+          style="
+            margin-top:18px;
+            color:#EF9A9A;
+            font-size:12px;
+            line-height:1.65;
+            text-align:center;
+          ">
+        </p>
+
+
+        <p class="auth-switch-text">
+          Already registered?
+          <a href="./login.html">
+            Sign in through the Secure Portal
+          </a>
+        </p>
+
+      </form>
+    </div>
+  </div>
+
+
+  <script src="./js/password-toggle.js?v=3"></script>
+
+<script
+  type="module"
+  src="./js/signup.js?v=3">
+</script>
+
+</body>
+</html>
