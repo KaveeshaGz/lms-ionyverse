@@ -46,7 +46,8 @@
 
 import {
   auth,
-  db
+  db,
+  storage
 } from "./firebase-config.js";
 
 import {
@@ -64,6 +65,11 @@ import {
   getDocs,
   serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+import {
+  ref,
+  getBlob
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-storage.js";
 
 /* ======================================================
    START FIREBASE-PROTECTED STUDENT DASHBOARD
@@ -522,7 +528,7 @@ function createStudentPages() {
               id="student-pdf-request-name"
               class="form-input"
               type="text"
-              placeholder="Example: Physics Formula Sheet"
+              placeholder=""
               required>
           </div>
 
@@ -629,7 +635,7 @@ function createStudentPages() {
             </label>
 
             <select
-              id="student-pdf-request-subject"
+              id="student-consultation-subject"
               class="form-select">
               <option>Mathematics</option>
               <option>Physics</option>
@@ -1075,6 +1081,10 @@ window.openStudentPanel = function (panelName) {
 
   selectedPanel.classList.add("active");
 
+    if (panelName === "pdf-library") {
+      loadStudentPdfLibrary();
+      }
+
     if (panelName === "request-pdf") {
         loadStudentPdfRequestHistory();
       }
@@ -1464,96 +1474,6 @@ window.addEventListener("storage", function (event) {
   }
 });
 
-/* ======================================================
-   FIREBASE STUDENT PDF REQUESTS
-====================================================== */
-
-async function submitFirebasePdfRequest(event) {
-  event.preventDefault();
-
-  const user = auth.currentUser;
-
-  if (!user) {
-    alert("Please sign in again.");
-    window.location.href = "./login.html";
-    return;
-  }
-
-  const pdfName = document
-    .getElementById("student-pdf-request-name")
-    .value
-    .trim();
-
-  const subject = document
-    .getElementById("student-pdf-request-subject")
-    .value;
-
-  const reason = document
-    .getElementById("student-pdf-request-reason")
-    .value
-    .trim();
-
-  if (!pdfName || !subject || !reason) {
-    alert("Please complete every PDF request field.");
-    return;
-  }
-
-  const form = document.getElementById(
-    "student-pdf-request-form"
-  );
-
-  const button = form.querySelector(
-    'button[type="submit"]'
-  );
-
-  button.disabled = true;
-  button.textContent = "Sending Request...";
-
-  try {
-    await addDoc(
-      collection(db, "pdfRequests"),
-      {
-        studentUid: user.uid,
-
-        studentName:
-          sessionStorage.getItem("lmsUserName") ||
-          user.displayName ||
-          "Student",
-
-        studentEmail:
-          user.email || "",
-
-        pdfName: pdfName,
-        subject: subject,
-        reason: reason,
-
-        status: "pending",
-
-        createdAt: serverTimestamp()
-      }
-    );
-
-    form.reset();
-
-    alert("PDF request sent successfully.");
-
-    await loadStudentPdfRequestHistory();
-
-  } catch (error) {
-    console.error(
-      "PDF request submission failed:",
-      error
-    );
-
-    alert(
-      "The PDF request could not be sent. Check the browser Console."
-    );
-
-  } finally {
-    button.disabled = false;
-    button.textContent = "Send PDF Request";
-  }
-}
 
 
 /* ------------------------------------------------------
@@ -1725,6 +1645,7 @@ function escapePdfRequestText(value) {
     .replace(/'/g, "&#039;");
 }
 
+
 /* ======================================================
    SEND PDF REQUEST TO FIRESTORE
 ====================================================== */
@@ -1767,9 +1688,7 @@ async function submitFirebasePdfRequest(event) {
   }
 
   const pdfName = nameInput.value.trim();
-
   const subject = subjectInput.value;
-
   const reason = reasonInput.value.trim();
 
   if (!pdfName || !subject || !reason) {
@@ -1786,9 +1705,7 @@ async function submitFirebasePdfRequest(event) {
   );
 
   submitButton.disabled = true;
-
-  submitButton.textContent =
-    "Sending Request...";
+  submitButton.textContent = "Sending Request...";
 
   try {
     const requestReference = await addDoc(
@@ -1823,6 +1740,8 @@ async function submitFirebasePdfRequest(event) {
 
     alert("PDF request sent successfully.");
 
+    await loadStudentPdfRequestHistory();
+
   } catch (error) {
     console.error(
       "PDF request Firestore error:",
@@ -1839,4 +1758,343 @@ async function submitFirebasePdfRequest(event) {
     submitButton.textContent =
       "Send PDF Request";
   }
+}
+
+/* ======================================================
+   FIREBASE STUDENT PDF LIBRARY
+====================================================== */
+
+function ensureStudentPdfLibraryContainer() {
+  const pdfPanel = document.getElementById(
+    "student-panel-pdf-library"
+  );
+
+  if (!pdfPanel) {
+    console.error(
+      "Student PDF Library panel was not found."
+    );
+
+    return null;
+  }
+
+  let grid = document.getElementById(
+    "student-pdf-library-grid"
+  );
+
+  if (grid) {
+    return grid;
+  }
+
+  pdfPanel.insertAdjacentHTML(
+    "beforeend",
+    `
+    <div class="section-head">
+      <div class="section-label">
+        Learning Resources ✦
+      </div>
+
+      <div class="page-title">
+        PDF Library
+      </div>
+
+      <div class="page-subtitle">
+        Browse PDF resources uploaded by your teachers.
+      </div>
+    </div>
+
+
+    <div
+      id="student-pdf-library-grid"
+      class="student-pdf-library-grid">
+    </div>
+    `
+  );
+
+  return document.getElementById(
+    "student-pdf-library-grid"
+  );
+}
+
+
+/* ------------------------------------------------------
+   LOAD ACTIVE PDF RESOURCES
+------------------------------------------------------ */
+
+async function loadStudentPdfLibrary() {
+  const grid =
+    ensureStudentPdfLibraryContainer();
+
+  if (!grid) {
+    return;
+  }
+
+  grid.innerHTML = `
+    <div class="student-pdf-library-empty">
+      Loading PDF resources...
+    </div>
+  `;
+
+  try {
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "pdfResources"
+        )
+      );
+
+    const pdfResources = [];
+
+    snapshot.forEach(function (pdfDocument) {
+      const resource =
+        pdfDocument.data();
+
+      if (resource.status === "active") {
+        pdfResources.push({
+          id: pdfDocument.id,
+          ...resource
+        });
+      }
+    });
+
+
+    pdfResources.sort(function (a, b) {
+      const aTime =
+        a.createdAt?.seconds || 0;
+
+      const bTime =
+        b.createdAt?.seconds || 0;
+
+      return bTime - aTime;
+    });
+
+
+    if (pdfResources.length === 0) {
+      grid.innerHTML = `
+        <div class="student-pdf-library-empty">
+
+          <div style="
+            font-size:30px;
+            margin-bottom:10px;
+          ">
+            📄
+          </div>
+
+          No PDF resources are available yet.
+
+        </div>
+      `;
+
+      return;
+    }
+
+
+    grid.innerHTML = pdfResources
+      .map(function (resource) {
+        const requiresApproval =
+          resource.approvalRequired === true;
+
+        return `
+          <article class="student-pdf-card">
+
+            <div class="student-pdf-icon">
+              📄
+            </div>
+
+            <div class="student-pdf-subject">
+              ${escapeStudentPdfText(
+                resource.subject
+              )}
+            </div>
+
+            <div class="student-pdf-title">
+              ${escapeStudentPdfText(
+                resource.title
+              )}
+            </div>
+
+            <div class="student-pdf-teacher">
+              ${escapeStudentPdfText(
+                resource.teacher
+              )}
+            </div>
+
+            <div class="student-pdf-access">
+              ${
+                requiresApproval
+                  ? `
+                    <span class="badge badge-yellow">
+                      Approval Required
+                    </span>
+                  `
+                  : `
+                    <span class="badge badge-green">
+                      Available
+                    </span>
+                  `
+              }
+            </div>
+
+
+            ${
+              requiresApproval
+                ? `
+                  <button
+                    class="btn-large btn-outline student-pdf-button"
+                    type="button"
+                    data-request-pdf-access="${escapeStudentPdfText(
+                      resource.id
+                    )}">
+                    Request Access
+                  </button>
+                `
+                : `
+                  <button
+                    class="btn-large btn-yellow student-pdf-button"
+                    type="button"
+                    data-open-pdf-resource="${escapeStudentPdfText(
+                      resource.id
+                    )}">
+                    Open PDF
+                  </button>
+                `
+            }
+
+          </article>
+        `;
+      })
+      .join("");
+
+
+    grid
+      .querySelectorAll(
+        "[data-open-pdf-resource]"
+      )
+      .forEach(function (button) {
+        button.addEventListener(
+          "click",
+          function () {
+            openStudentPdfResource(
+              button.dataset.openPdfResource,
+              pdfResources
+            );
+          }
+        );
+      });
+
+
+    grid
+      .querySelectorAll(
+        "[data-request-pdf-access]"
+      )
+      .forEach(function (button) {
+        button.addEventListener(
+          "click",
+          function () {
+            alert(
+              "PDF access request connection will be added in the next step."
+            );
+          }
+        );
+      });
+
+  } catch (error) {
+    console.error(
+      "Could not load PDF Library:",
+      error
+    );
+
+    grid.innerHTML = `
+      <div class="student-pdf-library-empty">
+        PDF resources could not be loaded.
+        Check the browser Console.
+      </div>
+    `;
+  }
+}
+
+
+/* ------------------------------------------------------
+   OPEN A FREE PDF RESOURCE
+------------------------------------------------------ */
+
+async function openStudentPdfResource(
+  resourceId,
+  resources
+) {
+  const resource = resources.find(
+    function (item) {
+      return item.id === resourceId;
+    }
+  );
+
+  if (!resource) {
+    alert("The PDF resource could not be found.");
+    return;
+  }
+
+
+  if (resource.approvalRequired === true) {
+    alert(
+      "This PDF requires administrator approval."
+    );
+
+    return;
+  }
+
+
+  try {
+    const pdfReference = ref(
+      storage,
+      resource.storagePath
+    );
+
+    const pdfBlob =
+      await getBlob(
+        pdfReference
+      );
+
+    const pdfUrl =
+      URL.createObjectURL(
+        pdfBlob
+      );
+
+    window.open(
+      pdfUrl,
+      "_blank"
+    );
+
+    setTimeout(
+      function () {
+        URL.revokeObjectURL(
+          pdfUrl
+        );
+      },
+      60000
+    );
+
+  } catch (error) {
+    console.error(
+      "Could not open PDF:",
+      error
+    );
+
+    alert(
+      "The PDF could not be opened. Check the browser Console."
+    );
+  }
+}
+
+
+/* ------------------------------------------------------
+   SAFE TEXT OUTPUT
+------------------------------------------------------ */
+
+function escapeStudentPdfText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

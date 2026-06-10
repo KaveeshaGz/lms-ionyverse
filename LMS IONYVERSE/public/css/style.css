@@ -2658,3 +2658,118 @@ body,
 .auth-switch-text a:hover {
   text-decoration: underline;
 }
+
+/* ======================================================
+   STUDENT PDF LIBRARY
+====================================================== */
+
+.student-pdf-library-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(230px, 1fr));
+
+  gap: 18px;
+}
+
+.student-pdf-card {
+  padding: 22px;
+
+  background: var(--card-bg);
+
+  border:
+    1px solid
+    var(--ivory-border);
+
+  border-radius:
+    var(--radius);
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.student-pdf-card:hover {
+  transform:
+    translateY(-4px);
+
+  border-color:
+    rgba(255, 212, 0, 0.38);
+
+  box-shadow:
+    0 14px 28px
+    rgba(0, 0, 0, 0.28);
+}
+
+.student-pdf-icon {
+  margin-bottom: 14px;
+
+  font-size: 30px;
+}
+
+.student-pdf-subject {
+  margin-bottom: 8px;
+
+  color: var(--yellow);
+
+  font-family: var(--mono);
+
+  font-size: 10px;
+
+  letter-spacing: 0.07em;
+
+  text-transform: uppercase;
+}
+
+.student-pdf-title {
+  margin-bottom: 8px;
+
+  color: var(--ivory);
+
+  font-family: var(--serif);
+
+  font-size: 21px;
+
+  line-height: 1.15;
+}
+
+.student-pdf-teacher {
+  min-height: 34px;
+
+  color: var(--ivory-dim);
+
+  font-size: 12px;
+}
+
+.student-pdf-access {
+  margin-top: 15px;
+  margin-bottom: 17px;
+}
+
+.student-pdf-button {
+  width: 100%;
+
+  padding: 10px 16px;
+
+  font-size: 12px;
+}
+
+.student-pdf-library-empty {
+  grid-column: 1 / -1;
+
+  padding: 44px 24px;
+
+  text-align: center;
+
+  color: var(--ivory-dim);
+
+  background: var(--card-bg);
+
+  border:
+    1px dashed
+    var(--ivory-border);
+
+  border-radius:
+    var(--radius);
+}

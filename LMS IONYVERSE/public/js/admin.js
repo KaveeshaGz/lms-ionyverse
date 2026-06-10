@@ -46,7 +46,8 @@
 
 import {
   auth,
-  db
+  db,
+  storage
 } from "./firebase-config.js";
 
 import {
@@ -60,11 +61,17 @@ import {
   collection,
   query,
   where,
+  addDoc,
   getDocs,
   updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-storage.js";
 
 window.adminLogout = async function () {
   await signOut(auth);
@@ -473,28 +480,47 @@ function createAdminPages() {
 
       <div class="analytics-grid">
 
-        <div class="ana-card">
-          <div class="ana-label">Total Requests</div>
-          <div class="ana-val">21</div>
-        </div>
+  <div class="ana-card">
+    <div class="ana-label">Total Requests</div>
 
-        <div class="ana-card">
-          <div class="ana-label">Pending</div>
-          <div class="ana-val">5</div>
-        </div>
+    <div
+      id="pdf-request-total-count"
+      class="ana-val">
+      0
+    </div>
+  </div>
 
-        <div class="ana-card">
-          <div class="ana-label">Approved</div>
-          <div class="ana-val">14</div>
-        </div>
+  <div class="ana-card">
+    <div class="ana-label">Pending</div>
 
-        <div class="ana-card">
-          <div class="ana-label">Rejected</div>
-          <div class="ana-val">2</div>
-        </div>
+    <div
+      id="pdf-request-pending-count"
+      class="ana-val">
+      0
+    </div>
+  </div>
 
-      </div>
+  <div class="ana-card">
+    <div class="ana-label">Approved</div>
 
+    <div
+      id="pdf-request-approved-count"
+      class="ana-val">
+      0
+    </div>
+  </div>
+
+  <div class="ana-card">
+    <div class="ana-label">Rejected</div>
+
+    <div
+      id="pdf-request-rejected-count"
+      class="ana-val">
+      0
+    </div>
+  </div>
+
+</div>
       <div class="table-wrap">
 
         <div class="table-head-row">
@@ -1228,21 +1254,16 @@ function connectAdminPageForms() {
   }
 
 
-  const pdfForm = document.getElementById(
-    "admin-pdf-upload-form"
+const pdfForm = document.getElementById(
+  "admin-pdf-upload-form"
+);
+
+if (pdfForm) {
+  pdfForm.addEventListener(
+    "submit",
+    uploadFirebasePdfResource
   );
-
-  if (pdfForm) {
-    pdfForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      alert(
-        "PDF uploaded successfully for visual testing. Firebase Storage will save it later."
-      );
-
-      pdfForm.reset();
-    });
-  }
+}
 
 
   document.addEventListener("click", function (event) {
@@ -3667,6 +3688,8 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         createAdminPages();
 
+        connectFirebasePdfUploadForm();
+
         await setupStudentApprovalManager();
 
       } catch (error) {
@@ -4079,6 +4102,10 @@ async function loadAdminPdfRequests() {
       return bTime - aTime;
     });
 
+    updateAdminPdfRequestStats(
+      requests
+    );
+
 
     if (requests.length === 0) {
       tableBody.innerHTML = `
@@ -4352,3 +4379,302 @@ document.addEventListener(
     }
   }
 );
+
+/* ======================================================
+   UPDATE REAL PDF REQUEST STATISTICS
+====================================================== */
+
+function updateAdminPdfRequestStats(requests) {
+  const totalElement = document.getElementById(
+    "pdf-request-total-count"
+  );
+
+  const pendingElement = document.getElementById(
+    "pdf-request-pending-count"
+  );
+
+  const approvedElement = document.getElementById(
+    "pdf-request-approved-count"
+  );
+
+  const rejectedElement = document.getElementById(
+    "pdf-request-rejected-count"
+  );
+
+
+  const totalCount =
+    requests.length;
+
+  const pendingCount =
+    requests.filter(function (request) {
+      return request.status === "pending";
+    }).length;
+
+  const approvedCount =
+    requests.filter(function (request) {
+      return request.status === "approved";
+    }).length;
+
+  const rejectedCount =
+    requests.filter(function (request) {
+      return request.status === "rejected";
+    }).length;
+
+
+  if (totalElement) {
+    totalElement.textContent =
+      totalCount;
+  }
+
+  if (pendingElement) {
+    pendingElement.textContent =
+      pendingCount;
+  }
+
+  if (approvedElement) {
+    approvedElement.textContent =
+      approvedCount;
+  }
+
+  if (rejectedElement) {
+    rejectedElement.textContent =
+      rejectedCount;
+  }
+}
+
+/* ======================================================
+   FIREBASE PDF RESOURCE UPLOAD
+====================================================== */
+
+async function uploadFirebasePdfResource(event) {
+  event.preventDefault();
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Please log in again.");
+    window.location.href = "./login.html";
+    return;
+  }
+
+  const titleInput =
+    document.getElementById("pdf-title");
+
+  const subjectInput =
+    document.getElementById("pdf-subject");
+
+  const teacherInput =
+    document.getElementById("pdf-teacher");
+
+  const approvalInput =
+    document.getElementById("pdf-approval");
+
+  const fileInput =
+    document.getElementById("pdf-file");
+
+
+  if (
+    !titleInput ||
+    !subjectInput ||
+    !teacherInput ||
+    !approvalInput ||
+    !fileInput
+  ) {
+    alert("The PDF upload form is incomplete.");
+    return;
+  }
+
+
+  const title = titleInput.value.trim();
+
+  const subject = subjectInput.value;
+
+  const teacher = teacherInput.value.trim();
+
+  const approvalRequired =
+    approvalInput.value === "yes";
+
+  const pdfFile =
+    fileInput.files[0];
+
+
+  if (!title || !subject || !teacher || !pdfFile) {
+    alert("Please complete every PDF upload field.");
+    return;
+  }
+
+
+  if (pdfFile.type !== "application/pdf") {
+    alert("Please choose a valid PDF file.");
+    return;
+  }
+
+
+  const maximumPdfSize =
+    10 * 1024 * 1024;
+
+  if (pdfFile.size > maximumPdfSize) {
+    alert("Please choose a PDF file below 10 MB.");
+    return;
+  }
+
+
+  const form = document.getElementById(
+    "admin-pdf-upload-form"
+  );
+
+  const submitButton = form.querySelector(
+    'button[type="submit"]'
+  );
+
+  submitButton.disabled = true;
+
+  submitButton.textContent =
+    "Uploading PDF...";
+
+
+  try {
+    /*
+      Create a safe unique file path.
+    */
+    const safeFileName = pdfFile.name
+      .replace(/[^a-zA-Z0-9._-]/g, "_");
+
+    const storagePath =
+      "pdfs/" +
+      Date.now() +
+      "-" +
+      safeFileName;
+
+
+    /*
+      Upload the real file to Firebase Storage.
+    */
+    const pdfStorageReference = ref(
+      storage,
+      storagePath
+    );
+
+    await uploadBytes(
+      pdfStorageReference,
+      pdfFile,
+      {
+        contentType: "application/pdf"
+      }
+    );
+
+
+    /*
+      Save the downloadable file URL.
+    */
+    const downloadUrl =
+      await getDownloadURL(
+        pdfStorageReference
+      );
+
+
+    /*
+      Save PDF details in Firestore.
+    */
+    await addDoc(
+      collection(
+        db,
+        "pdfResources"
+      ),
+      {
+        title: title,
+        subject: subject,
+        teacher: teacher,
+
+        approvalRequired:
+          approvalRequired,
+
+        fileName:
+          pdfFile.name,
+
+        storagePath:
+          storagePath,
+
+        downloadUrl:
+          downloadUrl,
+
+        status:
+          "active",
+
+        uploadedBy:
+          user.uid,
+
+        createdAt:
+          serverTimestamp()
+      }
+    );
+
+
+    form.reset();
+
+    alert(
+      "PDF uploaded successfully."
+    );
+
+    console.log(
+      "PDF uploaded:",
+      storagePath
+    );
+
+  } catch (error) {
+    console.error(
+      "PDF upload failed:",
+      error
+    );
+
+    alert(
+      "The PDF could not be uploaded. Check the browser Console."
+    );
+
+  } finally {
+    submitButton.disabled = false;
+
+    submitButton.textContent =
+      "Upload PDF";
+  }
+}
+
+/* ======================================================
+   CONNECT FIREBASE PDF UPLOAD FORM
+====================================================== */
+
+function connectFirebasePdfUploadForm() {
+  const pdfForm = document.getElementById(
+    "admin-pdf-upload-form"
+  );
+
+  if (!pdfForm) {
+    console.error(
+      "Admin PDF upload form was not found."
+    );
+
+    return;
+  }
+
+  /*
+    Prevent duplicate upload listeners.
+  */
+  if (
+    pdfForm.dataset.firebaseUploadConnected ===
+    "true"
+  ) {
+    return;
+  }
+
+  pdfForm.dataset.firebaseUploadConnected =
+    "true";
+
+  pdfForm.addEventListener(
+    "submit",
+    uploadFirebasePdfResource
+  );
+
+  console.log(
+    "Firebase PDF upload form connected."
+  );
+}
