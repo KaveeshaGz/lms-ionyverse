@@ -44,11 +44,28 @@
 //   window.location.href = "./login.html";
 // };
 
+import {
+  auth,
+  db
+} from "./firebase-config.js";
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 
 
-window.adminLogout = function () {
-  sessionStorage.removeItem("lmsRole");
+window.adminLogout = async function () {
+  await signOut(auth);
+
+  sessionStorage.clear();
+
   window.location.href = "./login.html";
 };
 
@@ -3635,82 +3652,105 @@ function removeStudyNote(noteId) {
 window.toggleStudyNote = toggleStudyNote;
 window.removeStudyNote = removeStudyNote;
 
-/* ======================================================
-   START ADMIN DASHBOARD SAFELY
-====================================================== */
-
 document.addEventListener("DOMContentLoaded", function () {
-  const role = sessionStorage.getItem("lmsRole");
+  onAuthStateChanged(auth, async function (user) {
+    if (!user) {
+      window.location.href = "./login.html";
+      return;
+    }
 
-  if (role !== "admin") {
-    window.location.href = "./login.html";
-    return;
-  }
+    try {
+      const profileReference = doc(
+        db,
+        "users",
+        user.uid
+      );
 
-  const loginGate = document.getElementById("admin-login-gate");
-  const dashboard = document.getElementById("admin-dashboard");
+      const profileSnapshot =
+        await getDoc(profileReference);
 
-  if (loginGate) {
-    loginGate.style.display = "none";
-  }
+      if (!profileSnapshot.exists()) {
+        await signOut(auth);
+        window.location.href = "./login.html";
+        return;
+      }
 
-  if (dashboard) {
-    dashboard.style.display = "block";
-  }
+      const profile = profileSnapshot.data();
 
-  /*
-    Start each feature separately.
-    One broken optional feature will no longer stop the sidebar.
-  */
+      if (
+        profile.role !== "admin" ||
+        profile.status !== "active"
+      ) {
+        await signOut(auth);
+        window.location.href = "./login.html";
+        return;
+      }
 
-  try {
-    createAdminPages();
-  } catch (error) {
-    console.error("Admin pages error:", error);
-  }
+      const loginGate =
+        document.getElementById("admin-login-gate");
 
-  try {
-    setupBannerManager();
-  } catch (error) {
-    console.error("Banner manager error:", error);
-  }
+      const dashboard =
+        document.getElementById("admin-dashboard");
 
-  try {
-    setupNotesManager();
-  } catch (error) {
-    console.error("Notes manager error:", error);
-  }
+      if (loginGate) {
+        loginGate.style.display = "none";
+      }
 
-  /*
-    IMPORTANT:
-    Connect sidebar clicks after dynamic menu items are created.
-  */
+      if (dashboard) {
+        dashboard.style.display = "block";
+      }
 
-  try {
-    connectAdminSidebar();
-  } catch (error) {
-    console.error("Sidebar connection error:", error);
-  }
+      try {
+        createAdminPages();
+      } catch (error) {
+        console.error("Admin pages error:", error);
+      }
 
-  try {
-    setupDashboardExtras();
-  } catch (error) {
-    console.error("Dashboard extras error:", error);
-  }
+      try {
+        setupBannerManager();
+      } catch (error) {
+        console.error("Banner manager error:", error);
+      }
 
-  try {
-    initializeDashboardChart();
-  } catch (error) {
-    console.error("Dashboard chart error:", error);
-  }
+      try {
+        setupNotesManager();
+      } catch (error) {
+        console.error("Notes manager error:", error);
+      }
 
-  try {
-    setupDashboardCardMouseAnimation();
-  } catch (error) {
-    console.error("Dashboard animation error:", error);
-  }
+      try {
+        connectAdminSidebar();
+      } catch (error) {
+        console.error("Sidebar connection error:", error);
+      }
 
-  console.log("Admin dashboard startup completed.");
+      try {
+        setupDashboardExtras();
+      } catch (error) {
+        console.error("Dashboard extras error:", error);
+      }
+
+      try {
+        initializeDashboardChart();
+      } catch (error) {
+        console.error("Dashboard chart error:", error);
+      }
+
+      try {
+        setupDashboardCardMouseAnimation();
+      } catch (error) {
+        console.error("Dashboard animation error:", error);
+      }
+
+      console.log("Firebase admin dashboard connected.");
+
+    } catch (error) {
+      console.error("Admin access check failed:", error);
+
+      await signOut(auth);
+
+      window.location.href = "./login.html";
+    }
+  });
 });
-
  

@@ -1,36 +1,40 @@
-/*
-  FIREBASE CONNECTION FILE
+/* ======================================================
+   FIREBASE CONNECTION
+====================================================== */
 
-  Do not add passwords inside this file.
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
-  Later, paste your Firebase web configuration here.
-*/
+import {
+  getAuth
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-import { initializeApp } from
-  "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-
-import { getAuth } from
-  "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-import { getFirestore } from
-  "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-import { getStorage } from
-  "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
+import {
+  getFirestore
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_FIREBASE_API_KEY",
-  authDomain: "PASTE_YOUR_AUTH_DOMAIN",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
-  messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
-  appId: "PASTE_YOUR_APP_ID"
+  apiKey: "AIzaSyAIAHpLBmOFT1qOBA_hu9hX47MJRsw0XyI",
+  authDomain: "browse-a-teacher-lms.firebaseapp.com",
+  projectId: "browse-a-teacher-lms",
+  storageBucket: "browse-a-teacher-lms.firebasestorage.app",
+  messagingSenderId: "216481615085",
+  appId: "1:216481615085:web:bdee245ad1d783815b10e4",
+  measurementId: "G-70VHL52TL2"
 };
 
 
 const app = initializeApp(firebaseConfig);
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+
+export {
+  app,
+  auth,
+  db
+};
