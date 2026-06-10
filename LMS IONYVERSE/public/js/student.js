@@ -40,41 +40,153 @@
 //   window.location.href = "./login.html";
 // };
 
+/* ======================================================
+   FIREBASE STUDENT AUTHENTICATION
+====================================================== */
+
+import {
+  auth,
+  db
+} from "./firebase-config.js";
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+
+/* ======================================================
+   START FIREBASE-PROTECTED STUDENT DASHBOARD
+====================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
-  const role = sessionStorage.getItem("lmsRole");
+  const dashboard =
+    document.getElementById("student-dashboard");
 
-  if (role !== "student") {
-    window.location.href = "./login.html";
-    return;
-  }
+  const loginGate =
+    document.getElementById("student-login-gate");
 
-  const loginGate = document.getElementById("student-login-gate");
-  const dashboard = document.getElementById("student-dashboard");
-
-  if (loginGate) {
-    loginGate.style.display = "none";
-  }
-
+  /*
+    Hide dashboard until Firebase confirms access.
+  */
   if (dashboard) {
-    dashboard.style.display = "block";
+    dashboard.style.display = "none";
   }
 
-  createStudentPages();
-  createStudentNotesPage();
-  connectStudentSidebar();
-  connectStudentDashboardRows();
-  connectStudentButtons();
+  onAuthStateChanged(auth, async function (user) {
+    if (!user) {
+      window.location.href = "./login.html";
+      return;
+    }
 
-  console.log("Student dashboard connected.");
+    try {
+      const profileReference = doc(
+        db,
+        "users",
+        user.uid
+      );
+
+      const profileSnapshot =
+        await getDoc(profileReference);
+
+      if (!profileSnapshot.exists()) {
+        await signOut(auth);
+
+        window.location.href = "./login.html";
+        return;
+      }
+
+      const profile = profileSnapshot.data();
+
+      if (
+        profile.role !== "student" ||
+        profile.status !== "active"
+      ) {
+        await signOut(auth);
+
+        sessionStorage.clear();
+
+        window.location.href = "./login.html";
+        return;
+      }
+
+      /*
+        Keep these values temporarily because
+        some existing LMS features still use them.
+      */
+      sessionStorage.setItem(
+        "lmsRole",
+        "student"
+      );
+
+      sessionStorage.setItem(
+        "lmsUserUid",
+        user.uid
+      );
+
+      sessionStorage.setItem(
+        "lmsUserEmail",
+        user.email || ""
+      );
+
+      sessionStorage.setItem(
+        "lmsUserName",
+        profile.name || ""
+      );
+
+      if (loginGate) {
+        loginGate.style.display = "none";
+      }
+
+      if (dashboard) {
+        dashboard.style.display = "block";
+      }
+
+      /*
+        Prevent duplicate page creation if the
+        auth observer runs again.
+      */
+      if (!window.studentDashboardStarted) {
+        window.studentDashboardStarted = true;
+
+        createStudentPages();
+        createStudentNotesPage();
+        connectStudentSidebar();
+        connectStudentDashboardRows();
+        connectStudentButtons();
+      }
+
+      console.log(
+        "Firebase student dashboard connected."
+      );
+
+    } catch (error) {
+      console.error(
+        "Student access check failed:",
+        error
+      );
+
+      await signOut(auth);
+
+      sessionStorage.clear();
+
+      window.location.href = "./login.html";
+    }
+  });
 });
 
+window.studentLogout = async function () {
+  await signOut(auth);
 
-window.studentLogout = function () {
-  sessionStorage.removeItem("lmsRole");
+  sessionStorage.clear();
+
   window.location.href = "./login.html";
 };
-
 
 
 /* ======================================================
