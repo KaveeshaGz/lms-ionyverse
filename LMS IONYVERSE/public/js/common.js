@@ -1,3 +1,10 @@
+/* ======================================================
+   WEBSITE CONTACT SETTINGS
+====================================================== */
+
+const BAT_WHATSAPP_NUMBER =
+  "94707655385";
+
 function showTab(name){
   document.querySelectorAll('.page-view').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -12,15 +19,15 @@ function toggleFaq(el){
 }
 function whatsappPurchase(course){
   const msg=encodeURIComponent('Hello Browse A Teacher. I would like to purchase the '+course+'. Please let me know the payment details. Thank you!');
-  window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+  window.open('https://wa.me/940707655385?text='+msg,'_blank');
 }
 function whatsappConsult(){
   const msg=encodeURIComponent('Hello Browse A Teacher. I would like to book a consultation session. Please advise on availability. Thank you!');
-  window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+  window.open('https://wa.me/940707655385?text='+msg,'_blank');
 }
 function whatsappSupport(){
   const msg=encodeURIComponent('Hello Browse A Teacher! I need some help. Could you assist me?');
-  window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+  window.open('https://wa.me/940707655385?text='+msg,'_blank');
 }
 
 // Library sub-tab toggle
@@ -72,7 +79,7 @@ function closePdfModal(){
 }
 function buyPdfWhatsapp(){
   const msg = encodeURIComponent('Hello Browse A Teacher. I would like to purchase the PDF: "'+_currentPdf.title+'" ('+_currentPdf.subject+', '+_currentPdf.price+'). Please advise on payment. Thank you!');
-  window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+  window.open('https://wa.me/940707655385?text='+msg,'_blank');
 }
 document.getElementById('pdf-modal')?.addEventListener('click', function(e){
   if(e.target===this) closePdfModal();
@@ -258,7 +265,7 @@ function whatsappTeacherAd(teacherName, className) {
   );
 
   window.open(
-    "https://wa.me/94XXXXXXXXX?text=" + message,
+    "https://wa.me/940707655385?text=" + message,
     "_blank"
   );
 }
@@ -551,48 +558,7 @@ const STUDY_NOTES_STORAGE_KEY = "browseATeacherStudyNotes";
 
 
 /* Default notes shown before the admin uploads anything */
-const defaultStudyNotes = [
-  {
-    id: "default-note-1",
-    subject: "mathematics",
-    title: "Integration Formula Map",
-    description:
-      "A quick visual summary of important integration formulas and when to use them.",
-    imageUrl:
-      "https://placehold.co/1200x900/171717/FFD400?text=Integration+Formula+Map",
-    active: true
-  },
-  {
-    id: "default-note-2",
-    subject: "physics",
-    title: "Waves and Oscillations",
-    description:
-      "Understand amplitude, frequency, wavelength, and period using a simple diagram.",
-    imageUrl:
-      "https://placehold.co/1200x900/171717/D4BBFF?text=Waves+and+Oscillations",
-    active: true
-  },
-  {
-    id: "default-note-3",
-    subject: "chemistry",
-    title: "Organic Chemistry Reactions",
-    description:
-      "A simple reaction pathway summary for quick revision before an exam.",
-    imageUrl:
-      "https://placehold.co/1200x900/171717/FFB3C6?text=Organic+Chemistry+Reactions",
-    active: true
-  },
-  {
-    id: "default-note-4",
-    subject: "biology",
-    title: "Cell Structure Summary",
-    description:
-      "A clear diagram showing the major cell organelles and their functions.",
-    imageUrl:
-      "https://placehold.co/1200x900/171717/B5EAD7?text=Cell+Structure+Summary",
-    active: true
-  }
-];
+const defaultStudyNotes = [];
 
 
 /* Read notes from browser storage */

@@ -64,13 +64,15 @@ import {
   addDoc,
   getDocs,
   updateDoc,
+  deleteDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 import {
   ref,
   uploadBytes,
-  getDownloadURL
+  getDownloadURL,
+  deleteObject
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-storage.js";
 
 window.adminLogout = async function () {
@@ -756,56 +758,7 @@ function createAdminPages() {
         </tr>
       </thead>
 
-      <tbody>
-
-        <tr>
-          <td>Sithara K.</td>
-          <td>sithara@email.com</td>
-          <td>4</td>
-          <td>
-            <span class="badge badge-green">Active</span>
-          </td>
-          <td>
-            <div class="action-row">
-              <button class="act-btn" data-action="view-student">
-                View
-              </button>
-
-              <button class="act-btn" data-action="edit-student">
-                Edit
-              </button>
-
-              <button class="act-btn danger" data-action="remove">
-                Remove
-              </button>
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Dilshan L.</td>
-          <td>dilshan@email.com</td>
-          <td>3</td>
-          <td>
-            <span class="badge badge-yellow">Suspended</span>
-          </td>
-          <td>
-            <div class="action-row">
-              <button class="act-btn" data-action="view-student">
-                View
-              </button>
-
-              <button class="act-btn" data-action="edit-student">
-                Edit
-              </button>
-
-              <button class="act-btn danger" data-action="remove">
-                Remove
-              </button>
-            </div>
-          </td>
-        </tr>
-
+      <tbody id="firebase-students-body">
       </tbody>
     </table>
   </div>
@@ -846,56 +799,7 @@ function createAdminPages() {
         </tr>
       </thead>
 
-      <tbody>
-
-        <tr>
-          <td>Mr. R. Perera</td>
-          <td>Mathematics</td>
-          <td>8 years</td>
-          <td>
-            <span class="badge badge-green">Active</span>
-          </td>
-          <td>
-            <div class="action-row">
-              <button class="act-btn" data-action="view-teacher">
-                View
-              </button>
-
-              <button class="act-btn" data-action="edit-teacher">
-                Edit
-              </button>
-
-              <button class="act-btn danger" data-action="remove">
-                Remove
-              </button>
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Ms. N. Silva</td>
-          <td>Physics</td>
-          <td>6 years</td>
-          <td>
-            <span class="badge badge-green">Active</span>
-          </td>
-          <td>
-            <div class="action-row">
-              <button class="act-btn" data-action="view-teacher">
-                View
-              </button>
-
-              <button class="act-btn" data-action="edit-teacher">
-                Edit
-              </button>
-
-              <button class="act-btn danger" data-action="remove">
-                Remove
-              </button>
-            </div>
-          </td>
-        </tr>
-
+      <tbody id="firebase-teachers-body">
       </tbody>
     </table>
   </div>
@@ -1051,7 +955,7 @@ function createAdminPages() {
         <input
           class="form-input"
           type="text"
-          placeholder="Example: New Physics Lesson Uploaded"
+          placeholder="Example:New Accounts Lesson Uploaded"
           required>
       </div>
 
@@ -1098,7 +1002,7 @@ function createAdminPages() {
       <tbody>
 
         <tr>
-          <td>New Physics Lesson Uploaded</td>
+          <td>New Chemistry Lesson Uploaded</td>
           <td>All Students</td>
           <td>07 Jun 2026</td>
           <td>
@@ -2622,7 +2526,7 @@ function addBannerManagerPanel(adminMain) {
             id="banner-title"
             class="form-input"
             type="text"
-            placeholder="Example: A/L Biology Revision Class"
+            placeholder="Example: A/L Accounts Revision Class"
             maxlength="80"
             required>
         </div>
@@ -3072,13 +2976,12 @@ function addNotesManagerPanel(adminMain) {
               Subject
             </label>
 
-            <select
+           <select
   id="admin-note-subject"
   class="form-select"
   required>
 
   ${window.getLmsSubjectOptions({
-    useSlug: true,
     includePlaceholder: true
   })}
 
@@ -3288,74 +3191,85 @@ function connectNotesManagerForm() {
    Firebase will replace this later.
 ====================================================== */
 
-const ADMIN_NOTES_STORAGE_KEY =
-  "browseATeacherStudyNotes";
+/* ======================================================
+   FIREBASE STUDY NOTES HELPERS
+====================================================== */
 
-
-function getSavedStudyNotes() {
-  try {
-    const savedNotes = localStorage.getItem(
-      ADMIN_NOTES_STORAGE_KEY
+async function loadFirebaseStudyNotes() {
+  const snapshot =
+    await getDocs(
+      collection(
+        db,
+        "studyNotes"
+      )
     );
 
-    if (!savedNotes) {
-      return [];
-    }
+  const notes = [];
 
-    return JSON.parse(savedNotes);
-  } catch (error) {
-    console.error("Could not read saved notes:", error);
-    return [];
-  }
+  snapshot.forEach(function (noteDocument) {
+    notes.push({
+      id: noteDocument.id,
+      ...noteDocument.data()
+    });
+  });
+
+  notes.sort(function (a, b) {
+    const firstTime =
+      a.createdAt?.seconds || 0;
+
+    const secondTime =
+      b.createdAt?.seconds || 0;
+
+    return secondTime - firstTime;
+  });
+
+  return notes;
 }
-
-
-function saveUploadedStudyNotes(notes) {
-  try {
-    localStorage.setItem(
-      ADMIN_NOTES_STORAGE_KEY,
-      JSON.stringify(notes)
-    );
-  } catch (error) {
-    console.error("Could not save study notes:", error);
-
-    throw new Error(
-      "Browser storage is full. Try a smaller image."
-    );
-  }
-
-  /*
-    Refresh public notes immediately when the shared
-    public renderer exists.
-  */
-  if (
-    typeof window.renderPublicStudyNotes === "function"
-  ) {
-    window.renderPublicStudyNotes();
-  }
-}
-/* Make Notes storage helpers available everywhere */
-window.getStudyNotes = getSavedStudyNotes;
-window.saveStudyNotes = saveUploadedStudyNotes;
 
 /* ======================================================
    HANDLE NOTE IMAGE UPLOAD
 ====================================================== */
 
-function handleStudyNoteUpload(event) {
+/* ======================================================
+   UPLOAD STUDY NOTE TO FIREBASE
+====================================================== */
+
+async function handleStudyNoteUpload(event) {
   event.preventDefault();
 
+  const user =
+    auth.currentUser;
+
+  if (!user) {
+    alert("Please sign in again.");
+
+    window.location.href =
+      "./login.html";
+
+    return;
+  }
+
+
   const titleInput =
-    document.getElementById("admin-note-title");
+    document.getElementById(
+      "admin-note-title"
+    );
 
   const subjectInput =
-    document.getElementById("admin-note-subject");
+    document.getElementById(
+      "admin-note-subject"
+    );
 
   const descriptionInput =
-    document.getElementById("admin-note-description");
+    document.getElementById(
+      "admin-note-description"
+    );
 
   const imageInput =
-    document.getElementById("admin-note-image");
+    document.getElementById(
+      "admin-note-image"
+    );
+
 
   if (
     !titleInput ||
@@ -3363,86 +3277,193 @@ function handleStudyNoteUpload(event) {
     !descriptionInput ||
     !imageInput
   ) {
-    alert("The Notes form is incomplete.");
-    console.error("One or more Notes form fields are missing.");
+    alert(
+      "The Study Notes form is incomplete."
+    );
+
     return;
   }
 
-  const title = titleInput.value.trim();
-  const subject = subjectInput.value;
-  const description = descriptionInput.value.trim();
-  const imageFile = imageInput.files[0];
 
-  if (!title) {
-    alert("Please enter a note title.");
+  const title =
+    titleInput.value.trim();
+
+  const subject =
+    subjectInput.value;
+
+  const description =
+    descriptionInput.value.trim();
+
+  const imageFile =
+    imageInput.files[0];
+
+
+  if (
+    !title ||
+    !subject ||
+    !description ||
+    !imageFile
+  ) {
+    alert(
+      "Please complete every Study Notes field."
+    );
+
     return;
   }
 
-  if (!subject) {
-    alert("Please select a subject.");
+
+  if (
+    !window.isAllowedLmsSubject(subject)
+  ) {
+    alert(
+      "Please select Accounting or Chemistry."
+    );
+
     return;
   }
 
-  if (!description) {
-    alert("Please enter a short description.");
+
+  if (
+    !imageFile.type.startsWith("image/")
+  ) {
+    alert(
+      "Please choose a valid image file."
+    );
+
     return;
   }
 
-  if (!imageFile) {
-    alert("Please choose a note image.");
+
+  const maximumImageSize =
+    5 * 1024 * 1024;
+
+  if (
+    imageFile.size > maximumImageSize
+  ) {
+    alert(
+      "Please choose an image below 5 MB."
+    );
+
     return;
   }
 
-  if (!imageFile.type.startsWith("image/")) {
-    alert("Please choose a valid JPG, PNG, or WebP image.");
-    return;
-  }
 
-  const maximumFileSize = 800 * 1024;
+  const form =
+    document.getElementById(
+      "admin-note-form"
+    );
 
-  if (imageFile.size > maximumFileSize) {
-    alert("Please choose an image below 800 KB.");
-    return;
-  }
+  const submitButton =
+    form.querySelector(
+      'button[type="submit"]'
+    );
 
-  const reader = new FileReader();
 
-  reader.onload = function () {
-    try {
-      const notes = getSavedStudyNotes();
+  submitButton.disabled = true;
 
-      notes.unshift({
-        id: "note-" + Date.now(),
-        title: title,
-        subject: subject,
-        description: description,
-        imageUrl: reader.result,
-        active: true
-      });
+  submitButton.textContent =
+    "Publishing Note...";
 
-      saveUploadedStudyNotes(notes);
 
-      document
-        .getElementById("admin-note-form")
-        .reset();
-
-      renderAdminNotesList();
-
-      alert("Study note published successfully.");
-    } catch (error) {
-      console.error("Study note upload error:", error);
-
-      alert(
-        "The note could not be saved. Open the browser Console to see the error."
+  try {
+    const safeFileName =
+      imageFile.name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
       );
-    }
-  };
 
-  reader.onerror = function () {
-    alert("The image could not be read. Please choose another image.");
-  };
 
-  reader.readAsDataURL(imageFile);
+    const storagePath =
+      "study-notes/" +
+      Date.now() +
+      "-" +
+      safeFileName;
+
+
+    const imageReference =
+      ref(
+        storage,
+        storagePath
+      );
+
+
+    await uploadBytes(
+      imageReference,
+      imageFile,
+      {
+        contentType:
+          imageFile.type
+      }
+    );
+
+
+    const imageUrl =
+      await getDownloadURL(
+        imageReference
+      );
+
+
+    await addDoc(
+      collection(
+        db,
+        "studyNotes"
+      ),
+      {
+        title:
+          title,
+
+        subject:
+          subject,
+
+        description:
+          description,
+
+        imageUrl:
+          imageUrl,
+
+        storagePath:
+          storagePath,
+
+        status:
+          "active",
+
+        uploadedBy:
+          user.uid,
+
+        createdAt:
+          serverTimestamp()
+      }
+    );
+
+
+    form.reset();
+
+
+    alert(
+      "Study note published successfully."
+    );
+
+
+    await renderAdminNotesList();
+
+
+  } catch (error) {
+    console.error(
+      "Study note upload failed:",
+      error
+    );
+
+    alert(
+      "The Study Note could not be uploaded. Check the Console."
+    );
+
+
+  } finally {
+    submitButton.disabled = false;
+
+    submitButton.textContent =
+      "Publish Note";
+  }
 }
 
 
@@ -3458,193 +3479,310 @@ function escapeAdminNoteText(value) {
 
 
 /* Draw uploaded notes in the admin page */
-function renderAdminNotesList() {
-  const list = document.getElementById(
-    "admin-notes-list"
-  );
+/* ======================================================
+   SHOW FIREBASE STUDY NOTES IN ADMIN PORTAL
+====================================================== */
+
+async function renderAdminNotesList() {
+  const list =
+    document.getElementById(
+      "admin-notes-list"
+    );
 
   if (!list) {
     return;
   }
 
-  const notes = window.getStudyNotes();
 
-  if (notes.length === 0) {
+  list.innerHTML = `
+    <div style="
+      grid-column:1/-1;
+      padding:22px;
+      color:var(--ivory-dim);
+      text-align:center;
+    ">
+      Loading Study Notes...
+    </div>
+  `;
+
+
+  try {
+    const notes =
+      await loadFirebaseStudyNotes();
+
+
+    if (notes.length === 0) {
+      list.innerHTML = `
+        <div style="
+          grid-column:1/-1;
+          padding:22px;
+          color:var(--ivory-dim);
+          text-align:center;
+        ">
+          No Study Notes have been published yet.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    list.innerHTML =
+      notes
+        .map(function (note) {
+          const isActive =
+            note.status === "active";
+
+          return `
+            <article class="note-card">
+
+              <img
+                class="note-image"
+                src="${escapeAdminNoteText(
+                  note.imageUrl
+                )}"
+                alt="${escapeAdminNoteText(
+                  note.title
+                )}">
+
+              <div style="padding:16px">
+
+                <div class="course-subject">
+                  ${escapeAdminNoteText(
+                    note.subject
+                  )}
+                </div>
+
+                <div class="note-title">
+                  ${escapeAdminNoteText(
+                    note.title
+                  )}
+                </div>
+
+                <p class="note-description">
+                  ${escapeAdminNoteText(
+                    note.description
+                  )}
+                </p>
+
+                <div style="
+                  display:flex;
+                  gap:8px;
+                  flex-wrap:wrap;
+                  margin-top:14px;
+                ">
+
+                  <button
+                    class="act-btn"
+                    type="button"
+                    onclick="toggleFirebaseStudyNote(
+                      '${escapeAdminNoteText(
+                        note.id
+                      )}'
+                    )">
+
+                    ${
+                      isActive
+                        ? "Hide"
+                        : "Publish"
+                    }
+
+                  </button>
+
+
+                  <button
+                    class="act-btn danger"
+                    type="button"
+                    onclick="removeFirebaseStudyNote(
+                      '${escapeAdminNoteText(
+                        note.id
+                      )}'
+                    )">
+
+                    Remove
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </article>
+          `;
+        })
+        .join("");
+
+
+  } catch (error) {
+    console.error(
+      "Could not load Study Notes:",
+      error
+    );
+
     list.innerHTML = `
       <div style="
         grid-column:1/-1;
+        padding:22px;
         color:var(--ivory-dim);
-        padding:18px 4px;
+        text-align:center;
       ">
-        No study notes have been uploaded yet.
+        Study Notes could not be loaded.
+        Check the Console.
       </div>
     `;
-
-    return;
   }
-
-  list.innerHTML = notes
-    .map(function (note) {
-      const statusText =
-        note.active === false
-          ? "Hidden"
-          : "Active";
-
-      const statusClass =
-        note.active === false
-          ? "badge badge-gray"
-          : "badge badge-green";
-
-      return `
-        <article style="
-          overflow:hidden;
-          border:1px solid var(--ivory-border);
-          border-radius:var(--radius);
-          background:var(--black);
-        ">
-
-          <img
-            src="${escapeAdminNoteText(note.imageUrl)}"
-            alt="${escapeAdminNoteText(note.title)}"
-            style="
-              display:block;
-              width:100%;
-              height:145px;
-              object-fit:cover;
-              background:#171717;
-            ">
-
-          <div style="padding:16px">
-
-            <div style="
-              color:var(--yellow);
-              font-family:var(--mono);
-              font-size:10px;
-              letter-spacing:0.07em;
-              margin-bottom:8px;
-              text-transform:uppercase;
-            ">
-              ${escapeAdminNoteText(note.subject)}
-            </div>
-
-            <div style="
-              color:var(--ivory);
-              font-family:var(--serif);
-              font-size:18px;
-              line-height:1.15;
-              margin-bottom:9px;
-            ">
-              ${escapeAdminNoteText(note.title)}
-            </div>
-
-            <p style="
-              color:var(--ivory-dim);
-              font-size:11px;
-              line-height:1.65;
-              margin-bottom:13px;
-            ">
-              ${escapeAdminNoteText(note.description)}
-            </p>
-
-            <div style="
-              display:flex;
-              align-items:center;
-              justify-content:space-between;
-              gap:10px;
-              margin-bottom:14px;
-            ">
-
-              <span class="${statusClass}">
-                ${statusText}
-              </span>
-
-            </div>
-
-            <div style="
-              display:flex;
-              gap:8px;
-              flex-wrap:wrap;
-            ">
-
-              <button
-                class="act-btn"
-                onclick="
-                  toggleStudyNote(
-                    '${escapeAdminNoteText(note.id)}'
-                  )
-                ">
-                ${
-                  note.active === false
-                    ? "Publish"
-                    : "Hide"
-                }
-              </button>
-
-              <button
-                class="act-btn danger"
-                onclick="
-                  removeStudyNote(
-                    '${escapeAdminNoteText(note.id)}'
-                  )
-                ">
-                Remove
-              </button>
-
-            </div>
-          </div>
-        </article>
-      `;
-    })
-    .join("");
 }
 
 
-/* Hide or publish a note */
-function toggleStudyNote(noteId) {
-  const notes = window.getStudyNotes();
+/* ======================================================
+   UPDATE OR REMOVE FIREBASE STUDY NOTES
+====================================================== */
 
-  const updatedNotes = notes.map(function (note) {
-    if (note.id === noteId) {
-      return {
-            ...note,
-            active: note.active === false
-      };
+window.toggleFirebaseStudyNote =
+  async function (noteId) {
+    try {
+      const noteReference =
+        doc(
+          db,
+          "studyNotes",
+          noteId
+        );
+
+
+      const noteSnapshot =
+        await getDoc(
+          noteReference
+        );
+
+
+      if (!noteSnapshot.exists()) {
+        alert(
+          "The Study Note could not be found."
+        );
+
+        return;
+      }
+
+
+      const currentStatus =
+        noteSnapshot.data().status;
+
+
+      await updateDoc(
+        noteReference,
+        {
+          status:
+            currentStatus === "active"
+              ? "hidden"
+              : "active"
+        }
+      );
+
+
+      await renderAdminNotesList();
+
+
+    } catch (error) {
+      console.error(
+        "Study Note status update failed:",
+        error
+      );
+
+      alert(
+        "The Study Note status could not be updated."
+      );
+    }
+  };
+
+
+window.removeFirebaseStudyNote =
+  async function (noteId) {
+    const confirmed =
+      confirm(
+        "Remove this Study Note permanently?"
+      );
+
+
+    if (!confirmed) {
+      return;
     }
 
-    return note;
-  });
 
-  window.saveStudyNotes(updatedNotes);
-
-  renderAdminNotesList();
-}
-
-
-/* Remove a note */
-function removeStudyNote(noteId) {
-  const confirmed = confirm(
-    "Remove this study note permanently?"
-  );
-
-  if (!confirmed) {
-    return;
-  }
-
-  const updatedNotes = window
-    .getStudyNotes()
-    .filter(function (note) {
-      return note.id !== noteId;
-    });
-
-  window.saveStudyNotes(updatedNotes);
-
-  renderAdminNotesList();
-}
+    try {
+      const noteReference =
+        doc(
+          db,
+          "studyNotes",
+          noteId
+        );
 
 
-/* Allow onclick buttons to access these functions */
-window.toggleStudyNote = toggleStudyNote;
-window.removeStudyNote = removeStudyNote;
+      const noteSnapshot =
+        await getDoc(
+          noteReference
+        );
+
+
+      if (!noteSnapshot.exists()) {
+        alert(
+          "The Study Note could not be found."
+        );
+
+        return;
+      }
+
+
+      const note =
+        noteSnapshot.data();
+
+
+      if (note.storagePath) {
+        try {
+          await deleteObject(
+            ref(
+              storage,
+              note.storagePath
+            )
+          );
+
+        } catch (storageError) {
+          console.warn(
+            "Study Note image removal warning:",
+            storageError
+          );
+        }
+      }
+
+
+      await deleteDoc(
+        noteReference
+      );
+
+
+      await renderAdminNotesList();
+
+
+      alert(
+        "Study Note removed successfully."
+      );
+
+
+    } catch (error) {
+      console.error(
+        "Study Note removal failed:",
+        error
+      );
+
+      alert(
+        "The Study Note could not be removed."
+      );
+    }
+  };
+
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   onAuthStateChanged(auth, async function (user) {

@@ -901,8 +901,7 @@ function connectStudentDashboardRows() {
 
       if (
         text.includes("integration") ||
-        text.includes("organic chemistry") ||
-        text.includes("waves")
+        text.includes("chemistry") 
       ) {
         row.addEventListener("click", function () {
           openStudentPage("videos");
@@ -1138,15 +1137,16 @@ function createStudentNotesPage() {
         </div>
 
         <select
-          id="student-notes-filter"
-          class="form-select student-notes-filter">
+  id="student-notes-filter"
+  class="form-select"
+  style="width:190px"
+  onchange="renderStudentNotes(this.value)">
 
-          ${window.getLmsSubjectOptions({
-            useSlug: true,
-            includeAll: true
-           })}
+  ${window.getLmsSubjectOptions({
+    includeAll: true
+  })}
 
-        </select>
+</select>
       </div>
 
       <div
@@ -1194,118 +1194,224 @@ function getStudentVisibleNotes() {
    DISPLAY NOTE CARDS
 ------------------------------------------------------ */
 
-window.renderStudentNotes = function (selectedSubject) {
-  const grid = document.getElementById(
-    "student-notes-grid"
-  );
+/* ======================================================
+   LOAD FIREBASE STUDY NOTES FOR STUDENTS
+====================================================== */
 
-  if (!grid) {
-    return;
-  }
+window.studentStudyNotesCache = [];
 
-  const subject = selectedSubject || "all";
 
-  const notes = getStudentVisibleNotes()
-    .filter(function (note) {
-      return (
-        subject === "all" ||
-        note.subject === subject
+window.renderStudentNotes =
+  async function (selectedSubject) {
+    const grid =
+      document.getElementById(
+        "student-notes-grid"
       );
-    });
 
-  if (notes.length === 0) {
+
+    if (!grid) {
+      return;
+    }
+
+
     grid.innerHTML = `
-      <div class="student-notes-empty">
-
-        <div class="student-notes-empty-icon">
-          📝
-        </div>
-
-        <div class="student-notes-empty-title">
-          No study notes available yet
-        </div>
-
-        <div class="student-notes-empty-text">
-          Published notes will appear here.
-        </div>
-
+      <div style="
+        grid-column:1/-1;
+        padding:22px;
+        color:var(--ivory-dim);
+        text-align:center;
+      ">
+        Loading Study Notes...
       </div>
     `;
 
-    return;
-  }
 
-  grid.innerHTML = notes
-    .map(function (note) {
-      return `
-        <article class="student-note-card">
-
-          <div class="student-note-image-wrap">
-
-            <img
-              class="student-note-image"
-              src="${escapeStudentNoteText(note.imageUrl)}"
-              alt="${escapeStudentNoteText(note.title)}">
-
-            <div class="student-note-badge">
-              ${escapeStudentNoteText(
-                formatStudentNoteSubject(note.subject)
-              )}
-            </div>
-
-          </div>
-
-          <div class="student-note-body">
-
-            <div class="student-note-mini-label">
-              Visual Revision Note ✦
-            </div>
-
-            <div class="student-note-title">
-              ${escapeStudentNoteText(note.title)}
-            </div>
-
-            <p class="student-note-description">
-              ${escapeStudentNoteText(note.description)}
-            </p>
-
-            <button
-              class="btn-large btn-yellow student-note-view-btn"
-              type="button"
-              data-student-note-id="${escapeStudentNoteText(note.id)}">
-              View Note
-            </button>
-
-          </div>
-        </article>
-      `;
-        })
-    .join("");
+    try {
+      const snapshot =
+        await getDocs(
+          collection(
+            db,
+            "studyNotes"
+          )
+        );
 
 
-  grid
-    .querySelectorAll("[data-student-note-id]")
-    .forEach(function (button) {
-      button.addEventListener(
-        "click",
-        function () {
-          const noteId =
-            button.dataset.studentNoteId;
+      let notes = [];
 
+
+      snapshot.forEach(
+        function (noteDocument) {
           const note =
-            getStudentVisibleNotes()
-              .find(function (item) {
-                return item.id === noteId;
-              });
+            noteDocument.data();
 
-          if (note) {
-            openStudentNoteModal(note);
+
+          if (
+            note.status === "active"
+          ) {
+            notes.push({
+              id:
+                noteDocument.id,
+
+              ...note
+            });
           }
         }
       );
-    });
-};
 
+
+      notes.sort(function (a, b) {
+        const firstTime =
+          a.createdAt?.seconds || 0;
+
+        const secondTime =
+          b.createdAt?.seconds || 0;
+
+        return secondTime - firstTime;
+      });
+
+
+      const subject =
+        selectedSubject || "all";
+
+
+      if (subject !== "all") {
+        notes =
+          notes.filter(
+            function (note) {
+              return (
+                note.subject === subject
+              );
+            }
+          );
+      }
+
+
+      window.studentStudyNotesCache =
+        notes;
+
+
+      if (notes.length === 0) {
+        grid.innerHTML = `
+          <div style="
+            grid-column:1/-1;
+            padding:22px;
+            color:var(--ivory-dim);
+            text-align:center;
+          ">
+            No Study Notes are available yet.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      grid.innerHTML =
+        notes
+          .map(function (note) {
+            return `
+              <article class="note-card">
+
+                <img
+                  class="note-image"
+                  src="${escapeStudentNoteText(
+                    note.imageUrl
+                  )}"
+                  alt="${escapeStudentNoteText(
+                    note.title
+                  )}">
+
+                <div style="padding:16px">
+
+                  <div class="course-subject">
+                    ${escapeStudentNoteText(
+                      note.subject
+                    )}
+                  </div>
+
+                  <div class="note-title">
+                    ${escapeStudentNoteText(
+                      note.title
+                    )}
+                  </div>
+
+                  <p class="note-description">
+                    ${escapeStudentNoteText(
+                      note.description
+                    )}
+                  </p>
+
+                  <button
+                      type="button"
+                      class="note-view-btn"
+                      data-student-note-id="${escapeStudentNoteText(
+                        note.id
+                      )}">
+
+                      View Note
+
+                  </button>
+
+                </div>
+
+              </article>
+            `;
+          })
+          .join("");
+
+          grid
+  .querySelectorAll(
+    "[data-student-note-id]"
+  )
+  .forEach(function (button) {
+    button.addEventListener(
+      "click",
+      function () {
+        const noteId =
+          button.dataset.studentNoteId;
+
+        const note =
+          notes.find(
+            function (item) {
+              return item.id === noteId;
+            }
+          );
+
+        if (!note) {
+          alert(
+            "The Study Note could not be found."
+          );
+
+          return;
+        }
+
+        openStudentNoteModal(
+          note
+        );
+      }
+    );
+  });
+
+
+    } catch (error) {
+      console.error(
+        "Could not load Study Notes:",
+        error
+      );
+
+      grid.innerHTML = `
+        <div style="
+          grid-column:1/-1;
+          padding:22px;
+          color:var(--ivory-dim);
+          text-align:center;
+        ">
+          Study Notes could not be loaded.
+          Check the Console.
+        </div>
+      `;
+    }
+  };
 
 /* ------------------------------------------------------
    NOTE PREVIEW POPUP

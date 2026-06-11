@@ -160,21 +160,23 @@
           </div>
         </div>
         <div>
-          <div class="db-recent" style="margin-bottom:16px">Recent Activity</div>
-          <div style="border:1px solid var(--border);border-radius:2px;background:var(--card-bg)">
-            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center">
-              <div style="width:6px;height:6px;background:var(--yellow);border-radius:50%;flex-shrink:0"></div>
-              <div><div style="font-size:12px">PDF request from Sithara K.</div><div style="font-size:10px;color:var(--gray);font-family:var(--mono)">2 mins ago</div></div>
-            </div>
-            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center">
-              <div style="width:6px;height:6px;background:var(--border);border-radius:50%;flex-shrink:0"></div>
-              <div><div style="font-size:12px">New student enrolled: Amara M.</div><div style="font-size:10px;color:var(--gray);font-family:var(--mono)">18 mins ago</div></div>
-            </div>
-            <div style="padding:12px 16px;display:flex;gap:10px;align-items:center">
-              <div style="width:6px;height:6px;background:var(--border);border-radius:50%;flex-shrink:0"></div>
-              <div><div style="font-size:12px">Consultation booked: Physics Prep</div><div style="font-size:10px;color:var(--gray);font-family:var(--mono)">1 hour ago</div></div>
-            </div>
-          </div>
+         <div
+  id="admin-dashboard-recent-activity"
+  style="
+    border:1px solid var(--border);
+    border-radius:2px;
+    background:var(--card-bg);
+  ">
+
+  <div style="
+    padding:18px 16px;
+    color:var(--ivory-dim);
+    font-size:12px;
+  ">
+    Recent activity will appear here.
+  </div>
+
+</div>
         </div>
       </div>
 
@@ -185,11 +187,7 @@
         </div>
         <table>
           <thead><tr><th>Student</th><th>Subject</th><th>Enrolled</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody>
-            <tr><td>Sithara Kumari</td><td>Chemistry, Maths</td><td>14 Feb 2024</td><td><span class="badge badge-green">Active</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn danger">Deactivate</button></div></td></tr>
-            <tr><td>Amara Mendis</td><td>Mathematics</td><td>02 Mar 2024</td><td><span class="badge badge-green">Active</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn danger">Deactivate</button></div></td></tr>
-            <tr><td>Dilshan Liyanage</td><td>Physics</td><td>20 Mar 2024</td><td><span class="badge badge-yellow">Pending</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn">Activate</button></div></td></tr>
-            <tr><td>Nuwani Silva</td><td>English, History</td><td>05 Apr 2024</td><td><span class="badge badge-gray">Inactive</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn">Activate</button></div></td></tr>
+          <tbody id="admin-dashboard-students-body">
           </tbody>
         </table>
       </div>
@@ -199,9 +197,7 @@
         <div class="table-wrap">
           <table>
             <thead><tr><th>Student</th><th>Subject</th><th>Date & Time</th><th>Type</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody>
-              <tr><td>Sithara K.</td><td>Mathematics</td><td>10 Jun · 4:00 PM</td><td>Exam Prep</td><td><span class="badge badge-yellow">Pending</span></td><td><div class="action-row"><button class="act-btn" style="color:var(--yellow);border-color:rgba(255,212,0,0.3)">Approve</button><button class="act-btn danger">Reject</button></div></td></tr>
-              <tr><td>Dilshan L.</td><td>Physics</td><td>12 Jun · 2:00 PM</td><td>Subject Help</td><td><span class="badge badge-green">Approved</span></td><td><div class="action-row"><button class="act-btn">Notes</button></div></td></tr>
+            <tbody id="admin-dashboard-consultations-body">
             </tbody>
           </table>
         </div>
@@ -218,7 +214,6 @@
             </div>
             <div class="form-group">
               <label class="form-label">Subject</label>
-              <select class="form-select form-input"><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>English</option><option>Economics</option></select>
             </div>
             <div class="form-group">
               <label class="form-label">Teacher</label>
@@ -259,7 +254,7 @@
 
 <script
   type="module"
-  src="./js/admin.js?v=15">
+  src="./js/admin.js?v=17">
 </script>
 
 </body>
