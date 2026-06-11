@@ -886,25 +886,60 @@ function createAdminPages() {
 
   <div class="analytics-grid">
 
-    <div class="ana-card">
-      <div class="ana-label">Total Requests</div>
-      <div class="ana-val">34</div>
+   <div class="analytics-grid">
+
+  <div class="ana-card">
+    <div class="ana-label">
+      Total Requests
     </div>
 
-    <div class="ana-card">
-      <div class="ana-label">Pending</div>
-      <div class="ana-val">12</div>
+    <div
+      id="consultation-total-count"
+      class="ana-val">
+      0
+    </div>
+  </div>
+
+
+  <div class="ana-card">
+    <div class="ana-label">
+      Pending
     </div>
 
-    <div class="ana-card">
-      <div class="ana-label">Approved</div>
-      <div class="ana-val">18</div>
+    <div
+      id="consultation-pending-count"
+      class="ana-val">
+      0
+    </div>
+  </div>
+
+
+  <div class="ana-card">
+    <div class="ana-label">
+      Approved
     </div>
 
-    <div class="ana-card">
-      <div class="ana-label">Rejected</div>
-      <div class="ana-val">4</div>
+    <div
+      id="consultation-approved-count"
+      class="ana-val">
+      0
     </div>
+  </div>
+
+
+  <div class="ana-card">
+    <div class="ana-label">
+      Rejected
+    </div>
+
+    <div
+      id="consultation-rejected-count"
+      class="ana-val">
+      0
+    </div>
+  </div>
+
+</div>
 
   </div>
 
@@ -919,73 +954,18 @@ function createAdminPages() {
         placeholder="Search consultations...">
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Student</th>
-          <th>Subject</th>
-          <th>Requested Date</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
+    <thead>
+  <tr>
+    <th>Student</th>
+    <th>Subject</th>
+    <th>Preferred Date</th>
+    <th>Requested Date</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+</thead>
 
-      <tbody>
-
-        <tr>
-          <td>Sithara K.</td>
-          <td>Physics Preparation</td>
-          <td>09 Jun 2026</td>
-          <td>
-            <span class="badge badge-yellow consult-status">
-              Pending
-            </span>
-          </td>
-          <td>
-            <div class="action-row">
-
-              <button
-                class="act-btn"
-                data-action="view-consultation">
-                View
-              </button>
-
-              <button
-                class="act-btn"
-                data-action="approve-consultation">
-                Approve
-              </button>
-
-              <button
-                class="act-btn danger"
-                data-action="reject-consultation">
-                Reject
-              </button>
-
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Amara M.</td>
-          <td>Chemistry Revision</td>
-          <td>10 Jun 2026</td>
-          <td>
-            <span class="badge badge-green consult-status">
-              Approved
-            </span>
-          </td>
-          <td>
-            <div class="action-row">
-              <button
-                class="act-btn"
-                data-action="view-consultation">
-                View
-              </button>
-            </div>
-          </td>
-        </tr>
-
+      <tbody id="firebase-consultation-requests-body">
       </tbody>
     </table>
   </div>
@@ -1204,6 +1184,10 @@ function showAdminPanel(panelName, selectedSidebarItem) {
   selectedPanel.classList.add("active");
     if (panelName === "pdf-requests") {
     loadAdminPdfRequests();
+    }
+
+    if (panelName === "consultations") {
+    loadAdminConsultationRequests();
     }
 
     if (panelName === "dashboard") {
@@ -4087,9 +4071,11 @@ async function loadAdminPdfRequests() {
 
     snapshot.forEach(function (requestDocument) {
       requests.push({
-        id: requestDocument.id,
-        ...requestDocument.data()
-      });
+  id:
+    requestDocument.id,
+
+  ...requestDocument.data()
+});
     });
 
     requests.sort(function (a, b) {
@@ -4671,3 +4657,429 @@ function connectFirebasePdfUploadForm() {
     "Firebase PDF upload form connected."
   );
 }
+
+
+/* ======================================================
+   FIREBASE ADMIN CONSULTATION REQUEST MANAGER
+====================================================== */
+
+async function loadAdminConsultationRequests() {
+  const tableBody =
+    document.getElementById(
+      "firebase-consultation-requests-body"
+    );
+
+  if (!tableBody) {
+    return;
+  }
+
+
+  tableBody.innerHTML = `
+    <tr>
+      <td colspan="6">
+        Loading consultation requests...
+      </td>
+    </tr>
+  `;
+
+
+  try {
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "consultationRequests"
+        )
+      );
+
+
+    const requests = [];
+
+    snapshot.forEach(
+      function (requestDocument) {
+        requests.push({
+  id:
+    requestDocument.id,
+
+  ...requestDocument.data()
+});
+      }
+    );
+
+
+    requests.sort(
+      function (a, b) {
+        const aTime =
+          a.createdAt?.seconds || 0;
+
+        const bTime =
+          b.createdAt?.seconds || 0;
+
+        return bTime - aTime;
+      }
+    );
+
+
+    updateAdminConsultationStats(
+      requests
+    );
+
+
+    if (requests.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="6">
+            No consultation requests have been submitted yet.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    tableBody.innerHTML =
+      requests
+        .map(
+          function (request) {
+            return `
+              <tr>
+
+                <td>
+                  ${escapeAdminConsultationText(
+                    request.studentName
+                  )}
+                </td>
+
+                <td>
+                  ${escapeAdminConsultationText(
+                    request.subject
+                  )}
+                </td>
+
+                <td>
+                  ${escapeAdminConsultationText(
+                    request.preferredDate
+                  )}
+                </td>
+
+                <td>
+                  ${formatAdminConsultationDate(
+                    request.createdAt
+                  )}
+                </td>
+
+                <td>
+                  ${createAdminConsultationBadge(
+                    request.status
+                  )}
+                </td>
+
+                <td>
+                  ${createAdminConsultationActions(
+                    request
+                  )}
+                </td>
+
+              </tr>
+            `;
+          }
+        )
+        .join("");
+
+
+  } catch (error) {
+    console.error(
+      "Could not load admin consultation requests:",
+      error
+    );
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          Consultation requests could not be loaded.
+          Check the Console.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+
+/* ------------------------------------------------------
+   APPROVE OR REJECT CONSULTATION
+------------------------------------------------------ */
+
+async function updateFirebaseConsultationStatus(
+  requestId,
+  newStatus,
+  button
+) {
+  const confirmed = confirm(
+    newStatus === "approved"
+      ? "Approve this consultation request?"
+      : "Reject this consultation request?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  button.disabled = true;
+
+  button.textContent =
+    newStatus === "approved"
+      ? "Approving..."
+      : "Rejecting...";
+
+
+  try {
+    await updateDoc(
+      doc(
+        db,
+        "consultationRequests",
+        requestId
+      ),
+      {
+        status:
+          newStatus,
+
+        reviewedAt:
+          serverTimestamp(),
+
+        reviewedBy:
+          auth.currentUser?.uid || ""
+      }
+    );
+
+
+    alert(
+      newStatus === "approved"
+        ? "Consultation request approved."
+        : "Consultation request rejected."
+    );
+
+
+    await loadAdminConsultationRequests();
+
+
+  } catch (error) {
+    console.error(
+      "Consultation update failed:",
+      error
+    );
+
+    alert(
+      "The consultation request could not be updated. Check the Console."
+    );
+
+    button.disabled = false;
+  }
+}
+
+
+/* ------------------------------------------------------
+   ADMIN CONSULTATION STATS
+------------------------------------------------------ */
+
+function updateAdminConsultationStats(
+  requests
+) {
+  const total =
+    document.getElementById(
+      "consultation-total-count"
+    );
+
+  const pending =
+    document.getElementById(
+      "consultation-pending-count"
+    );
+
+  const approved =
+    document.getElementById(
+      "consultation-approved-count"
+    );
+
+  const rejected =
+    document.getElementById(
+      "consultation-rejected-count"
+    );
+
+
+  if (total) {
+    total.textContent =
+      requests.length;
+  }
+
+  if (pending) {
+    pending.textContent =
+      requests.filter(
+        function (request) {
+          return request.status === "pending";
+        }
+      ).length;
+  }
+
+  if (approved) {
+    approved.textContent =
+      requests.filter(
+        function (request) {
+          return request.status === "approved";
+        }
+      ).length;
+  }
+
+  if (rejected) {
+    rejected.textContent =
+      requests.filter(
+        function (request) {
+          return request.status === "rejected";
+        }
+      ).length;
+  }
+}
+
+
+/* ------------------------------------------------------
+   ADMIN CONSULTATION TABLE HELPERS
+------------------------------------------------------ */
+
+function createAdminConsultationActions(
+  request
+) {
+  if (request.status !== "pending") {
+    return `
+      <span style="
+        color:var(--ivory-dim);
+        font-size:12px;
+      ">
+        Reviewed
+      </span>
+    `;
+  }
+
+  return `
+    <div class="action-row">
+
+      <button
+        class="act-btn"
+        type="button"
+        data-consultation-approve="${escapeAdminConsultationText(
+          request.id
+        )}">
+        Approve
+      </button>
+
+      <button
+        class="act-btn danger"
+        type="button"
+        data-consultation-reject="${escapeAdminConsultationText(
+          request.id
+        )}">
+        Reject
+      </button>
+
+    </div>
+  `;
+}
+
+
+function createAdminConsultationBadge(
+  status
+) {
+  if (status === "approved") {
+    return `
+      <span class="badge badge-green">
+        Approved
+      </span>
+    `;
+  }
+
+  if (status === "rejected") {
+    return `
+      <span class="badge badge-red">
+        Rejected
+      </span>
+    `;
+  }
+
+  return `
+    <span class="badge badge-yellow">
+      Pending
+    </span>
+  `;
+}
+
+
+function formatAdminConsultationDate(
+  timestamp
+) {
+  if (
+    !timestamp ||
+    !timestamp.toDate
+  ) {
+    return "Just now";
+  }
+
+  return timestamp
+    .toDate()
+    .toLocaleDateString("en-GB");
+}
+
+
+function escapeAdminConsultationText(
+  value
+) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* ------------------------------------------------------
+   ADMIN CONSULTATION BUTTONS
+------------------------------------------------------ */
+
+document.addEventListener(
+  "click",
+  async function (event) {
+    const approveButton =
+      event.target.closest(
+        "[data-consultation-approve]"
+      );
+
+    if (approveButton) {
+      await updateFirebaseConsultationStatus(
+        approveButton.dataset
+          .consultationApprove,
+
+        "approved",
+
+        approveButton
+      );
+
+      return;
+    }
+
+
+    const rejectButton =
+      event.target.closest(
+        "[data-consultation-reject]"
+      );
+
+    if (rejectButton) {
+      await updateFirebaseConsultationStatus(
+        rejectButton.dataset
+          .consultationReject,
+
+        "rejected",
+
+        rejectButton
+      );
+    }
+  }
+);

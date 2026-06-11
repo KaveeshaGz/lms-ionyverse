@@ -183,6 +183,18 @@ document.addEventListener("DOMContentLoaded", function () {
            );
         }
 
+        const refreshConsultationsButton =
+  document.getElementById(
+    "refresh-student-consultations"
+  );
+
+if (refreshConsultationsButton) {
+  refreshConsultationsButton.addEventListener(
+    "click",
+    loadStudentConsultationHistory
+  );
+}
+
       }
 
       
@@ -651,6 +663,7 @@ function createStudentPages() {
             </label>
 
             <input
+              id="student-consultation-date"
               class="form-input"
               type="date"
               required>
@@ -664,6 +677,7 @@ function createStudentPages() {
           </label>
 
           <textarea
+            id="student-consultation-message"
             class="form-input"
             rows="5"
             placeholder="Tell the teacher what you need help with"
@@ -677,6 +691,40 @@ function createStudentPages() {
         </button>
 
       </form>
+
+      <div
+  class="table-wrap"
+  style="margin-top:28px">
+
+  <div class="table-head-row">
+    <div class="table-title">
+      My Consultation Requests
+    </div>
+
+    <button
+      id="refresh-student-consultations"
+      class="act-btn"
+      type="button">
+      Refresh
+    </button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Subject</th>
+        <th>Preferred Date</th>
+        <th>Requested Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody id="student-consultation-history">
+    </tbody>
+  </table>
+
+</div>
+
     </section>
 
 
@@ -913,6 +961,10 @@ if (panelName === "request-pdf") {
   loadStudentPdfRequestHistory();
 }
 
+if (panelName === "book-consultation") {
+  loadStudentConsultationHistory();
+}
+
 if (panelName === "study-notes") {
   window.renderStudentNotes("all");
 }
@@ -1023,17 +1075,11 @@ function connectStudentButtons() {
   );
 
   if (consultationForm) {
-    consultationForm.addEventListener(
-      "submit",
-      function (event) {
-        event.preventDefault();
-
-        alert("Consultation request sent to the admin.");
-
-        consultationForm.reset();
-      }
-    );
-  }
+  consultationForm.addEventListener(
+    "submit",
+    submitFirebaseConsultationRequest
+  );
+}
 
 
   document.addEventListener("click", function (event) {
@@ -1099,6 +1145,10 @@ window.openStudentPanel = function (panelName) {
 
     if (panelName === "request-pdf") {
         loadStudentPdfRequestHistory();
+      }
+
+    if (panelName === "book-consultation") {
+        loadStudentConsultationHistory();
       }
 
   const labelMap = {
@@ -2702,3 +2752,173 @@ document.addEventListener(
     }
   }
 );
+
+/* ======================================================
+   SEND CONSULTATION REQUEST TO FIRESTORE
+====================================================== */
+
+async function submitFirebaseConsultationRequest(
+  event
+) {
+  event.preventDefault();
+
+  console.log(
+    "Consultation request submit started."
+  );
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Please sign in again.");
+
+    window.location.href =
+      "./login.html";
+
+    return;
+  }
+
+
+  const subjectInput =
+    document.getElementById(
+      "student-consultation-subject"
+    );
+
+  const dateInput =
+    document.getElementById(
+      "student-consultation-date"
+    );
+
+  const messageInput =
+    document.getElementById(
+      "student-consultation-message"
+    );
+
+
+  if (
+    !subjectInput ||
+    !dateInput ||
+    !messageInput
+  ) {
+    console.error(
+      "Consultation form fields were not found."
+    );
+
+    alert(
+      "The consultation form is incomplete. Check the Console."
+    );
+
+    return;
+  }
+
+
+  const subject =
+    subjectInput.value;
+
+  const preferredDate =
+    dateInput.value;
+
+  const consultationMessage =
+    messageInput.value.trim();
+
+
+  if (
+    !subject ||
+    !preferredDate ||
+    !consultationMessage
+  ) {
+    alert(
+      "Please complete every consultation field."
+    );
+
+    return;
+  }
+
+
+  const form =
+    document.getElementById(
+      "student-consultation-form"
+    );
+
+  const submitButton =
+    form.querySelector(
+      'button[type="submit"]'
+    );
+
+
+  submitButton.disabled = true;
+
+  submitButton.textContent =
+    "Sending Request...";
+
+
+  try {
+    const requestReference =
+      await addDoc(
+        collection(
+          db,
+          "consultationRequests"
+        ),
+        {
+          studentUid:
+            user.uid,
+
+          studentName:
+            sessionStorage.getItem(
+              "lmsUserName"
+            ) ||
+            user.displayName ||
+            "Student",
+
+          studentEmail:
+            user.email || "",
+
+          subject:
+            subject,
+
+          preferredDate:
+            preferredDate,
+
+          message:
+            consultationMessage,
+
+          status:
+            "pending",
+
+          createdAt:
+            serverTimestamp()
+        }
+      );
+
+
+    console.log(
+      "Consultation request created:",
+      requestReference.id
+    );
+
+
+    form.reset();
+
+
+    alert(
+      "Consultation request sent successfully."
+    );
+
+
+  } catch (error) {
+    console.error(
+      "Consultation request Firestore error:",
+      error
+    );
+
+    alert(
+      "The consultation request could not be saved. Check the Console."
+    );
+
+
+  } finally {
+    submitButton.disabled = false;
+
+    submitButton.textContent =
+      "Request Consultation";
+  }
+}
