@@ -1,0 +1,90 @@
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:762: <td>Sithara K.</td>
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:763: <td>sithara@email.com</td>
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:786: <td>Dilshan L.</td>
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:787: <td>dilshan@email.com</td>
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:853: <td>Mathematics</td>
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:877: <td>Physics</td>
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:1054: placeholder="Example: New Physics Lesson Uploaded"
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:1101: <td>New Physics Lesson Uploaded</td>
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:1288: "Video published successfully for visual testing. Firebase will store it later."
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:1441: "Student registered successfully for local testing."
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:1460: "Notification sent successfully for local testing."
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:1700: alert("Changes saved successfully for local testing.");
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:2625: placeholder="Example: A/L Biology Revision Class"
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:2945: Temporary localStorage version.
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:3297: const savedNotes = localStorage.getItem(
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\admin.js:3315: localStorage.setItem(
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:15: window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:19: window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:23: window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:75: window.open('https://wa.me/94XXXXXXXXX?text='+msg,'_blank');
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:142: window.history.replaceState(null, "", "#" + tabName);
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:231: window.history.replaceState(null, "", "#" + sectionName);
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:261: "https://wa.me/94XXXXXXXXX?text=" + message,
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:276: const saved = localStorage.getItem(
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:288: localStorage.setItem(
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:546: Temporary localStorage version.
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:557: subject: "mathematics",
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:567: subject: "physics",
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:568: title: "Waves and Oscillations",
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:572: "https://placehold.co/1200x900/171717/D4BBFF?text=Waves+and+Oscillations",
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:587: subject: "biology",
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:601: const storedNotes = localStorage.getItem(
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:606: localStorage.setItem(
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\common.js:625: localStorage.setItem(
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:182: loadStudentPdfRequestHistory
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:194: loadStudentConsultationHistory
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:537: <tbody id="student-pdf-request-history">
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:642: <tbody id="student-consultation-history">
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:692: <tbody id="student-session-history">
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:852: loadStudentPdfRequestHistory();
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:856: loadStudentConsultationHistory();
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:905: text.includes("waves")
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:1042: loadStudentPdfRequestHistory();
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:1046: loadStudentConsultationHistory();
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:1178: localStorage.getItem(
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:1447: async function loadStudentPdfRequestHistory() {
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:1449: "student-pdf-request-history"
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:1716: await loadStudentPdfRequestHistory();
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:2668: await loadStudentConsultationHistory();
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:2816: await loadStudentConsultationHistory();
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:2842: async function loadStudentConsultationHistory() {
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:2845: "student-consultation-history"
+D:\LMS Ionyverse\LMS IONYVERSE\public\js\student.js:3031: "student-session-history"
+D:\LMS Ionyverse\LMS IONYVERSE\public\admin.html:167: <div><div style="font-size:12px">PDF request from Sithara K.</div><div style="font-size:10px;color:var(--gray);font-family:var(--mono)">2 mins ago</div></div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\admin.html:175: <div><div style="font-size:12px">Consultation booked: Physics Prep</div><div style="font-size:10px;color:var(--gray);font-family:var(--mono)">1 hour ago</div></div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\admin.html:189: <tr><td>Sithara Kumari</td><td>Chemistry, Maths</td><td>14 Feb 2024</td><td><span class="badge badge-green">Active</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn danger">Deactivate</button></div></td></tr>
+D:\LMS Ionyverse\LMS IONYVERSE\public\admin.html:190: <tr><td>Amara Mendis</td><td>Mathematics</td><td>02 Mar 2024</td><td><span class="badge badge-green">Active</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn danger">Deactivate</button></div></td></tr>
+D:\LMS Ionyverse\LMS IONYVERSE\public\admin.html:191: <tr><td>Dilshan Liyanage</td><td>Physics</td><td>20 Mar 2024</td><td><span class="badge badge-yellow">Pending</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn">Activate</button></div></td></tr>
+D:\LMS Ionyverse\LMS IONYVERSE\public\admin.html:192: <tr><td>Nuwani Silva</td><td>English, History</td><td>05 Apr 2024</td><td><span class="badge badge-gray">Inactive</span></td><td><div class="action-row"><button class="act-btn">Edit</button><button class="act-btn">Activate</button></div></td></tr>
+D:\LMS Ionyverse\LMS IONYVERSE\public\admin.html:203: <tr><td>Sithara K.</td><td>Mathematics</td><td>10 Jun · 4:00 PM</td><td>Exam Prep</td><td><span class="badge badge-yellow">Pending</span></td><td><div class="action-row"><button class="act-btn" style="color:var(--yellow);border-color:rgba(255,212,0,0.3)">Approve</button><button class="act-btn danger">Reject</button></div></td></tr>
+D:\LMS Ionyverse\LMS IONYVERSE\public\admin.html:204: <tr><td>Dilshan L.</td><td>Physics</td><td>12 Jun · 2:00 PM</td><td>Subject Help</td><td><span class="badge badge-green">Approved</span></td><td><div class="action-row"><button class="act-btn">Notes</button></div></td></tr>
+D:\LMS Ionyverse\LMS IONYVERSE\public\admin.html:221: <select class="form-select form-input"><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>English</option><option>Economics</option></select>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:277: <div><div class="author-name">Sithara K.</div><div class="author-grade">A/Levels · Chemistry</div></div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:286: <div><div class="author-name">Amara M.</div><div class="author-grade">O/Levels · Mathematics</div></div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:295: <div><div class="author-name">Dilshan L.</div><div class="author-grade">A/Levels · Physics</div></div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:452: <div class="course-thumb" style="background:#080D16;cursor:pointer" onclick="openVideoModal('Waves, Mechanics &amp; Thermodynamics — Full Course','Mr. K. Jayawardena','Physics')">
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:491: <div class="course-subject" style="color:var(--yellow)">?? Mathematics</div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:494: <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px;background:transparent;border:1px solid var(--yellow);color:var(--yellow)" onclick="openPdfModal('Integration & Differentiation Workbook','Mr. R. Perera','LKR 650','Mathematics')">?? Unlock via WhatsApp</button>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:508: <div class="course-subject">Physics</div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:509: <div class="course-title">Waves & Optics — Exam Formula Sheet</div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:511: <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px;background:transparent;border:1px solid var(--yellow);color:var(--yellow)" onclick="openPdfModal('Waves & Optics Formula Sheet','Mr. K. Jayawardena','LKR 500','Physics')">?? Unlock via WhatsApp</button>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:524: <div class="course-subject" style="color:var(--pastel-peach)">?? Economics</div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:525: <div class="course-title">Macro Economics — Past Paper Analysis 2019–2023</div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:527: <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px;background:transparent;border:1px solid var(--yellow);color:var(--yellow)" onclick="openPdfModal('Economics Past Paper Analysis','Mr. A. Silva','LKR 700','Economics')">?? Unlock via WhatsApp</button>
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:556: <input class="form-input" type="text" placeholder="Sithara Kumari">
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:659: <div class="note-card" data-subject="mathematics">
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:669: Mathematics
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:695: <div class="note-card" data-subject="physics">
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:699: src="https://placehold.co/900x600/171717/D4BBFF?text=Waves+and+Oscillations"
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:700: alt="Waves and Oscillations">
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:705: Physics
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:709: Waves and Oscillations
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:720: 'https://placehold.co/1200x900/171717/D4BBFF?text=Waves+and+Oscillations',
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:721: 'Waves and Oscillations'
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:767: <div class="note-card" data-subject="biology">
+D:\LMS Ionyverse\LMS IONYVERSE\public\index.html:777: Biology
+D:\LMS Ionyverse\LMS IONYVERSE\public\student.html:140: <div class="db-name">Good morning, Sithara ???</div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\student.html:157: <div><div class="db-course-name">Advanced Integration Techniques</div><div class="db-course-sub">Mathematics · Module 4 of 8</div></div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\student.html:179: <div><div class="db-course-name">Waves & Oscillations</div><div class="db-course-sub">Physics · Module 1 of 5</div></div>
+D:\LMS Ionyverse\LMS IONYVERSE\public\student.html:192: <div style="font-size:14px;font-weight:500;margin-bottom:4px">Exam Prep · Mathematics</div>
