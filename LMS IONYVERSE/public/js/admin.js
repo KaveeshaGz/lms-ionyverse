@@ -147,12 +147,7 @@ function createAdminPages() {
           <div class="form-group">
             <label class="form-label">Subject</label>
             <select id="video-subject" class="form-select form-input">
-              <option>Mathematics</option>
-              <option>Physics</option>
-              <option>Chemistry</option>
-              <option>Biology</option>
-              <option>English</option>
-              <option>Economics</option>
+               ${window.getLmsSubjectOptions()}
             </select>
           </div>
 
@@ -250,64 +245,96 @@ function createAdminPages() {
 
           <tbody>
             <tr>
-              <td>Advanced Integration Techniques</td>
-              <td>Mathematics</td>
-              <td>Mr. R. Perera</td>
-              <td>Paid</td>
-              <td>
-                <span class="badge badge-green">Published</span>
-              </td>
-              <td>
-                <div class="action-row">
-                  <button class="act-btn" data-action="edit-video">
-                    Edit
-                  </button>                  
-                  <button class="act-btn danger" data-action="remove">
-                    Remove
-                  </button>
-                </div>
-              </td>
-            </tr>
+  <td>Financial Accounting Fundamentals</td>
+  <td>Accounting</td>
+  <td>Accounting Teacher</td>
+  <td>Paid</td>
+
+  <td>
+    <span class="badge badge-green">
+      Published
+    </span>
+  </td>
+
+  <td>
+    <div class="action-row">
+
+      <button
+        class="act-btn"
+        data-action="edit-video">
+        Edit
+      </button>
+
+      <button
+        class="act-btn danger"
+        data-action="remove">
+        Remove
+      </button>
+
+    </div>
+  </td>
+</tr>
 
             <tr>
-              <td>Waves and Oscillations</td>
-              <td>Physics</td>
-              <td>Ms. N. Silva</td>
-              <td>Free</td>
-              <td>
-                <span class="badge badge-green">Published</span>
-              </td>
-              <td>
-                <div class="action-row">
-                  <button class="act-btn" data-action="edit-video">
-                    Edit
-                  </button>                  
-                  <button class="act-btn danger" data-action="remove">
-                    Remove
-                  </button>
-                </div>
-              </td>
-            </tr>
+  <td>Chemical Bonding</td>
+  <td>Chemistry</td>
+  <td>Chemistry Teacher</td>
+  <td>Free</td>
 
-            <tr>
-              <td>Organic Chemistry Reactions</td>
-              <td>Chemistry</td>
-              <td>Mr. D. Fernando</td>
-              <td>Paid</td>
-              <td>
-                <span class="badge badge-yellow">Draft</span>
-              </td>
-              <td>
-                <div class="action-row">
-                  <button class="act-btn" data-action="edit-video">
-                    Edit
-                  </button>                  
-                  <button class="act-btn danger" data-action="remove">
-                    Remove
-                  </button>
-                </div>
-              </td>
-            </tr>
+  <td>
+    <span class="badge badge-green">
+      Published
+    </span>
+  </td>
+
+  <td>
+    <div class="action-row">
+
+      <button
+        class="act-btn"
+        data-action="edit-video">
+        Edit
+      </button>
+
+      <button
+        class="act-btn danger"
+        data-action="remove">
+        Remove
+      </button>
+
+    </div>
+  </td>
+</tr>
+           <tr>
+  <td>Chemical Bonding</td>
+  <td>Chemistry</td>
+  <td>Chemistry Teacher</td>
+  <td>Free</td>
+
+  <td>
+    <span class="badge badge-green">
+      Published
+    </span>
+  </td>
+
+  <td>
+    <div class="action-row">
+
+      <button
+        class="act-btn"
+        data-action="edit-video">
+        Edit
+      </button>
+
+      <button
+        class="act-btn danger"
+        data-action="remove">
+        Remove
+      </button>
+
+    </div>
+  </td>
+</tr>
           </tbody>
         </table>
 
@@ -346,12 +373,7 @@ function createAdminPages() {
           <div class="form-group">
             <label class="form-label">Subject</label>
             <select id="pdf-subject" class="form-select form-input">
-              <option>Mathematics</option>
-              <option>Physics</option>
-              <option>Chemistry</option>
-              <option>Biology</option>
-              <option>English</option>
-              <option>Economics</option>
+              ${window.getLmsSubjectOptions()}
             </select>
           </div>
 
@@ -604,32 +626,40 @@ function createAdminPages() {
     <div class="admin-page-card">
       <div class="db-recent">Top Subjects</div>
 
-      <div class="db-course-row">
-        <div class="db-course-name">Mathematics</div>
-        <div class="db-prog-wrap">
-          <div class="db-prog-bar">
-            <div class="db-prog-fill" style="width:85%"></div>
-          </div>
-        </div>
-      </div>
+     <div class="db-course-row">
 
-      <div class="db-course-row">
-        <div class="db-course-name">Physics</div>
-        <div class="db-prog-wrap">
-          <div class="db-prog-bar">
-            <div class="db-prog-fill" style="width:72%"></div>
-          </div>
-        </div>
-      </div>
+  <div class="db-course-name">
+    Accounting
+  </div>
 
-      <div class="db-course-row">
-        <div class="db-course-name">Chemistry</div>
-        <div class="db-prog-wrap">
-          <div class="db-prog-bar">
-            <div class="db-prog-fill" style="width:63%"></div>
-          </div>
-        </div>
+  <div class="db-prog-wrap">
+    <div class="db-prog-bar">
+      <div
+        class="db-prog-fill"
+        style="width:72%">
       </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="db-course-row">
+
+  <div class="db-course-name">
+    Chemistry
+  </div>
+
+  <div class="db-prog-wrap">
+    <div class="db-prog-bar">
+      <div
+        class="db-prog-fill"
+        style="width:63%">
+      </div>
+    </div>
+  </div>
+
+</div>
 
     </div>
   </div>
@@ -875,100 +905,125 @@ function createAdminPages() {
 <!-- ==========================================
      CONSULTATIONS PAGE
 =========================================== -->
-<section id="admin-panel-consultations" class="admin-panel">
+
+<section
+  id="admin-panel-consultations"
+  class="admin-panel">
 
   <div class="section-head">
-    <div class="page-title">Consultations</div>
+
+    <div class="page-title">
+      Consultations
+    </div>
+
     <div class="page-subtitle">
       Review and manage student consultation requests.
     </div>
+
   </div>
+
 
   <div class="analytics-grid">
 
-   <div class="analytics-grid">
+    <div class="ana-card">
 
-  <div class="ana-card">
-    <div class="ana-label">
-      Total Requests
+      <div class="ana-label">
+        Total Requests
+      </div>
+
+      <div
+        id="consultation-total-count"
+        class="ana-val">
+        0
+      </div>
+
     </div>
 
-    <div
-      id="consultation-total-count"
-      class="ana-val">
-      0
+
+    <div class="ana-card">
+
+      <div class="ana-label">
+        Pending
+      </div>
+
+      <div
+        id="consultation-pending-count"
+        class="ana-val">
+        0
+      </div>
+
     </div>
+
+
+    <div class="ana-card">
+
+      <div class="ana-label">
+        Approved
+      </div>
+
+      <div
+        id="consultation-approved-count"
+        class="ana-val">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="ana-card">
+
+      <div class="ana-label">
+        Rejected
+      </div>
+
+      <div
+        id="consultation-rejected-count"
+        class="ana-val">
+        0
+      </div>
+
+    </div>
+
   </div>
 
-
-  <div class="ana-card">
-    <div class="ana-label">
-      Pending
-    </div>
-
-    <div
-      id="consultation-pending-count"
-      class="ana-val">
-      0
-    </div>
-  </div>
-
-
-  <div class="ana-card">
-    <div class="ana-label">
-      Approved
-    </div>
-
-    <div
-      id="consultation-approved-count"
-      class="ana-val">
-      0
-    </div>
-  </div>
-
-
-  <div class="ana-card">
-    <div class="ana-label">
-      Rejected
-    </div>
-
-    <div
-      id="consultation-rejected-count"
-      class="ana-val">
-      0
-    </div>
-  </div>
-
-</div>
-
-  </div>
 
   <div class="table-wrap">
 
     <div class="table-head-row">
-      <div class="table-title">Consultation Requests</div>
+
+      <div class="table-title">
+        Consultation Requests
+      </div>
 
       <input
         class="table-search"
         type="text"
         placeholder="Search consultations...">
+
     </div>
 
-    <thead>
-  <tr>
-    <th>Student</th>
-    <th>Subject</th>
-    <th>Preferred Date</th>
-    <th>Requested Date</th>
-    <th>Status</th>
-    <th>Actions</th>
-  </tr>
-</thead>
 
-      <tbody id="firebase-consultation-requests-body">
+    <table>
+
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Subject</th>
+          <th>Preferred Date</th>
+          <th>Requested Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody
+        id="firebase-consultation-requests-body">
       </tbody>
+
     </table>
+
   </div>
+
 </section>
 
 
@@ -3018,46 +3073,16 @@ function addNotesManagerPanel(adminMain) {
             </label>
 
             <select
-              id="admin-note-subject"
-              class="form-select"
-              required>
+  id="admin-note-subject"
+  class="form-select"
+  required>
 
-              <option value="">
-                Select a subject
-              </option>
+  ${window.getLmsSubjectOptions({
+    useSlug: true,
+    includePlaceholder: true
+  })}
 
-              <option value="mathematics">
-                Mathematics
-              </option>
-
-              <option value="physics">
-                Physics
-              </option>
-
-              <option value="chemistry">
-                Chemistry
-              </option>
-
-              <option value="biology">
-                Biology
-              </option>
-
-              <option value="english">
-                English
-              </option>
-
-              <option value="economics">
-                Economics
-              </option>
-
-              <option value="history">
-                History
-              </option>
-
-              <option value="computer-science">
-                Computer Science
-              </option>
-            </select>
+</select>
           </div>
 
 
@@ -4070,12 +4095,12 @@ async function loadAdminPdfRequests() {
     const requests = [];
 
     snapshot.forEach(function (requestDocument) {
-      requests.push({
-  id:
-    requestDocument.id,
+             requests.push({
+             id:
+             requestDocument.id,
 
-  ...requestDocument.data()
-});
+            ...requestDocument.data()
+            });
     });
 
     requests.sort(function (a, b) {
@@ -4475,6 +4500,16 @@ async function uploadFirebasePdfResource(event) {
 
   const subject = subjectInput.value;
 
+  if (
+  !window.isAllowedLmsSubject(subject)
+) {
+  alert(
+    "Please select Accounting or Chemistry."
+  );
+
+  return;
+}
+
   const teacher = teacherInput.value.trim();
 
   const approvalRequired =
@@ -4698,11 +4733,11 @@ async function loadAdminConsultationRequests() {
     snapshot.forEach(
       function (requestDocument) {
         requests.push({
-  id:
-    requestDocument.id,
+            id:
+               requestDocument.id,
 
-  ...requestDocument.data()
-});
+              ...requestDocument.data()
+          });
       }
     );
 
@@ -4805,7 +4840,6 @@ async function loadAdminConsultationRequests() {
   }
 }
 
-
 /* ------------------------------------------------------
    APPROVE OR REJECT CONSULTATION
 ------------------------------------------------------ */
@@ -4815,35 +4849,178 @@ async function updateFirebaseConsultationStatus(
   newStatus,
   button
 ) {
-  const confirmed = confirm(
-    newStatus === "approved"
-      ? "Approve this consultation request?"
-      : "Reject this consultation request?"
+  const requestReference = doc(
+    db,
+    "consultationRequests",
+    requestId
   );
-
-  if (!confirmed) {
-    return;
-  }
-
 
   button.disabled = true;
 
   button.textContent =
     newStatus === "approved"
-      ? "Approving..."
+      ? "Preparing..."
       : "Rejecting...";
 
 
   try {
+    /*
+      Read the selected request so the preferred
+      date can be shown as the default value.
+    */
+    const requestSnapshot =
+      await getDoc(
+        requestReference
+      );
+
+    if (!requestSnapshot.exists()) {
+      alert(
+        "The consultation request could not be found."
+      );
+
+      button.disabled = false;
+
+      return;
+    }
+
+
+    const request =
+      requestSnapshot.data();
+
+
+    /*
+      Rejection does not need session details.
+    */
+    if (newStatus === "rejected") {
+      const confirmed = confirm(
+        "Reject this consultation request?"
+      );
+
+      if (!confirmed) {
+        button.disabled = false;
+        button.textContent = "Reject";
+        return;
+      }
+
+      await updateDoc(
+        requestReference,
+        {
+          status:
+            "rejected",
+
+          reviewedAt:
+            serverTimestamp(),
+
+          reviewedBy:
+            auth.currentUser?.uid || ""
+        }
+      );
+
+      alert(
+        "Consultation request rejected."
+      );
+
+      await loadAdminConsultationRequests();
+
+      return;
+    }
+
+
+    /*
+      Collect session details before approval.
+    */
+    const teacherName = prompt(
+      "Enter the teacher name:",
+      "Teacher"
+    );
+
+    if (!teacherName) {
+      button.disabled = false;
+      button.textContent = "Approve";
+      return;
+    }
+
+
+    const scheduledDate = prompt(
+      "Enter the confirmed session date in YYYY-MM-DD format:",
+      request.preferredDate || ""
+    );
+
+    if (!scheduledDate) {
+      button.disabled = false;
+      button.textContent = "Approve";
+      return;
+    }
+
+
+    const scheduledTime = prompt(
+      "Enter the session time. Example: 4:00 PM",
+      ""
+    );
+
+    if (!scheduledTime) {
+      button.disabled = false;
+      button.textContent = "Approve";
+      return;
+    }
+
+
+    const meetingLink = prompt(
+      "Paste the online meeting link:",
+      "https://"
+    );
+
+    if (
+      !meetingLink ||
+      !meetingLink.startsWith("https://")
+    ) {
+      alert(
+        "Please enter a valid secure meeting link beginning with https://"
+      );
+
+      button.disabled = false;
+      button.textContent = "Approve";
+
+      return;
+    }
+
+
+    const sessionTitle = prompt(
+      "Enter a session title:",
+      request.subject +
+        " Consultation"
+    );
+
+    if (!sessionTitle) {
+      button.disabled = false;
+      button.textContent = "Approve";
+      return;
+    }
+
+
+    /*
+      Save the approval and session details.
+    */
     await updateDoc(
-      doc(
-        db,
-        "consultationRequests",
-        requestId
-      ),
+      requestReference,
       {
         status:
-          newStatus,
+          "approved",
+
+        teacherName:
+          teacherName.trim(),
+
+        scheduledDate:
+          scheduledDate.trim(),
+
+        scheduledTime:
+          scheduledTime.trim(),
+
+        meetingLink:
+          meetingLink.trim(),
+
+        sessionTitle:
+          sessionTitle.trim(),
 
         reviewedAt:
           serverTimestamp(),
@@ -4855,9 +5032,7 @@ async function updateFirebaseConsultationStatus(
 
 
     alert(
-      newStatus === "approved"
-        ? "Consultation request approved."
-        : "Consultation request rejected."
+      "Consultation approved and session details saved."
     );
 
 

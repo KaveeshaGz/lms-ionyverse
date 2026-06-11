@@ -195,6 +195,19 @@ if (refreshConsultationsButton) {
   );
 }
 
+const refreshSessionsButton =
+  document.getElementById(
+    "refresh-student-sessions"
+  );
+
+
+if (refreshSessionsButton) {
+  refreshSessionsButton.addEventListener(
+    "click",
+    loadStudentSessions
+  );
+}
+
       }
 
       
@@ -288,60 +301,51 @@ function createStudentPages() {
       <div class="student-card-grid">
 
         <div class="student-card">
-          <div class="course-subject">Mathematics</div>
 
-          <div class="course-title">
-            Advanced Integration Techniques
-          </div>
+  <div class="course-subject">
+    Accounting
+  </div>
 
-          <div class="course-teacher">
-            Module 4 of 8
-          </div>
+  <div class="course-title">
+    Financial Accounting Fundamentals
+  </div>
 
-          <div class="course-progress">
-            <div class="course-progress-fill"
-              style="width:82%">
-            </div>
-          </div>
-        </div>
+  <div class="course-teacher">
+    Module 1 of 6
+  </div>
 
-        <div class="student-card">
-          <div class="course-subject">Chemistry</div>
+  <div class="course-progress">
+    <div
+      class="course-progress-fill"
+      style="width:40%">
+    </div>
+  </div>
 
-          <div class="course-title">
-            Organic Chemistry Reactions
-          </div>
+</div>
 
-          <div class="course-teacher">
-            Module 2 of 6
-          </div>
 
-          <div class="course-progress">
-            <div class="course-progress-fill"
-              style="width:38%">
-            </div>
-          </div>
-        </div>
+<div class="student-card">
 
-        <div class="student-card">
-          <div class="course-subject">Physics</div>
+  <div class="course-subject">
+    Chemistry
+  </div>
 
-          <div class="course-title">
-            Waves and Oscillations
-          </div>
+  <div class="course-title">
+    Organic Chemistry Reactions
+  </div>
 
-          <div class="course-teacher">
-            Module 1 of 5
-          </div>
+  <div class="course-teacher">
+    Module 2 of 6
+  </div>
 
-          <div class="course-progress">
-            <div class="course-progress-fill"
-              style="width:98%">
-            </div>
-          </div>
-        </div>
+  <div class="course-progress">
+    <div
+      class="course-progress-fill"
+      style="width:38%">
+    </div>
+  </div>
 
-      </div>
+</div>
     </section>
 
 
@@ -382,49 +386,36 @@ function createStudentPages() {
 
           <tbody>
 
-            <tr>
-              <td>Advanced Integration Techniques</td>
-              <td>Mathematics</td>
-              <td>82%</td>
+  <tr>
+    <td>Financial Accounting Fundamentals</td>
+    <td>Accounting</td>
+    <td>40%</td>
 
-              <td>
-                <button
-                  class="act-btn"
-                  data-student-action="watch-video">
-                  Watch
-                </button>
-              </td>
-            </tr>
+    <td>
+      <button
+        class="act-btn"
+        data-student-action="watch-video">
+        Watch
+      </button>
+    </td>
+  </tr>
 
-            <tr>
-              <td>Organic Chemistry Reactions</td>
-              <td>Chemistry</td>
-              <td>38%</td>
 
-              <td>
-                <button
-                  class="act-btn"
-                  data-student-action="watch-video">
-                  Watch
-                </button>
-              </td>
-            </tr>
+  <tr>
+    <td>Organic Chemistry Reactions</td>
+    <td>Chemistry</td>
+    <td>38%</td>
 
-            <tr>
-              <td>Waves and Oscillations</td>
-              <td>Physics</td>
-              <td>98%</td>
+    <td>
+      <button
+        class="act-btn"
+        data-student-action="watch-video">
+        Watch
+      </button>
+    </td>
+  </tr>
 
-              <td>
-                <button
-                  class="act-btn"
-                  data-student-action="watch-video">
-                  Watch
-                </button>
-              </td>
-            </tr>
-
-          </tbody>
+</tbody>
         </table>
       </div>
     </section>
@@ -444,70 +435,7 @@ function createStudentPages() {
         </div>
       </div>
 
-      <div class="table-wrap">
-
-        <div class="table-head-row">
-          <div class="table-title">Approved PDF Files</div>
-
-          <input
-            class="table-search"
-            type="text"
-            placeholder="Search PDFs...">
-        </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>PDF Resource</th>
-              <th>Subject</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            <tr>
-              <td>Chemistry Notes 2026</td>
-              <td>Chemistry</td>
-
-              <td>
-                <span class="badge badge-green">
-                  Approved
-                </span>
-              </td>
-
-              <td>
-                <button
-                  class="act-btn"
-                  data-student-action="view-pdf">
-                  View
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>Mathematics Formula Sheet</td>
-              <td>Mathematics</td>
-
-              <td>
-                <span class="badge badge-green">
-                  Approved
-                </span>
-              </td>
-
-              <td>
-                <button
-                  class="act-btn"
-                  data-student-action="view-pdf">
-                  View
-                </button>
-              </td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
+      
     </section>
 
 
@@ -552,11 +480,7 @@ function createStudentPages() {
             <select
               id="student-pdf-request-subject"
               class="form-select">
-              <option>Mathematics</option>
-              <option>Physics</option>
-              <option>Chemistry</option>
-              <option>Biology</option>
-              <option>English</option>
+              ${window.getLmsSubjectOptions()}
             </select>
           </div>
 
@@ -649,11 +573,7 @@ function createStudentPages() {
             <select
               id="student-consultation-subject"
               class="form-select">
-              <option>Mathematics</option>
-              <option>Physics</option>
-              <option>Chemistry</option>
-              <option>Biology</option>
-              <option>English</option>
+               ${window.getLmsSubjectOptions()}
             </select>
           </div>
 
@@ -745,11 +665,19 @@ function createStudentPages() {
       <div class="table-wrap">
 
         <div class="table-head-row">
-          <div class="table-title">
-            Consultation Sessions
-          </div>
-        </div>
 
+  <div class="table-title">
+    Consultation Sessions
+  </div>
+
+  <button
+    id="refresh-student-sessions"
+    class="act-btn"
+    type="button">
+    Refresh
+  </button>
+
+</div>
         <table>
           <thead>
             <tr>
@@ -761,48 +689,7 @@ function createStudentPages() {
             </tr>
           </thead>
 
-          <tbody>
-
-            <tr>
-              <td>Exam Prep - Mathematics</td>
-              <td>10 Jun 2026 - 4:00 PM</td>
-              <td>Mr. Perera</td>
-
-              <td>
-                <span class="badge badge-green">
-                  Confirmed
-                </span>
-              </td>
-
-              <td>
-                <button
-                  class="act-btn"
-                  data-student-action="join-session">
-                  Join
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>Physics Subject Help</td>
-              <td>Pending</td>
-              <td>Ms. Silva</td>
-
-              <td>
-                <span class="badge badge-yellow">
-                  Pending
-                </span>
-              </td>
-
-              <td>
-                <button
-                  class="act-btn"
-                  data-student-action="view-session">
-                  View
-                </button>
-              </td>
-            </tr>
-
+          <tbody id="student-session-history">
           </tbody>
         </table>
       </div>
@@ -847,7 +734,7 @@ function createStudentPages() {
           <strong>Consultation confirmed</strong>
 
           <div class="course-teacher">
-            Exam Prep - Mathematics · 10 Jun 2026
+            Exam Prep - Accounting · 10 Jun 2026
           </div>
         </div>
 
@@ -953,6 +840,10 @@ function showStudentPanel(panelName, selectedItem) {
 
   selectedPanel.classList.add("active");
 
+  if (panelName === "my-sessions") {
+  loadStudentSessions();
+  }
+  
   if (panelName === "pdf-library") {
   loadStudentPdfLibrary();
 }
@@ -1139,6 +1030,10 @@ window.openStudentPanel = function (panelName) {
 
   selectedPanel.classList.add("active");
 
+    if (panelName === "my-sessions") {
+      loadStudentSessions();
+    }
+
     if (panelName === "pdf-library") {
       loadStudentPdfLibrary();
       }
@@ -1246,15 +1141,10 @@ function createStudentNotesPage() {
           id="student-notes-filter"
           class="form-select student-notes-filter">
 
-          <option value="all">All Subjects</option>
-          <option value="mathematics">Mathematics</option>
-          <option value="physics">Physics</option>
-          <option value="chemistry">Chemistry</option>
-          <option value="biology">Biology</option>
-          <option value="english">English</option>
-          <option value="economics">Economics</option>
-          <option value="history">History</option>
-          <option value="computer-science">Computer Science</option>
+          ${window.getLmsSubjectOptions({
+            useSlug: true,
+            includeAll: true
+           })}
 
         </select>
       </div>
@@ -2766,6 +2656,8 @@ async function submitFirebaseConsultationRequest(
     "Consultation request submit started."
   );
 
+  await loadStudentConsultationHistory();
+
   const user = auth.currentUser;
 
   if (!user) {
@@ -2813,6 +2705,16 @@ async function submitFirebaseConsultationRequest(
 
   const subject =
     subjectInput.value;
+
+    if (
+  !window.isAllowedLmsSubject(subject)
+) {
+  alert(
+    "Please select Accounting or Chemistry."
+  );
+
+  return;
+}
 
   const preferredDate =
     dateInput.value;
@@ -2902,6 +2804,7 @@ async function submitFirebaseConsultationRequest(
     alert(
       "Consultation request sent successfully."
     );
+    await loadStudentConsultationHistory();
 
 
   } catch (error) {
@@ -2921,4 +2824,463 @@ async function submitFirebaseConsultationRequest(
     submitButton.textContent =
       "Request Consultation";
   }
+}
+
+/* ======================================================
+   LOAD THIS STUDENT'S CONSULTATION REQUESTS
+====================================================== */
+
+async function loadStudentConsultationHistory() {
+  const tableBody =
+    document.getElementById(
+      "student-consultation-history"
+    );
+
+  const user =
+    auth.currentUser;
+
+  if (!tableBody || !user) {
+    return;
+  }
+
+  tableBody.innerHTML = `
+    <tr>
+      <td colspan="4">
+        Loading consultation requests...
+      </td>
+    </tr>
+  `;
+
+  try {
+    const requestQuery = query(
+      collection(
+        db,
+        "consultationRequests"
+      ),
+      where(
+        "studentUid",
+        "==",
+        user.uid
+      )
+    );
+
+    const snapshot =
+      await getDocs(
+        requestQuery
+      );
+
+    const requests = [];
+
+    snapshot.forEach(
+      function (requestDocument) {
+        requests.push({
+          id: requestDocument.id,
+          ...requestDocument.data()
+        });
+      }
+    );
+
+    requests.sort(
+      function (a, b) {
+        const aTime =
+          a.createdAt?.seconds || 0;
+
+        const bTime =
+          b.createdAt?.seconds || 0;
+
+        return bTime - aTime;
+      }
+    );
+
+    if (requests.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="4">
+            You have not submitted any consultation requests yet.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+    tableBody.innerHTML =
+      requests
+        .map(
+          function (request) {
+            return `
+              <tr>
+
+                <td>
+                  ${escapeStudentConsultationText(
+                    request.subject
+                  )}
+                </td>
+
+                <td>
+                  ${escapeStudentConsultationText(
+                    request.preferredDate
+                  )}
+                </td>
+
+                <td>
+                  ${formatStudentConsultationDate(
+                    request.createdAt
+                  )}
+                </td>
+
+                <td>
+                  ${createStudentConsultationBadge(
+                    request.status
+                  )}
+                </td>
+
+              </tr>
+            `;
+          }
+        )
+        .join("");
+
+  } catch (error) {
+    console.error(
+      "Could not load student consultations:",
+      error
+    );
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="4">
+          Consultation requests could not be loaded.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+
+/* ------------------------------------------------------
+   STUDENT CONSULTATION HELPERS
+------------------------------------------------------ */
+
+function createStudentConsultationBadge(status) {
+  if (status === "approved") {
+    return `
+      <span class="badge badge-green">
+        Approved
+      </span>
+    `;
+  }
+
+  if (status === "rejected") {
+    return `
+      <span class="badge badge-red">
+        Rejected
+      </span>
+    `;
+  }
+
+  return `
+    <span class="badge badge-yellow">
+      Pending
+    </span>
+  `;
+}
+
+
+function formatStudentConsultationDate(
+  timestamp
+) {
+  if (
+    !timestamp ||
+    !timestamp.toDate
+  ) {
+    return "Just now";
+  }
+
+  return timestamp
+    .toDate()
+    .toLocaleDateString("en-GB");
+}
+
+
+function escapeStudentConsultationText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/* ======================================================
+   FIREBASE STUDENT CONSULTATION SESSIONS
+====================================================== */
+
+async function loadStudentSessions() {
+  const tableBody =
+    document.getElementById(
+      "student-session-history"
+    );
+
+  const user =
+    auth.currentUser;
+
+  if (!tableBody || !user) {
+    return;
+  }
+
+
+  tableBody.innerHTML = `
+    <tr>
+      <td colspan="5">
+        Loading your sessions...
+      </td>
+    </tr>
+  `;
+
+
+  try {
+    /*
+      Retrieve this student's consultation requests.
+      Filter approved sessions locally to avoid needing
+      a Firestore composite index.
+    */
+    const requestQuery = query(
+      collection(
+        db,
+        "consultationRequests"
+      ),
+      where(
+        "studentUid",
+        "==",
+        user.uid
+      )
+    );
+
+
+    const snapshot =
+      await getDocs(
+        requestQuery
+      );
+
+
+    const sessions = [];
+
+
+    snapshot.forEach(
+      function (requestDocument) {
+        const request =
+          requestDocument.data();
+
+        if (
+          request.status ===
+          "approved"
+        ) {
+          sessions.push({
+            id:
+              requestDocument.id,
+
+            ...request
+          });
+        }
+      }
+    );
+
+
+    sessions.sort(
+      function (a, b) {
+        const firstDate =
+          String(
+            a.scheduledDate || ""
+          );
+
+        const secondDate =
+          String(
+            b.scheduledDate || ""
+          );
+
+        return firstDate.localeCompare(
+          secondDate
+        );
+      }
+    );
+
+
+    if (sessions.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="5">
+            No approved consultation sessions are available yet.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    tableBody.innerHTML =
+      sessions
+        .map(
+          function (session) {
+            const hasMeetingDetails =
+              Boolean(
+                session.meetingLink &&
+                session.scheduledDate &&
+                session.scheduledTime
+              );
+
+
+            return `
+              <tr>
+
+                <td>
+                  ${escapeStudentSessionText(
+                    session.sessionTitle ||
+                    session.subject +
+                      " Consultation"
+                  )}
+                </td>
+
+                <td>
+                  ${
+                    hasMeetingDetails
+                      ? escapeStudentSessionText(
+                          session.scheduledDate +
+                          " · " +
+                          session.scheduledTime
+                        )
+                      : "Awaiting schedule"
+                  }
+                </td>
+
+                <td>
+                  ${escapeStudentSessionText(
+                    session.teacherName ||
+                    "To be assigned"
+                  )}
+                </td>
+
+                <td>
+                  ${
+                    hasMeetingDetails
+                      ? `
+                        <span class="badge badge-green">
+                          Confirmed
+                        </span>
+                      `
+                      : `
+                        <span class="badge badge-yellow">
+                          Scheduling
+                        </span>
+                      `
+                  }
+                </td>
+
+                <td>
+                  ${
+                    hasMeetingDetails
+                      ? `
+                        <button
+                          class="act-btn"
+                          type="button"
+                          data-join-consultation="${escapeStudentSessionText(
+                            session.meetingLink
+                          )}">
+                          Join Session
+                        </button>
+                      `
+                      : `
+                        <span style="
+                          color:var(--ivory-dim);
+                          font-size:12px;
+                        ">
+                          Pending
+                        </span>
+                      `
+                  }
+                </td>
+
+              </tr>
+            `;
+          }
+        )
+        .join("");
+
+
+  } catch (error) {
+    console.error(
+      "Could not load student sessions:",
+      error
+    );
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5">
+          Sessions could not be loaded.
+          Check the Console.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+
+/* ------------------------------------------------------
+   OPEN APPROVED MEETING LINK
+------------------------------------------------------ */
+
+document.addEventListener(
+  "click",
+  function (event) {
+    const joinButton =
+      event.target.closest(
+        "[data-join-consultation]"
+      );
+
+
+    if (!joinButton) {
+      return;
+    }
+
+
+    const meetingLink =
+      joinButton.dataset
+        .joinConsultation;
+
+
+    if (
+      !meetingLink ||
+      !meetingLink.startsWith(
+        "https://"
+      )
+    ) {
+      alert(
+        "The meeting link is invalid. Please contact the administrator."
+      );
+
+      return;
+    }
+
+
+    window.open(
+      meetingLink,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
+);
+
+
+/* ------------------------------------------------------
+   SAFE SESSION TEXT
+------------------------------------------------------ */
+
+function escapeStudentSessionText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
