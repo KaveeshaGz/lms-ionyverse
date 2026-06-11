@@ -1653,6 +1653,15 @@ async function submitFirebasePdfRequest(event) {
 
   const pdfName = nameInput.value.trim();
   const subject = subjectInput.value;
+  if (
+  !window.isAllowedLmsSubject(subject)
+) {
+  alert(
+    "Please select Accounting or Chemistry."
+  );
+
+  return;
+}
   const reason = reasonInput.value.trim();
 
   if (!pdfName || !subject || !reason) {

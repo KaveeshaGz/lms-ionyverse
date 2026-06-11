@@ -153,27 +153,71 @@
     </div>
   </section>
 
-  <!-- MARQUEE -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span class="marquee-item"><span class="marquee-dot mdot-pink">🌸</span>Mathematics</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-lilac">✦</span>Physics</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-mint">🌿</span>Chemistry</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-peach">🌼</span>Biology</span>
-      <span class="marquee-item"><span class="marquee-dot" style="color:var(--pastel-sky)">📚</span>English Literature</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-pink">✿</span>History</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-lilac">💻</span>Computer Science</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-mint">📊</span>Economics</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-pink">🌸</span>Mathematics</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-lilac">✦</span>Physics</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-mint">🌿</span>Chemistry</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-peach">🌼</span>Biology</span>
-      <span class="marquee-item"><span class="marquee-dot" style="color:var(--pastel-sky)">📚</span>English Literature</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-pink">✿</span>History</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-lilac">💻</span>Computer Science</span>
-      <span class="marquee-item"><span class="marquee-dot mdot-mint">📊</span>Economics</span>
-    </div>
+ <!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-pink">
+        📊
+      </span>
+      Accounting
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-mint">
+        ⚗
+      </span>
+      Chemistry
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-lilac">
+        ✦
+      </span>
+      Accounting
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-peach">
+        🌿
+      </span>
+      Chemistry
+    </span>
+
+
+    <!-- Repeated items keep the scrolling animation smooth -->
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-pink">
+        📊
+      </span>
+      Accounting
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-mint">
+        ⚗
+      </span>
+      Chemistry
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-lilac">
+        ✦
+      </span>
+      Accounting
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-peach">
+        🌿
+      </span>
+      Chemistry
+    </span>
+
   </div>
+</div>
 
   <!-- FEATURES -->
   <section>
@@ -278,7 +322,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)"><span>Which subjects are available?</span><span class="faq-toggle">+</span></div>
-        <div class="faq-a">We cover Maths, Science (Physics, Chemistry, Biology), English, History, Economics, and Computer Science. More subjects are added regularly.</div>
+        <div class="faq-a">We currently offer Accounting and Chemistry. Additional subjects may be added later.</div>
       </div>
     </div>
   </section>
@@ -336,10 +380,8 @@
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
         <button class="btn-ghost" style="font-size:12px;padding:8px 16px">✦ All</button>
-        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:var(--yellow);color:var(--yellow)">📐 Mathematics</button>
-        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:rgba(181,213,255,0.4);color:var(--pastel-sky)">⚛ Physics</button>
-        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:rgba(255,179,198,0.4);color:var(--pastel-pink)">⚗ Chemistry</button>
-        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:rgba(181,234,215,0.4);color:var(--pastel-mint)">🌿 Biology</button>
+        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:var(--yellow);color:var(--yellow)"> 📊 Accounting</button>
+        <button class="btn-ghost" style="font-size:12px;padding:8px 16px;border-color:rgba(181,213,255,0.4);color:var(--pastel-sky)">⚗ Chemistry</button>
       </div>
     </div>
 
@@ -516,12 +558,8 @@
           <div class="form-group">
             <label class="form-label">Subject</label>
             <select class="form-select form-input">
-              <option>Mathematics</option>
-              <option>Physics</option>
-              <option>Chemistry</option>
-              <option>Biology</option>
-              <option>English</option>
-              <option>Economics</option>
+             <option>Accounting</option>
+             <option>Chemistry</option>
             </select>
           </div>
           <div class="form-group">

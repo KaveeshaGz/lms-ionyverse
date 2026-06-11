@@ -440,9 +440,9 @@ function createAdminPages() {
 
           <tbody>
             <tr>
-              <td>Integration Revision Notes</td>
-              <td>Mathematics</td>
-              <td>Mr. R. Perera</td>
+              <td>Accounting Revision Notes</td>
+              <td>Accounting</td>
+              <td>Mrs.Roshini</td>
               <td>Request Required</td>
               <td>
                 <span class="badge badge-green">Active</span>
@@ -463,9 +463,9 @@ function createAdminPages() {
             </tr>
 
             <tr>
-              <td>Physics Formula Sheet</td>
-              <td>Physics</td>
-              <td>Ms. N. Silva</td>
+              <td>Chemistry Formula Sheet</td>
+              <td>Chemistry</td>
+              <td>Chemistry Teacher</td>
               <td>Open Access</td>
               <td>
                 <span class="badge badge-green">Active</span>
