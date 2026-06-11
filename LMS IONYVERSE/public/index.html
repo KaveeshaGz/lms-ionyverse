@@ -488,6 +488,8 @@
   </div>
 
 </div>
+  </section>
+</div>
 <!-- ===== CONSULTATION PAGE ===== -->
 <div id="page-consult" class="page-view">
   <section>
@@ -587,18 +589,28 @@
 
     <div class="notes-filter-row">
 
-      <button
-  class="btn-ghost">
-  📊 Accounting
-</button>
+  <button
+    type="button"
+    class="btn-ghost notes-filter-btn active"
+    data-public-note-filter="all">
+    ✦ All Notes
+  </button>
 
-<button
-  class="btn-ghost">
-  ⚗ Chemistry
-</button>
+  <button
+    type="button"
+    class="btn-ghost notes-filter-btn"
+    data-public-note-filter="accounting">
+    📊 Accounting
+  </button>
 
-    </div>
+  <button
+    type="button"
+    class="btn-ghost notes-filter-btn"
+    data-public-note-filter="chemistry">
+    ⚗ Chemistry
+  </button>
 
+</div>
 
     <div
   id="public-notes-grid"
@@ -740,9 +752,12 @@
 
 <script src="./js/password-toggle.js?v=3"></script>
 
+<script src="./js/common.js?v=4"></script>
 
-<script src="./js/common.js"></script>
-
+<script
+  type="module"
+  src="./js/public-notes.js?v=1">
+</script>
 
 
 </body>

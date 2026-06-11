@@ -247,12 +247,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const sectionName = window.location.hash.replace("#", "");
 
   if (
-    sectionName === "landing" ||
-    sectionName === "courses" ||
-    sectionName === "consult"
-  ) {
-    window.openPublicSection(sectionName);
-  }
+  sectionName === "landing" ||
+  sectionName === "courses" ||
+  sectionName === "notes" ||
+  sectionName === "consult"
+) {
+  window.openPublicSection(sectionName);
+}
 });
 
 function whatsappTeacherAd(teacherName, className) {
