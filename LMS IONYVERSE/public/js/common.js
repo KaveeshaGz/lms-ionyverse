@@ -271,282 +271,6 @@ function whatsappTeacherAd(teacherName, className) {
   );
 }
 
-/* =========================================================
-   COURSE LIBRARY BANNERS
-   Temporary browser-storage version.
-   Firebase Storage will replace this later.
-   ========================================================= */
-
-const BAT_BANNER_STORAGE_KEY = "batTeacherBanners";
-
-function getTeacherBanners() {
-  try {
-    const saved = localStorage.getItem(
-      BAT_BANNER_STORAGE_KEY
-    );
-
-    return saved ? JSON.parse(saved) : [];
-  } catch (error) {
-    console.error("Could not read banners:", error);
-    return [];
-  }
-}
-
-function saveTeacherBanners(banners) {
-  localStorage.setItem(
-    BAT_BANNER_STORAGE_KEY,
-    JSON.stringify(banners)
-  );
-
-  window.dispatchEvent(
-    new CustomEvent("bat-banners-updated")
-  );
-}
-
-function escapeBannerText(value) {
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-function safeBannerLink(value) {
-  if (!value) return "";
-
-  try {
-    const parsed = new URL(value);
-
-    if (
-      parsed.protocol === "http:" ||
-      parsed.protocol === "https:"
-    ) {
-      return value;
-    }
-  } catch (error) {
-    return "";
-  }
-
-  return "";
-}
-
-/*
-  Create:
-  left side  = videos and PDFs
-  right side = banners
-*/
-function createCourseBannerSidebar() {
-  const courseSection = document.querySelector(
-    "#page-courses section"
-  );
-
-  if (!courseSection) return;
-
-  /*
-    Prevent duplicate layouts.
-  */
-  if (
-    document.getElementById("course-library-layout")
-  ) {
-    renderCourseBanners();
-    return;
-  }
-
-  const heading = courseSection.querySelector(
-    ".courses-header"
-  );
-
-  const layout = document.createElement("div");
-
-  layout.id = "course-library-layout";
-  layout.className =
-    "course-library-layout no-banners";
-
-  const mainColumn = document.createElement("div");
-
-  mainColumn.className = "course-library-main";
-
-  const sidebar = document.createElement("aside");
-
-  sidebar.id = "teacher-banner-sidebar";
-  sidebar.className = "teacher-banner-sidebar";
-  sidebar.style.display = "none";
-
-  sidebar.innerHTML = `
-    <div class="teacher-banner-sidebar-head">
-
-      <div class="teacher-banner-sidebar-label">
-        ✦ Featured Classes
-      </div>
-
-      <div class="teacher-banner-sidebar-note">
-        Explore classes from other educators.
-      </div>
-
-    </div>
-
-    <div
-      id="teacher-banner-list"
-      class="teacher-banner-list">
-    </div>
-  `;
-
-  /*
-    Place the layout below the Course Library heading.
-  */
-  if (heading) {
-    heading.insertAdjacentElement(
-      "afterend",
-      layout
-    );
-  } else {
-    courseSection.appendChild(layout);
-  }
-
-  /*
-    Move the existing tabs, videos and PDFs
-    into the left-side column.
-  */
-  const elementsToMove = [];
-
-  let currentElement = layout.nextElementSibling;
-
-  while (currentElement) {
-    elementsToMove.push(currentElement);
-    currentElement =
-      currentElement.nextElementSibling;
-  }
-
-  elementsToMove.forEach(function (element) {
-    mainColumn.appendChild(element);
-  });
-
-  layout.appendChild(mainColumn);
-  layout.appendChild(sidebar);
-
-  renderCourseBanners();
-}
-
-function renderCourseBanners() {
-  const layout = document.getElementById(
-    "course-library-layout"
-  );
-
-  const sidebar = document.getElementById(
-    "teacher-banner-sidebar"
-  );
-
-  const list = document.getElementById(
-    "teacher-banner-list"
-  );
-
-  if (!layout || !sidebar || !list) return;
-
-  const banners = getTeacherBanners()
-    .filter(function (banner) {
-      return banner.active !== false;
-    });
-
-  /*
-    No advertisements:
-    hide the complete right-side column.
-  */
-  if (banners.length === 0) {
-    sidebar.style.display = "none";
-    list.innerHTML = "";
-    layout.classList.add("no-banners");
-    return;
-  }
-
-  /*
-    Advertisements exist:
-    show them on the right-hand side.
-  */
-  sidebar.style.display = "flex";
-  layout.classList.remove("no-banners");
-
-  list.innerHTML = banners.map(function (banner) {
-    const title = escapeBannerText(
-      banner.title || "Sponsored Class"
-    );
-
-    const image = escapeBannerText(
-      banner.image || ""
-    );
-
-    const link = safeBannerLink(
-      banner.link || ""
-    );
-
-    /*
-      No destination link:
-      show only the image.
-    */
-    if (!link) {
-      return `
-        <div class="teacher-banner-card">
-
-          <img
-            class="teacher-banner-image"
-            src="${image}"
-            alt="${title}">
-
-          <div class="teacher-banner-chip">
-            Sponsored
-          </div>
-
-        </div>
-      `;
-    }
-
-    /*
-      Destination link exists:
-      make the image clickable.
-    */
-    return `
-      <a
-        class="teacher-banner-card"
-        href="${escapeBannerText(link)}"
-        target="_blank"
-        rel="noopener noreferrer">
-
-        <img
-          class="teacher-banner-image"
-          src="${image}"
-          alt="${title}">
-
-        <div class="teacher-banner-chip">
-          Sponsored
-        </div>
-
-      </a>
-    `;
-  }).join("");
-}
-
-  
-
-document.addEventListener(
-  "DOMContentLoaded",
-  createCourseBannerSidebar
-);
-
-window.addEventListener(
-  "bat-banners-updated",
-  renderCourseBanners
-);
-
-window.addEventListener(
-  "storage",
-  renderCourseBanners
-);
-
-/*
-  Make functions available to admin.js.
-*/
-window.getTeacherBanners = getTeacherBanners;
-window.saveTeacherBanners = saveTeacherBanners;
 
 
 /* ======================================================
@@ -782,5 +506,117 @@ document.addEventListener(
   "DOMContentLoaded",
   function () {
     window.renderPublicStudyNotes();
+  }
+);
+
+/* ======================================================
+   PUBLIC MOBILE NAVIGATION
+====================================================== */
+
+window.togglePublicMobileNav =
+  function () {
+    const menu =
+      document.getElementById(
+        "public-mobile-nav"
+      );
+
+    const toggle =
+      document.getElementById(
+        "public-nav-toggle"
+      );
+
+    if (!menu || !toggle) {
+      return;
+    }
+
+    const isOpen =
+      menu.classList.toggle("open");
+
+    toggle.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+
+    toggle.textContent =
+      isOpen ? "×" : "☰";
+  };
+
+
+window.closePublicMobileNav =
+  function () {
+    const menu =
+      document.getElementById(
+        "public-mobile-nav"
+      );
+
+    const toggle =
+      document.getElementById(
+        "public-nav-toggle"
+      );
+
+    if (!menu || !toggle) {
+      return;
+    }
+
+    menu.classList.remove("open");
+
+    toggle.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+    toggle.textContent = "☰";
+  };
+
+
+document.addEventListener(
+  "click",
+  function (event) {
+    const menu =
+      document.getElementById(
+        "public-mobile-nav"
+      );
+
+    const toggle =
+      document.getElementById(
+        "public-nav-toggle"
+      );
+
+    if (!menu || !toggle) {
+      return;
+    }
+
+    const clickedInsideMenu =
+      menu.contains(event.target);
+
+    const clickedToggle =
+      toggle.contains(event.target);
+
+    if (
+      !clickedInsideMenu &&
+      !clickedToggle
+    ) {
+      window.closePublicMobileNav();
+    }
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+    if (event.key === "Escape") {
+      window.closePublicMobileNav();
+    }
+  }
+);
+
+
+window.addEventListener(
+  "resize",
+  function () {
+    if (window.innerWidth > 920) {
+      window.closePublicMobileNav();
+    }
   }
 );

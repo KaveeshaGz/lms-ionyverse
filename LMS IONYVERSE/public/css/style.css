@@ -2988,3 +2988,418 @@ body,
   transform:
     rotate(-28deg);
 }
+
+/* ======================================================
+   PUBLIC COURSE LIBRARY BANNER SIDEBAR
+====================================================== */
+
+.public-course-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    250px;
+
+  align-items: start;
+
+  gap: 24px;
+}
+
+.public-course-layout.no-banners {
+  grid-template-columns:
+    minmax(0, 1fr);
+}
+
+.public-course-main {
+  min-width: 0;
+}
+
+.public-banner-sidebar {
+  position: sticky;
+
+  top: 86px;
+
+  min-width: 0;
+}
+
+.public-banner-sidebar[hidden] {
+  display: none !important;
+}
+
+.public-banner-sidebar-head {
+  margin-bottom: 14px;
+
+  padding-bottom: 12px;
+
+  border-bottom:
+    1px solid
+    var(--ivory-border);
+}
+
+.public-banner-sidebar-title {
+  color:
+    var(--ivory);
+
+  font-family:
+    var(--serif);
+
+  font-size:
+    20px;
+
+  line-height:
+    1.15;
+}
+
+.public-banner-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.public-banner-card {
+  display: block;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--ivory-border);
+
+  border-radius:
+    var(--radius);
+
+  background:
+    var(--card-bg);
+
+  color:
+    var(--ivory);
+
+  text-decoration:
+    none;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.public-banner-card:hover {
+  border-color:
+    rgba(
+      255,
+      212,
+      0,
+      0.45
+    );
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 14px 28px
+    rgba(
+      0,
+      0,
+      0,
+      0.28
+    );
+}
+
+.public-banner-image {
+  display: block;
+
+  width: 100%;
+
+  aspect-ratio:
+    4 / 5;
+
+  object-fit:
+    cover;
+}
+
+.public-banner-caption {
+  padding:
+    12px 14px;
+
+  color:
+    var(--ivory);
+
+  font-size:
+    12px;
+
+  font-weight:
+    500;
+
+  line-height:
+    1.45;
+}
+
+
+/*
+  The requirement is right-side advertisements only.
+  Hide banners on narrow screens rather than moving
+  them below the learning content.
+*/
+
+@media (
+  max-width: 900px
+) {
+  .public-course-layout {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .public-banner-sidebar {
+    display:
+      none !important;
+  }
+}
+
+/* ======================================================
+   PUBLIC STUDY NOTES GRID
+====================================================== */
+
+#public-notes-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(
+        260px,
+        360px
+      )
+    );
+
+  justify-content:
+    center;
+
+  align-items:
+    start;
+
+  gap:
+    22px;
+
+  width:
+    100%;
+
+  margin-top:
+    28px;
+}
+
+.public-notes-message {
+  grid-column:
+    1 / -1;
+
+  padding:
+    36px 18px;
+
+  border:
+    1px solid
+    var(--ivory-border);
+
+  border-radius:
+    var(--radius);
+
+  color:
+    var(--ivory-dim);
+
+  text-align:
+    center;
+}
+
+.public-note-card {
+  width:
+    100%;
+
+  max-width:
+    360px;
+
+  overflow:
+    hidden;
+}
+
+.public-note-image {
+  display:
+    block;
+
+  width:
+    100%;
+
+  aspect-ratio:
+    4 / 3;
+
+  object-fit:
+    cover;
+}
+
+.note-card-body {
+  padding:
+    16px;
+}
+
+/* ======================================================
+   RESPONSIVE PUBLIC NAVIGATION
+====================================================== */
+
+.nav-links button {
+  background: transparent;
+  border: none;
+
+  color: var(--ivory-dim);
+
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.nav-links button:hover {
+  color: var(--yellow);
+}
+
+
+.public-nav-toggle {
+  display: none;
+
+  width: 42px;
+  height: 42px;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--ivory-border);
+  border-radius: 50%;
+
+  background: transparent;
+  color: var(--ivory);
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+.public-nav-toggle:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+
+.public-mobile-nav {
+  position: fixed;
+  top: 74px;
+  left: 16px;
+  right: 16px;
+  z-index: 9999;
+
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 18px;
+
+  border: 1px solid var(--ivory-border);
+  border-radius: var(--radius);
+
+  background: rgba(10, 10, 10, 0.98);
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 20px 40px
+    rgba(0, 0, 0, 0.45);
+}
+
+.public-mobile-nav.open {
+  display: flex;
+}
+
+.public-mobile-nav button {
+  width: 100%;
+
+  padding: 13px 14px;
+
+  border: 1px solid var(--ivory-border);
+  border-radius: var(--radius-pill);
+
+  background: transparent;
+  color: var(--ivory);
+
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.public-mobile-nav button:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+.public-mobile-nav-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  margin-top: 8px;
+}
+
+.public-mobile-nav-actions .btn-primary {
+  background: var(--yellow);
+  color: var(--black);
+  border-color: var(--yellow);
+}
+
+
+@media (max-width: 920px) {
+  nav {
+    padding: 0 22px;
+  }
+
+  .nav-links,
+  .nav-cta {
+    display: none;
+  }
+
+  .public-nav-toggle {
+    display: flex;
+  }
+
+  .nav-logo {
+    font-size: 20px;
+  }
+}
+
+
+@media (max-width: 520px) {
+  nav {
+    padding: 0 16px;
+  }
+
+  .nav-logo {
+    font-size: 18px;
+  }
+
+  .public-mobile-nav-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (min-width: 921px) {
+  .public-mobile-nav {
+    display: none !important;
+  }
+}

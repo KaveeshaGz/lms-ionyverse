@@ -1,5 +1,6 @@
 /* ======================================================
    PUBLIC FIREBASE STUDY NOTES
+   Live Firestore version
 ====================================================== */
 
 import {
@@ -10,7 +11,7 @@ import {
   collection,
   query,
   where,
-  getDocs
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 
@@ -18,6 +19,9 @@ let publicStudyNotes = [];
 
 let selectedPublicSubject =
   "all";
+
+let stopPublicNotesListener =
+  null;
 
 
 /* ------------------------------------------------------
@@ -42,10 +46,10 @@ function normalizePublicSubject(value) {
 
 
 /* ------------------------------------------------------
-   LOAD PUBLISHED NOTES FROM FIRESTORE
+   START LIVE FIRESTORE NOTES LISTENER
 ------------------------------------------------------ */
 
-async function loadPublicStudyNotes() {
+function loadPublicStudyNotes() {
   const grid =
     document.getElementById(
       "public-notes-grid"
@@ -62,97 +66,101 @@ async function loadPublicStudyNotes() {
 
 
   grid.innerHTML = `
-    <div style="
-      grid-column:1/-1;
-      padding:34px 18px;
-      color:var(--ivory-dim);
-      text-align:center;
-    ">
+    <div class="public-notes-message">
       Loading Study Notes...
     </div>
   `;
 
 
-  try {
-    /*
-      Public visitors receive published notes only.
-    */
-    const notesQuery =
-      query(
-        collection(
-          db,
-          "studyNotes"
-        ),
-
-        where(
-          "status",
-          "==",
-          "active"
-        )
-      );
-
-
-    const snapshot =
-      await getDocs(
-        notesQuery
-      );
-
-
-    publicStudyNotes = [];
-
-
-    snapshot.forEach(
-      function (noteDocument) {
-        publicStudyNotes.push({
-          id:
-            noteDocument.id,
-
-          ...noteDocument.data()
-        });
-      }
-    );
-
-
-    publicStudyNotes.sort(
-      function (firstNote, secondNote) {
-        const firstTime =
-          firstNote.createdAt?.seconds || 0;
-
-        const secondTime =
-          secondNote.createdAt?.seconds || 0;
-
-        return secondTime - firstTime;
-      }
-    );
-
-
-    renderPublicStudyNotes();
-
-
-  } catch (error) {
-    console.error(
-      "Could not load public Study Notes:",
-      error
-    );
-
-
-    grid.innerHTML = `
-      <div style="
-        grid-column:1/-1;
-        padding:34px 18px;
-        color:var(--ivory-dim);
-        text-align:center;
-      ">
-        Study Notes could not be loaded.
-        Check the browser Console.
-      </div>
-    `;
+  /*
+    Prevent duplicate Firestore listeners.
+  */
+  if (stopPublicNotesListener) {
+    stopPublicNotesListener();
   }
+
+
+  const notesQuery =
+    query(
+      collection(
+        db,
+        "studyNotes"
+      ),
+
+      where(
+        "status",
+        "==",
+        "active"
+      )
+    );
+
+
+  stopPublicNotesListener =
+    onSnapshot(
+      notesQuery,
+
+      function (snapshot) {
+        publicStudyNotes = [];
+
+
+        snapshot.forEach(
+          function (noteDocument) {
+            publicStudyNotes.push({
+              id:
+                noteDocument.id,
+
+              ...noteDocument.data()
+            });
+          }
+        );
+
+
+        publicStudyNotes.sort(
+          function (
+            firstNote,
+            secondNote
+          ) {
+            const firstTime =
+              firstNote
+                .createdAt
+                ?.seconds || 0;
+
+            const secondTime =
+              secondNote
+                .createdAt
+                ?.seconds || 0;
+
+            return (
+              secondTime -
+              firstTime
+            );
+          }
+        );
+
+
+        renderPublicStudyNotes();
+      },
+
+      function (error) {
+        console.error(
+          "Could not load public Study Notes:",
+          error
+        );
+
+
+        grid.innerHTML = `
+          <div class="public-notes-message">
+            Study Notes could not be loaded.
+            Check the browser Console.
+          </div>
+        `;
+      }
+    );
 }
 
 
 /* ------------------------------------------------------
-   DISPLAY PUBLISHED NOTES
+   DISPLAY ACTIVE NOTES
 ------------------------------------------------------ */
 
 function renderPublicStudyNotes() {
@@ -193,12 +201,7 @@ function renderPublicStudyNotes() {
     visibleNotes.length === 0
   ) {
     grid.innerHTML = `
-      <div style="
-        grid-column:1/-1;
-        padding:34px 18px;
-        color:var(--ivory-dim);
-        text-align:center;
-      ">
+      <div class="public-notes-message">
         No study notes are available yet.
       </div>
     `;
@@ -213,21 +216,17 @@ function renderPublicStudyNotes() {
         function (note) {
           return `
             <article
-              class="note-card"
-              data-subject="${escapePublicNoteText(
-                normalizePublicSubject(
-                  note.subject
-                )
-              )}">
+              class="note-card public-note-card">
 
               <img
-                class="note-image"
+                class="note-image public-note-image"
                 src="${escapePublicNoteText(
                   note.imageUrl
                 )}"
                 alt="${escapePublicNoteText(
                   note.title
                 )}">
+
 
               <div class="note-card-body">
 
@@ -237,11 +236,13 @@ function renderPublicStudyNotes() {
                   )}
                 </div>
 
+
                 <div class="note-title">
                   ${escapePublicNoteText(
                     note.title
                   )}
                 </div>
+
 
                 <p class="note-description">
                   ${escapePublicNoteText(
@@ -249,13 +250,16 @@ function renderPublicStudyNotes() {
                   )}
                 </p>
 
+
                 <button
                   type="button"
                   class="note-view-btn"
                   data-open-public-note="${escapePublicNoteText(
                     note.id
                   )}">
+
                   View Note
+
                 </button>
 
               </div>
@@ -313,7 +317,7 @@ function renderPublicStudyNotes() {
 
 
 /* ------------------------------------------------------
-   SUBJECT FILTERS
+   SUBJECT FILTER BUTTONS
 ------------------------------------------------------ */
 
 function connectPublicStudyNoteFilters() {
@@ -364,7 +368,7 @@ function connectPublicStudyNoteFilters() {
 
 
 /* ------------------------------------------------------
-   NOTE PREVIEW POPUP
+   NOTE IMAGE POPUP
 ------------------------------------------------------ */
 
 function openPublicNoteModal(note) {
@@ -434,15 +438,33 @@ window.closeNoteImage =
   };
 
 
+/*
+  Useful while testing from the browser Console.
+*/
+window.loadPublicStudyNotes =
+  loadPublicStudyNotes;
+
+
 /* ------------------------------------------------------
-   START PUBLIC NOTES PAGE
+   START PUBLIC NOTES
 ------------------------------------------------------ */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function () {
-    connectPublicStudyNoteFilters();
+function startPublicNotes() {
+  connectPublicStudyNoteFilters();
 
-    loadPublicStudyNotes();
-  }
-);
+  loadPublicStudyNotes();
+}
+
+
+if (
+  document.readyState ===
+  "loading"
+) {
+  document.addEventListener(
+    "DOMContentLoaded",
+    startPublicNotes
+  );
+
+} else {
+  startPublicNotes();
+}

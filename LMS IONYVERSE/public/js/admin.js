@@ -245,98 +245,7 @@ function createAdminPages() {
             </tr>
           </thead>
 
-          <tbody>
-            <tr>
-  <td>Financial Accounting Fundamentals</td>
-  <td>Accounting</td>
-  <td>Accounting Teacher</td>
-  <td>Paid</td>
-
-  <td>
-    <span class="badge badge-green">
-      Published
-    </span>
-  </td>
-
-  <td>
-    <div class="action-row">
-
-      <button
-        class="act-btn"
-        data-action="edit-video">
-        Edit
-      </button>
-
-      <button
-        class="act-btn danger"
-        data-action="remove">
-        Remove
-      </button>
-
-    </div>
-  </td>
-</tr>
-
-            <tr>
-  <td>Chemical Bonding</td>
-  <td>Chemistry</td>
-  <td>Chemistry Teacher</td>
-  <td>Free</td>
-
-  <td>
-    <span class="badge badge-green">
-      Published
-    </span>
-  </td>
-
-  <td>
-    <div class="action-row">
-
-      <button
-        class="act-btn"
-        data-action="edit-video">
-        Edit
-      </button>
-
-      <button
-        class="act-btn danger"
-        data-action="remove">
-        Remove
-      </button>
-
-    </div>
-  </td>
-</tr>
-           <tr>
-  <td>Chemical Bonding</td>
-  <td>Chemistry</td>
-  <td>Chemistry Teacher</td>
-  <td>Free</td>
-
-  <td>
-    <span class="badge badge-green">
-      Published
-    </span>
-  </td>
-
-  <td>
-    <div class="action-row">
-
-      <button
-        class="act-btn"
-        data-action="edit-video">
-        Edit
-      </button>
-
-      <button
-        class="act-btn danger"
-        data-action="remove">
-        Remove
-      </button>
-
-    </div>
-  </td>
-</tr>
+          <tbody id="firebase-admin-videos-body">
           </tbody>
         </table>
 
@@ -1145,6 +1054,14 @@ function showAdminPanel(panelName, selectedSidebarItem) {
     loadAdminPdfRequests();
     }
 
+    if (panelName === "videos") {
+    loadAdminVideos();
+    }
+
+    if (panelName === "upload-video") {
+    connectFirebaseVideoUploadForm();
+    }
+
     if (panelName === "consultations") {
     loadAdminConsultationRequests();
     }
@@ -1173,201 +1090,150 @@ function showAdminPanel(panelName, selectedSidebarItem) {
   });
 }
 
+/* ======================================================
+   FIREBASE VIDEO PUBLISHING
+====================================================== */
 
-/* ------------------------------------------------------
-   TEMPORARY VISUAL TEST ACTIONS
-   Firebase will replace these later.
------------------------------------------------------- */
+async function uploadFirebaseVideoResource(event) {
+  event.preventDefault();
 
-function connectAdminPageForms() {
-  const videoForm = document.getElementById(
-    "admin-video-upload-form"
-  );
+  const user = auth.currentUser;
 
-  if (videoForm) {
-    videoForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      alert(
-        "Video published successfully for visual testing. Firebase will store it later."
-      );
-
-      videoForm.reset();
-    });
+  if (!user) {
+    alert("Please sign in again.");
+    window.location.href = "./login.html";
+    return;
   }
 
+  const titleInput =
+    document.getElementById("video-title");
 
-const pdfForm = document.getElementById(
-  "admin-pdf-upload-form"
-);
+  const subjectInput =
+    document.getElementById("video-subject");
 
-if (pdfForm) {
-  pdfForm.addEventListener(
-    "submit",
-    uploadFirebasePdfResource
-  );
-}
+  const teacherInput =
+    document.getElementById("video-teacher");
 
+  const accessInput =
+    document.getElementById("video-access");
 
-  document.addEventListener("click", function (event) {
-    const button = event.target.closest("[data-action]");
+  const urlInput =
+    document.getElementById("video-url");
 
-    if (!button) {
-      return;
-    }
+  const descriptionInput =
+    document.getElementById("video-description");
 
-    const action = button.dataset.action;
-    const row = button.closest("tr");
-    
-    if (action === "edit-video") {
-      openEditModal(row, "Edit Video");
+  if (
+    !titleInput ||
+    !subjectInput ||
+    !teacherInput ||
+    !accessInput ||
+    !urlInput ||
+    !descriptionInput
+  ) {
+    alert("The video upload form is incomplete.");
     return;
-    }
-
-    if (action === "edit-pdf") {
-      openEditModal(row, "Edit PDF Resource");
-    return;
-    }
-
-    if (action === "view-pdf") {
-      openViewModal(row, "PDF Resource Details");
-    return;
-    }
-
-    if (action === "view-request") {
-      openViewModal(row, "PDF Request Details");
-    return;
-    }
-
-    if (!row) {
-      return;
-    }
-    if (action === "view-student") {
-  openViewModal(row, "Student Details");
-  return;
-}
-
-if (action === "edit-student") {
-  openEditModal(row, "Edit Student");
-  return;
-}
-
-if (action === "view-teacher") {
-  openViewModal(row, "Teacher Details");
-  return;
-}
-
-if (action === "edit-teacher") {
-  openEditModal(row, "Edit Teacher");
-  return;
-}
-
-if (action === "view-consultation") {
-  openViewModal(row, "Consultation Details");
-  return;
-}
-
-if (action === "approve-consultation") {
-  const statusBadge = row.querySelector(".consult-status");
-
-  if (statusBadge) {
-    statusBadge.textContent = "Approved";
-    statusBadge.className =
-      "badge badge-green consult-status";
   }
 
-  alert("Consultation approved.");
-  return;
-}
+  const title = titleInput.value.trim();
+  const subject = subjectInput.value;
+  const teacher = teacherInput.value.trim();
+  const accessLevel = accessInput.value;
+  const videoUrl = urlInput.value.trim();
+  const description = descriptionInput.value.trim();
 
-if (action === "reject-consultation") {
-  const statusBadge = row.querySelector(".consult-status");
-
-  if (statusBadge) {
-    statusBadge.textContent = "Rejected";
-    statusBadge.className =
-      "badge badge-red consult-status";
+  if (
+    !title ||
+    !subject ||
+    !teacher ||
+    !accessLevel ||
+    !videoUrl
+  ) {
+    alert("Please complete all required video fields.");
+    return;
   }
 
-  alert("Consultation rejected.");
-  return;
-}
+  if (!window.isAllowedLmsSubject(subject)) {
+    alert("Please select Accounting or Chemistry.");
+    return;
+  }
 
-if (action === "view-notification") {
-  openViewModal(row, "Notification Details");
-  return;
-}
+  if (
+    !videoUrl.startsWith("https://")
+  ) {
+    alert("Please enter a secure video URL beginning with https://");
+    return;
+  }
 
-    if (action === "remove") {
-      const confirmed = confirm(
-        "Are you sure you want to remove this item?"
-      );
+  const form =
+    document.getElementById("admin-video-upload-form");
 
-      if (confirmed) {
-        row.remove();
+  const submitButton =
+    form.querySelector('button[type="submit"]');
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Publishing Video...";
+
+  try {
+    await addDoc(
+      collection(db, "videos"),
+      {
+        title: title,
+        subject: subject,
+        teacher: teacher,
+        accessLevel: accessLevel,
+        videoUrl: videoUrl,
+        description: description,
+        status: "published",
+        uploadedBy: user.uid,
+        createdAt: serverTimestamp()
       }
-
-      return;
-    }
-
-
-    const statusBadge = row.querySelector(".request-status");
-
-    if (!statusBadge) {
-      return;
-    }
-
-    if (action === "approve") {
-      statusBadge.textContent = "Approved";
-      statusBadge.className =
-        "badge badge-green request-status";
-
-      alert("PDF request approved.");
-    }
-
-    if (action === "reject") {
-      statusBadge.textContent = "Rejected";
-      statusBadge.className =
-        "badge badge-red request-status";
-
-      alert("PDF request rejected.");
-    }
-  });
-  const studentForm = document.getElementById(
-  "admin-student-form"
-);
-
-if (studentForm) {
-  studentForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    alert(
-      "Student registered successfully for local testing."
     );
 
-    studentForm.reset();
-  });
+    form.reset();
+
+    alert("Video published successfully.");
+
+    await loadAdminVideos();
+
+  } catch (error) {
+    console.error("Video publish failed:", error);
+
+    alert("The video could not be published. Check the Console.");
+
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Publish Video";
+  }
 }
+function connectFirebaseVideoUploadForm() {
+  const videoForm =
+    document.getElementById(
+      "admin-video-upload-form"
+    );
 
+  if (!videoForm) {
+    return;
+  }
 
-const notificationForm = document.getElementById(
-  "admin-notification-form"
-);
+  if (
+    videoForm.dataset.firebaseVideoConnected ===
+    "true"
+  ) {
+    return;
+  }
 
-if (notificationForm) {
-  notificationForm.addEventListener(
+  videoForm.dataset.firebaseVideoConnected =
+    "true";
+
+  videoForm.addEventListener(
     "submit",
-    function (event) {
-      event.preventDefault();
-
-      alert(
-        "Notification sent successfully for local testing."
-      );
-
-      notificationForm.reset();
-    }
+    uploadFirebaseVideoResource
   );
-}
+
+  console.log(
+    "Firebase video upload form connected."
+  );
 }
 
 /* ======================================================
@@ -2670,165 +2536,599 @@ function addBannerManagerPanel(adminMain) {
 
 
 
-function handleBannerUpload(event) {
+/* ======================================================
+   UPLOAD BANNER TO FIREBASE
+====================================================== */
+
+async function handleBannerUpload(event) {
   event.preventDefault();
 
-  const title = document
-    .getElementById("banner-title")
-    .value
-    .trim();
+  const user =
+    auth.currentUser;
 
-  const link = document
-    .getElementById("banner-link")
-    .value
-    .trim();
+  if (!user) {
+    alert("Please sign in again.");
 
-  const imageFile = document
-    .getElementById("banner-image")
-    .files[0];
-
-  if (!title || !imageFile) {
-    alert("Please add a title and choose an image.");
-    return;
-  }
-
-  if (imageFile.size > 1024 * 1024) {
-    alert("Please choose an image smaller than 1 MB.");
-    return;
-  }
-
-  const banners = window.getTeacherBanners();
-
-  if (banners.length >= 6) {
-    alert("A maximum of 6 banners is allowed.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = function () {
-    banners.push({
-      id: Date.now().toString(),
-      title: title,
-      link: link,
-      image: reader.result,
-      active: true
-    });
-
-    window.saveTeacherBanners(banners);
-
-    document
-      .getElementById("banner-upload-form")
-      .reset();
-
-    renderAdminBannerList();
-
-    alert("Banner published successfully.");
-  };
-
-  reader.onerror = function () {
-    alert("The image could not be read.");
-  };
-
-  reader.readAsDataURL(imageFile);
-}
-
-function renderAdminBannerList() {
-  const list = document.getElementById(
-    "banner-admin-list"
-  );
-
-  if (!list) return;
-
-  const banners = window.getTeacherBanners();
-
-  if (banners.length === 0) {
-    list.innerHTML = `
-      <div class="teacher-banner-empty">
-        No banners have been uploaded yet.
-      </div>
-    `;
+    window.location.href =
+      "./login.html";
 
     return;
   }
 
-  list.innerHTML = banners.map((banner) => {
-    const title = escapeAdminBannerText(
-      banner.title || "Teacher Advertisement"
+
+  const form =
+    document.getElementById(
+      "banner-upload-form"
     );
 
-    const statusText =
-      banner.active === false ? "Enable" : "Disable";
+  const titleInput =
+    document.getElementById(
+      "banner-title"
+    );
 
-    return `
-      <article class="banner-admin-item">
+  const linkInput =
+    document.getElementById(
+      "banner-link"
+    );
 
-        <img
-          class="banner-admin-thumb"
-          src="${banner.image}"
-          alt="${title}">
+  const imageInput =
+    document.getElementById(
+      "banner-image"
+    );
 
-        <div class="banner-admin-item-body">
 
-          <div class="banner-admin-item-title">
-            ${title}
-          </div>
+  if (
+    !form ||
+    !titleInput ||
+    !linkInput ||
+    !imageInput
+  ) {
+    alert(
+      "The banner upload form is incomplete."
+    );
 
-          <div class="banner-admin-item-actions">
+    return;
+  }
 
-            <button
-              class="act-btn"
-              onclick="toggleTeacherBanner('${banner.id}')">
-              ${statusText}
-            </button>
 
-            <button
-              class="act-btn danger"
-              onclick="removeTeacherBanner('${banner.id}')">
-              Remove
-            </button>
+  const title =
+    titleInput.value.trim();
 
-          </div>
+  const link =
+    linkInput.value.trim();
 
-        </div>
+  const imageFile =
+    imageInput.files[0];
 
-      </article>
-    `;
-  }).join("");
-}
 
-function toggleTeacherBanner(id) {
-  const banners = window.getTeacherBanners();
+  if (
+    !title ||
+    !imageFile
+  ) {
+    alert(
+      "Please add a title and choose an image."
+    );
 
-  const updated = banners.map((banner) => {
-    if (banner.id === id) {
-      return {
-          ...banner,
-          active: banner.active === false
-      };
+    return;
+  }
+
+
+  if (
+    link &&
+    !link.startsWith("https://")
+  ) {
+    alert(
+      "The optional destination link must begin with https://"
+    );
+
+    return;
+  }
+
+
+  if (
+    !imageFile.type.startsWith("image/")
+  ) {
+    alert(
+      "Please choose a valid image file."
+    );
+
+    return;
+  }
+
+
+  const maximumBannerSize =
+    1024 * 1024;
+
+
+  if (
+    imageFile.size >
+    maximumBannerSize
+  ) {
+    alert(
+      "Please choose an image smaller than 1 MB."
+    );
+
+    return;
+  }
+
+
+  const existingSnapshot =
+    await getDocs(
+      collection(
+        db,
+        "banners"
+      )
+    );
+
+
+  if (
+    existingSnapshot.size >= 6
+  ) {
+    alert(
+      "A maximum of 6 banners is allowed."
+    );
+
+    return;
+  }
+
+
+  const submitButton =
+    form.querySelector(
+      'button[type="submit"]'
+    );
+
+
+  submitButton.disabled = true;
+
+  submitButton.textContent =
+    "Publishing Banner...";
+
+
+  let storagePath = "";
+
+
+  try {
+    const safeFileName =
+      imageFile.name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+      );
+
+
+    storagePath =
+      "banners/" +
+      Date.now() +
+      "-" +
+      safeFileName;
+
+
+    const imageReference =
+      ref(
+        storage,
+        storagePath
+      );
+
+
+    await uploadBytes(
+      imageReference,
+      imageFile,
+      {
+        contentType:
+          imageFile.type
+      }
+    );
+
+
+    const imageUrl =
+      await getDownloadURL(
+        imageReference
+      );
+
+
+    await addDoc(
+      collection(
+        db,
+        "banners"
+      ),
+      {
+        title:
+          title,
+
+        link:
+          link,
+
+        imageUrl:
+          imageUrl,
+
+        storagePath:
+          storagePath,
+
+        status:
+          "active",
+
+        uploadedBy:
+          user.uid,
+
+        createdAt:
+          serverTimestamp()
+      }
+    );
+
+
+    form.reset();
+
+
+    alert(
+      "Banner published successfully."
+    );
+
+
+    await renderAdminBannerList();
+
+
+  } catch (error) {
+    console.error(
+      "Banner upload failed:",
+      error
+    );
+
+
+    if (storagePath) {
+      try {
+        await deleteObject(
+          ref(
+            storage,
+            storagePath
+          )
+        );
+
+      } catch (cleanupError) {
+        console.warn(
+          "Banner cleanup warning:",
+          cleanupError
+        );
+      }
     }
 
-    return banner;
-  });
 
-  window.saveTeacherBanners(updated);
-  renderAdminBannerList();
+    alert(
+      "The banner could not be published. Check the Console."
+    );
+
+
+  } finally {
+    submitButton.disabled = false;
+
+    submitButton.textContent =
+      "Publish Banner";
+  }
 }
 
-function removeTeacherBanner(id) {
-  const confirmed = confirm(
-    "Remove this banner advertisement?"
-  );
+/* ======================================================
+   SHOW FIREBASE BANNERS IN ADMIN PORTAL
+====================================================== */
 
-  if (!confirmed) return;
+async function renderAdminBannerList() {
+  const list =
+    document.getElementById(
+      "banner-admin-list"
+    );
 
-  const banners = window
-    .getTeacherBanners()
-    .filter((banner) => banner.id !== id);
 
-  window.saveTeacherBanners(banners);
-  renderAdminBannerList();
+  if (!list) {
+    return;
+  }
+
+
+  list.innerHTML = `
+    <div class="teacher-banner-empty">
+      Loading banners...
+    </div>
+  `;
+
+
+  try {
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "banners"
+        )
+      );
+
+
+    const banners = [];
+
+
+    snapshot.forEach(
+      function (bannerDocument) {
+        banners.push({
+          id:
+            bannerDocument.id,
+
+          ...bannerDocument.data()
+        });
+      }
+    );
+
+
+    banners.sort(
+      function (firstBanner, secondBanner) {
+        const firstTime =
+          firstBanner.createdAt?.seconds || 0;
+
+        const secondTime =
+          secondBanner.createdAt?.seconds || 0;
+
+        return secondTime - firstTime;
+      }
+    );
+
+
+    if (
+      banners.length === 0
+    ) {
+      list.innerHTML = `
+        <div class="teacher-banner-empty">
+          No banners have been uploaded yet.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    list.innerHTML =
+      banners
+        .map(
+          function (banner) {
+            const isActive =
+              banner.status ===
+              "active";
+
+
+            return `
+              <article class="banner-admin-item">
+
+                <img
+                  class="banner-admin-thumb"
+                  src="${escapeAdminBannerText(
+                    banner.imageUrl
+                  )}"
+                  alt="${escapeAdminBannerText(
+                    banner.title
+                  )}">
+
+                <div class="banner-admin-item-body">
+
+                  <div class="banner-admin-item-title">
+                    ${escapeAdminBannerText(
+                      banner.title
+                    )}
+                  </div>
+
+
+                  <div style="
+                    margin-top:5px;
+                    color:var(--ivory-dim);
+                    font-size:11px;
+                  ">
+                    ${
+                      isActive
+                        ? "Visible publicly"
+                        : "Hidden"
+                    }
+                  </div>
+
+
+                  <div class="banner-admin-item-actions">
+
+                    <button
+                      class="act-btn"
+                      type="button"
+                      onclick="toggleFirebaseBanner(
+                        '${escapeAdminBannerText(
+                          banner.id
+                        )}'
+                      )">
+
+                      ${
+                        isActive
+                          ? "Disable"
+                          : "Enable"
+                      }
+
+                    </button>
+
+
+                    <button
+                      class="act-btn danger"
+                      type="button"
+                      onclick="removeFirebaseBanner(
+                        '${escapeAdminBannerText(
+                          banner.id
+                        )}'
+                      )">
+
+                      Remove
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </article>
+            `;
+          }
+        )
+        .join("");
+
+
+  } catch (error) {
+    console.error(
+      "Could not load banners:",
+      error
+    );
+
+
+    list.innerHTML = `
+      <div class="teacher-banner-empty">
+        Banners could not be loaded.
+        Check the Console.
+      </div>
+    `;
+  }
 }
+
+/* ======================================================
+   UPDATE OR REMOVE FIREBASE BANNERS
+====================================================== */
+
+window.toggleFirebaseBanner =
+  async function (bannerId) {
+    try {
+      const bannerReference =
+        doc(
+          db,
+          "banners",
+          bannerId
+        );
+
+
+      const bannerSnapshot =
+        await getDoc(
+          bannerReference
+        );
+
+
+      if (!bannerSnapshot.exists()) {
+        alert(
+          "The banner could not be found."
+        );
+
+        return;
+      }
+
+
+      const currentStatus =
+        bannerSnapshot.data().status;
+
+
+      await updateDoc(
+        bannerReference,
+        {
+          status:
+            currentStatus === "active"
+              ? "hidden"
+              : "active"
+        }
+      );
+
+
+      await renderAdminBannerList();
+
+
+    } catch (error) {
+      console.error(
+        "Banner status update failed:",
+        error
+      );
+
+      alert(
+        "The banner status could not be updated."
+      );
+    }
+  };
+
+
+window.removeFirebaseBanner =
+  async function (bannerId) {
+    const confirmed =
+      confirm(
+        "Remove this banner advertisement permanently?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    try {
+      const bannerReference =
+        doc(
+          db,
+          "banners",
+          bannerId
+        );
+
+
+      const bannerSnapshot =
+        await getDoc(
+          bannerReference
+        );
+
+
+      if (!bannerSnapshot.exists()) {
+        alert(
+          "The banner could not be found."
+        );
+
+        return;
+      }
+
+
+      const banner =
+        bannerSnapshot.data();
+
+
+      if (
+        banner.storagePath
+      ) {
+        try {
+          await deleteObject(
+            ref(
+              storage,
+              banner.storagePath
+            )
+          );
+
+        } catch (storageError) {
+          console.warn(
+            "Banner image removal warning:",
+            storageError
+          );
+        }
+      }
+
+
+      await deleteDoc(
+        bannerReference
+      );
+
+
+      await renderAdminBannerList();
+
+
+      alert(
+        "Banner removed successfully."
+      );
+
+
+    } catch (error) {
+      console.error(
+        "Banner removal failed:",
+        error
+      );
+
+      alert(
+        "The banner could not be removed."
+      );
+    }
+  };
+
+
 
 function escapeAdminBannerText(value) {
   return String(value || "")
@@ -2839,10 +3139,7 @@ function escapeAdminBannerText(value) {
     .replace(/'/g, "&#039;");
 }
 
-/* Make onclick functions available globally */
 
-window.toggleTeacherBanner = toggleTeacherBanner;
-window.removeTeacherBanner = removeTeacherBanner;
 
 /* ======================================================
    ADMIN PANEL — STUDY NOTES MANAGER
@@ -3836,6 +4133,8 @@ document.addEventListener("DOMContentLoaded", function () {
         createAdminPages();
 
         connectFirebasePdfUploadForm();
+
+        connectFirebaseVideoUploadForm();
 
         await setupStudentApprovalManager();
 
@@ -5392,6 +5691,249 @@ document.addEventListener(
         "rejected",
 
         rejectButton
+      );
+    }
+  }
+);
+
+
+/* ======================================================
+   FIREBASE ADMIN VIDEO LIBRARY
+====================================================== */
+
+async function loadAdminVideos() {
+  const tableBody =
+    document.getElementById(
+      "firebase-admin-videos-body"
+    );
+
+  if (!tableBody) {
+    return;
+  }
+
+  tableBody.innerHTML = `
+    <tr>
+      <td colspan="6">
+        Loading videos...
+      </td>
+    </tr>
+  `;
+
+  try {
+    const snapshot =
+      await getDocs(
+        collection(db, "videos")
+      );
+
+    const videos = [];
+
+    snapshot.forEach(function (videoDocument) {
+      videos.push({
+        id: videoDocument.id,
+        ...videoDocument.data()
+      });
+    });
+
+    videos.sort(function (a, b) {
+      const aTime = a.createdAt?.seconds || 0;
+      const bTime = b.createdAt?.seconds || 0;
+
+      return bTime - aTime;
+    });
+
+    if (videos.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="6">
+            No videos have been published yet.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+    tableBody.innerHTML =
+      videos
+        .map(function (video) {
+          return `
+            <tr>
+
+              <td>
+                ${escapeAdminVideoText(video.title)}
+              </td>
+
+              <td>
+                ${escapeAdminVideoText(video.subject)}
+              </td>
+
+              <td>
+                ${escapeAdminVideoText(video.teacher)}
+              </td>
+
+              <td>
+                ${escapeAdminVideoText(video.accessLevel)}
+              </td>
+
+              <td>
+                ${createAdminVideoStatusBadge(video.status)}
+              </td>
+
+              <td>
+                <div class="action-row">
+
+                  <button
+                    class="act-btn"
+                    type="button"
+                    data-video-toggle="${escapeAdminVideoText(video.id)}">
+                    ${
+                      video.status === "published"
+                        ? "Hide"
+                        : "Publish"
+                    }
+                  </button>
+
+                  <button
+                    class="act-btn danger"
+                    type="button"
+                    data-video-remove="${escapeAdminVideoText(video.id)}">
+                    Remove
+                  </button>
+
+                </div>
+              </td>
+
+            </tr>
+          `;
+        })
+        .join("");
+
+  } catch (error) {
+    console.error("Could not load videos:", error);
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          Videos could not be loaded.
+          Check the Console.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+
+function createAdminVideoStatusBadge(status) {
+  if (status === "published") {
+    return `
+      <span class="badge badge-green">
+        Published
+      </span>
+    `;
+  }
+
+  return `
+    <span class="badge badge-yellow">
+      Hidden
+    </span>
+  `;
+}
+
+
+function escapeAdminVideoText(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/* ======================================================
+   FIREBASE ADMIN VIDEO ACTIONS
+====================================================== */
+
+async function toggleFirebaseVideo(videoId) {
+  try {
+    const videoReference =
+      doc(db, "videos", videoId);
+
+    const videoSnapshot =
+      await getDoc(videoReference);
+
+    if (!videoSnapshot.exists()) {
+      alert("The video could not be found.");
+      return;
+    }
+
+    const currentStatus =
+      videoSnapshot.data().status;
+
+    await updateDoc(
+      videoReference,
+      {
+        status:
+          currentStatus === "published"
+            ? "hidden"
+            : "published"
+      }
+    );
+
+    await loadAdminVideos();
+
+  } catch (error) {
+    console.error("Video status update failed:", error);
+
+    alert("The video status could not be updated.");
+  }
+}
+
+
+async function removeFirebaseVideo(videoId) {
+  const confirmed =
+    confirm("Remove this video permanently?");
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    await deleteDoc(
+      doc(db, "videos", videoId)
+    );
+
+    await loadAdminVideos();
+
+    alert("Video removed successfully.");
+
+  } catch (error) {
+    console.error("Video removal failed:", error);
+
+    alert("The video could not be removed.");
+  }
+}
+
+
+document.addEventListener(
+  "click",
+  async function (event) {
+    const toggleButton =
+      event.target.closest("[data-video-toggle]");
+
+    if (toggleButton) {
+      await toggleFirebaseVideo(
+        toggleButton.dataset.videoToggle
+      );
+
+      return;
+    }
+
+    const removeButton =
+      event.target.closest("[data-video-remove]");
+
+    if (removeButton) {
+      await removeFirebaseVideo(
+        removeButton.dataset.videoRemove
       );
     }
   }

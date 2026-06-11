@@ -12,7 +12,9 @@
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=Caveat:wght@400;600&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="./css/style.css">
+  <link
+  rel="stylesheet"
+  href="./css/style.css?v=8">
 </head>
 
 <body>
@@ -44,56 +46,130 @@
 </nav> -->
 <!-- PUBLIC NAV -->
 <!-- MAIN NAVIGATION -->
-<nav class="main-nav">
+<!-- NAV -->
+<nav>
 
   <div
     class="nav-logo"
-    onclick="showTab('landing')">
+    onclick="openPublicSection('landing')">
     Browse <span>A</span> Teacher
   </div>
 
+
   <ul class="nav-links">
     <li>
-      <a href="#" onclick="showTab('landing'); return false;">
+      <button
+        type="button"
+        onclick="openPublicSection('landing')">
         Home
-      </a>
+      </button>
     </li>
 
     <li>
-      <a href="#" onclick="showTab('courses'); return false;">
+      <button
+        type="button"
+        onclick="openPublicSection('courses')">
         Courses
-      </a>
+      </button>
     </li>
 
     <li>
-      <a href="#" onclick="showTab('notes'); return false;">
+      <button
+        type="button"
+        onclick="openPublicSection('notes')">
         Notes
-      </a>
+      </button>
     </li>
 
     <li>
-      <a href="#" onclick="showTab('consult'); return false;">
+      <button
+        type="button"
+        onclick="openPublicSection('consult')">
         Consult
-      </a>
+      </button>
     </li>
   </ul>
 
+
   <div class="nav-cta">
+
     <button
       class="btn-ghost"
+      type="button"
       onclick="window.location.href='./login.html'">
       Login
     </button>
 
     <button
-  class="btn-primary"
-  onclick="window.location.href='./signup.html'">
-  Get Started
-</button>
+      class="btn-primary"
+      type="button"
+      onclick="openPublicSection('courses')">
+      Get Started
+    </button>
 
   </div>
 
+
+  <button
+    id="public-nav-toggle"
+    class="public-nav-toggle"
+    type="button"
+    aria-label="Open navigation"
+    aria-expanded="false"
+    onclick="togglePublicMobileNav()">
+    ☰
+  </button>
+
 </nav>
+
+
+<div
+  id="public-mobile-nav"
+  class="public-mobile-nav">
+
+  <button
+    type="button"
+    onclick="openPublicSection('landing'); closePublicMobileNav();">
+    Home
+  </button>
+
+  <button
+    type="button"
+    onclick="openPublicSection('courses'); closePublicMobileNav();">
+    Courses
+  </button>
+
+  <button
+    type="button"
+    onclick="openPublicSection('notes'); closePublicMobileNav();">
+    Notes
+  </button>
+
+  <button
+    type="button"
+    onclick="openPublicSection('consult'); closePublicMobileNav();">
+    Consult
+  </button>
+
+  <div class="public-mobile-nav-actions">
+
+    <button
+      class="btn-ghost"
+      type="button"
+      onclick="window.location.href='./login.html'">
+      Login
+    </button>
+
+    <button
+      class="btn-primary"
+      type="button"
+      onclick="openPublicSection('courses'); closePublicMobileNav();">
+      Get Started
+    </button>
+
+  </div>
+
+</div>
 
 
 <!-- PAGE TABS
@@ -752,11 +828,16 @@
 
 <script src="./js/password-toggle.js?v=3"></script>
 
-<script src="./js/common.js?v=4"></script>
+<script src="./js/common.js?v=5"></script>
 
 <script
   type="module"
-  src="./js/public-notes.js?v=1">
+  src="./js/public-notes.js?v=2">
+</script>
+
+<script
+  type="module"
+  src="./js/public-banners.js?v=1">
 </script>
 
 
