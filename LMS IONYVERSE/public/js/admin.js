@@ -1068,7 +1068,7 @@ function showAdminPanel(panelName, selectedSidebarItem) {
 
     if (panelName === "dashboard") {
   setTimeout(function () {
-    initializeDashboardChart();
+    
   }, 50);
 }
 
@@ -1629,147 +1629,6 @@ function initializeAnalyticsChart() {
 
 let dashboardEnrollmentsChart = null;
 
-function initializeDashboardChart() {
-  const canvas = document.getElementById(
-    "dashboard-enrollments-chart"
-  );
-
-  if (!canvas) {
-    return;
-  }
-
-  /*
-    Prevent duplicate charts when the admin returns
-    to the Dashboard page.
-  */
-  if (dashboardEnrollmentsChart) {
-    return;
-  }
-
-  if (typeof Chart === "undefined") {
-    console.error("Chart.js was not loaded.");
-    return;
-  }
-
-  dashboardEnrollmentsChart = new Chart(canvas, {
-    type: "bar",
-
-    data: {
-      labels: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug"
-      ],
-
-      datasets: [
-        {
-          label: "Student Enrollments",
-
-          data: [
-            68,
-            92,
-            81,
-            118,
-            104,
-            146,
-            128,
-            154
-          ],
-
-          backgroundColor: [
-            "rgba(240, 234, 214, 0.16)",
-            "rgba(240, 234, 214, 0.16)",
-            "rgba(240, 234, 214, 0.16)",
-            "rgba(240, 234, 214, 0.16)",
-            "rgba(240, 234, 214, 0.16)",
-            "rgba(255, 212, 0, 0.58)",
-            "rgba(240, 234, 214, 0.16)",
-            "rgba(240, 234, 214, 0.16)"
-          ],
-
-          borderColor: [
-            "rgba(240, 234, 214, 0.22)",
-            "rgba(240, 234, 214, 0.22)",
-            "rgba(240, 234, 214, 0.22)",
-            "rgba(240, 234, 214, 0.22)",
-            "rgba(240, 234, 214, 0.22)",
-            "rgba(255, 212, 0, 0.95)",
-            "rgba(240, 234, 214, 0.22)",
-            "rgba(240, 234, 214, 0.22)"
-          ],
-
-          borderWidth: 1,
-          borderRadius: 6,
-          maxBarThickness: 46
-        }
-      ]
-    },
-
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-
-      animation: {
-        duration: 700
-      },
-
-      plugins: {
-        legend: {
-          display: false
-        },
-
-        tooltip: {
-          displayColors: false,
-
-          callbacks: {
-            label: function (context) {
-              return context.parsed.y + " students enrolled";
-            }
-          }
-        }
-      },
-
-      scales: {
-        x: {
-          grid: {
-            display: false
-          },
-
-          ticks: {
-            color: "rgba(240, 234, 214, 0.55)",
-
-            font: {
-              family: "Space Mono",
-              size: 10
-            }
-          }
-        },
-
-        y: {
-          beginAtZero: true,
-
-          grid: {
-            color: "rgba(240, 234, 214, 0.08)"
-          },
-
-          ticks: {
-            color: "rgba(240, 234, 214, 0.55)",
-
-            font: {
-              family: "Space Mono",
-              size: 10
-            }
-          }
-        }
-      }
-    }
-  });
-}
 
 /* ======================================================
    EXISTING DASHBOARD FUNCTIONALITY
@@ -4178,7 +4037,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       try {
-        initializeDashboardChart();
+        
       } catch (error) {
         console.error("Dashboard chart error:", error);
       }

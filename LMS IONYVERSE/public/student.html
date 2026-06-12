@@ -145,12 +145,70 @@
         <div class="db-date" id="live-date">Friday, 06 Jun 2025</div>
         <div style="font-family:var(--hand);font-size:17px;color:var(--pastel-pink);opacity:0.6;margin-top:4px">let's pick up where you left off 🌸→</div>
       </div>
-      <div class="db-stats">
-        <div class="db-stat"><div class="db-stat-val" style="color:var(--yellow)">4</div><div class="db-stat-key">Enrolled</div></div>
-        <div class="db-stat"><div class="db-stat-val">12</div><div class="db-stat-key">Videos Watched</div></div>
-        <div class="db-stat"><div class="db-stat-val">3</div><div class="db-stat-key">PDFs Access</div></div>
-        <div class="db-stat"><div class="db-stat-val">1</div><div class="db-stat-key">Sessions</div></div>
-      </div>
+    <!-- STUDENT DASHBOARD LIVE COUNTS -->
+<div class="db-stats">
+
+  <div class="db-stat">
+
+    <div
+      id="student-dashboard-enrolled-count"
+      class="db-stat-val"
+      style="color:var(--yellow)">
+      0
+    </div>
+
+    <div class="db-stat-key">
+      Enrolled
+    </div>
+
+  </div>
+
+
+  <div class="db-stat">
+
+    <div
+      id="student-dashboard-video-count"
+      class="db-stat-val">
+      0
+    </div>
+
+    <div class="db-stat-key">
+      Videos Watched
+    </div>
+
+  </div>
+
+
+  <div class="db-stat">
+
+    <div
+      id="student-dashboard-pdf-count"
+      class="db-stat-val">
+      0
+    </div>
+
+    <div class="db-stat-key">
+      PDFs Access
+    </div>
+
+  </div>
+
+
+  <div class="db-stat">
+
+    <div
+      id="student-dashboard-session-count"
+      class="db-stat-val">
+      0
+    </div>
+
+    <div class="db-stat-key">
+      Sessions
+    </div>
+
+  </div>
+
+</div>
 
       <div class="db-recent">Continue Watching</div>
       <div>
@@ -215,22 +273,27 @@
       </div>
 
       <div style="margin-top:32px">
-        <div class="db-recent">Notifications</div>
-        <div style="display:flex;flex-direction:column;gap:1px">
-          <div class="student-dashboard-notification"
-  onclick="openStudentPanel('notifications')"
-  style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
-            <div style="width:6px;height:6px;background:var(--yellow);border-radius:50%;flex-shrink:0;margin-top:5px"></div>
-            <div><div style="font-size:13px;margin-bottom:2px">PDF request approved</div><div style="font-size:11px;color:var(--gray);font-family:var(--mono)">2 hours ago · Chemistry Notes 2024</div></div>
-          </div>
-          <div class="student-dashboard-notification"
-  onclick="openStudentPanel('notifications')"
-  style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
-            <div style="width:6px;height:6px;background:var(--border);border-radius:50%;flex-shrink:0;margin-top:5px"></div>
-            <div><div style="font-size:13px;margin-bottom:2px">New video added to your course</div><div style="font-size:11px;color:var(--gray);font-family:var(--mono)">Yesterday · Module 5: Differentiation</div></div>
-          </div>
-        </div>
-      </div>
+       <div style="margin-top:32px">
+
+  <div class="db-recent">
+    Notifications
+  </div>
+
+  <div
+    id="student-dashboard-notifications"
+    class="student-page-card"
+    style="
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:90px;
+      color:var(--ivory-dim);
+      text-align:center;
+    ">
+    New notifications will appear here.
+  </div>
+
+</div>
     </div>
   </div><!-- end db-body -->
   </div><!-- end student-dashboard -->
@@ -259,7 +322,7 @@
 
 <script
   type="module"
-  src="./js/student.js?v=27">
+  src="./js/student.js?v=28">
 </script>
 
 </body>

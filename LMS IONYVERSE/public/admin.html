@@ -129,56 +129,153 @@
         <div class="page-subtitle">Overview of platform activity and management</div>
       </div>
 
-      <div class="analytics-grid">
-        <div class="ana-card">
-          <div class="ana-label">Total Students</div>
-          <div class="ana-val">2,418</div>
-          <div class="ana-delta">+124 this month</div>
-        </div>
-        <div class="ana-card">
-          <div class="ana-label">Total Videos</div>
-          <div class="ana-val">186</div>
-          <div class="ana-delta">+8 this week</div>
-        </div>
-        <div class="ana-card">
-          <div class="ana-label">🌟 Consultations</div>
-          <div class="ana-val">34</div>
-          <div class="ana-delta">12 pending review</div>
-        </div>
-        <div class="ana-card">
-          <div class="ana-label">📥 PDF Requests</div>
-          <div class="ana-val">21</div>
-          <div class="ana-delta">5 awaiting approval</div>
-        </div>
-      </div>
+      <!-- ADMIN DASHBOARD LIVE COUNTS -->
+<div class="analytics-grid">
 
-      <div class="two-col" style="margin-bottom:32px">
-        <div>
-          <div class="db-recent" style="margin-bottom:16px">Monthly Enrollments</div>
-          <div class="analytics-chart-wrap">
-            <canvas id="dashboard-enrollments-chart"></canvas>
-          </div>
-        </div>
-        <div>
-         <div
-  id="admin-dashboard-recent-activity"
-  style="
-    border:1px solid var(--border);
-    border-radius:2px;
-    background:var(--card-bg);
-  ">
+  <div class="ana-card">
 
-  <div style="
-    padding:18px 16px;
-    color:var(--ivory-dim);
-    font-size:12px;
-  ">
-    Recent activity will appear here.
+    <div class="ana-label">
+      Total Students
+    </div>
+
+    <div
+      id="admin-dashboard-student-count"
+      class="ana-val">
+      0
+    </div>
+
+    <div
+      id="admin-dashboard-student-note"
+      class="ana-delta">
+      No live data yet
+    </div>
+
+  </div>
+
+
+  <div class="ana-card">
+
+    <div class="ana-label">
+      Total Videos
+    </div>
+
+    <div
+      id="admin-dashboard-video-count"
+      class="ana-val">
+      0
+    </div>
+
+    <div
+      id="admin-dashboard-video-note"
+      class="ana-delta">
+      No live data yet
+    </div>
+
+  </div>
+
+
+  <div class="ana-card">
+
+    <div class="ana-label">
+      🌟 Consultations
+    </div>
+
+    <div
+      id="admin-dashboard-consultation-count"
+      class="ana-val">
+      0
+    </div>
+
+    <div
+      id="admin-dashboard-consultation-note"
+      class="ana-delta">
+      No live data yet
+    </div>
+
+  </div>
+
+
+  <div class="ana-card">
+
+    <div class="ana-label">
+      📥 PDF Requests
+    </div>
+
+    <div
+      id="admin-dashboard-pdf-request-count"
+      class="ana-val">
+      0
+    </div>
+
+    <div
+      id="admin-dashboard-pdf-request-note"
+      class="ana-delta">
+      No live data yet
+    </div>
+
   </div>
 
 </div>
-        </div>
+
+      <div
+  class="two-col"
+  style="margin-bottom:32px">
+
+  <!-- MONTHLY ENROLLMENTS -->
+  <div>
+
+    <div
+      class="db-recent"
+      style="margin-bottom:16px">
+      Monthly Enrollments
+    </div>
+
+    <div class="admin-page-card">
+
+      <div
+        id="admin-dashboard-enrollment-placeholder"
+        style="
+          min-height:220px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:var(--ivory-dim);
+          text-align:center;
+        ">
+        Monthly enrollment statistics will appear here.
       </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- RECENT ACTIVITY -->
+  <div>
+
+    <div
+      class="db-recent"
+      style="margin-bottom:16px">
+      Recent Activity
+    </div>
+
+    <div
+      id="admin-dashboard-recent-activity"
+      class="admin-page-card"
+      style="
+        min-height:220px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:var(--ivory-dim);
+        text-align:center;
+      ">
+      Recent activity will appear here.
+    </div>
+
+  </div>
+
+</div>
 
       <div class="table-wrap">
         <div class="table-head-row">
@@ -254,7 +351,7 @@
 
 <script
   type="module"
-  src="./js/admin.js?v=20">
+  src="./js/admin.js?v=21">
 </script>
 
 </body>
