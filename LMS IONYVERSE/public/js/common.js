@@ -40,7 +40,21 @@ function switchLib(tab){
   document.getElementById('lib-tab-pdfs').style.cssText = tab==='pdfs'
     ? 'padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--yellow);background:none;border:none;cursor:pointer;border-bottom:2px solid var(--yellow);margin-bottom:-1px'
     : 'padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--gray);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px';
+
+const activeSubjectButton =
+  document.querySelector(
+    ".public-subject-filter.active"
+  );
+
+if (activeSubjectButton) {
+  window.filterPublicLibrarySubject(
+    activeSubjectButton.dataset
+      .librarySubject,
+    activeSubjectButton
+  );
 }
+
+  }
 
 // Video Modal
 function openVideoModal(title, teacher, subject){
@@ -620,3 +634,186 @@ window.addEventListener(
     }
   }
 );
+
+/* ======================================================
+   PUBLIC COURSE LIBRARY SUBJECT FILTERS
+====================================================== */
+
+window.filterPublicLibrarySubject =
+  function (
+    selectedSubject,
+    clickedButton
+  ) {
+    const subject =
+      String(
+        selectedSubject || "all"
+      )
+        .trim()
+        .toLowerCase();
+
+
+    /*
+      Update the selected button design.
+    */
+    document
+      .querySelectorAll(
+        ".public-subject-filter"
+      )
+      .forEach(function (button) {
+        button.classList.remove(
+          "active"
+        );
+      });
+
+
+    if (clickedButton) {
+      clickedButton.classList.add(
+        "active"
+      );
+    }
+
+
+    /*
+      Filter both:
+      - Video Course cards
+      - PDF Resource cards
+
+      Existing cards are detected using
+      their visible subject text.
+    */
+    const libraryCards =
+      document.querySelectorAll(
+        "#lib-videos .course-card, " +
+        "#lib-pdfs .course-card"
+      );
+
+
+    libraryCards.forEach(
+      function (card) {
+        const cardText =
+          card.textContent
+            .trim()
+            .toLowerCase();
+
+
+        const shouldShow =
+          subject === "all" ||
+          cardText.includes(
+            subject
+          );
+
+
+        card.style.display =
+          shouldShow
+            ? ""
+            : "none";
+      }
+    );
+
+
+    /*
+      Show a friendly message if a subject
+      does not currently have uploaded items.
+    */
+    updatePublicLibraryEmptyMessage(
+      subject
+    );
+  };
+
+
+/* ------------------------------------------------------
+   DISPLAY EMPTY SUBJECT MESSAGE
+------------------------------------------------------ */
+
+function updatePublicLibraryEmptyMessage(
+  selectedSubject
+) {
+  const activeLibrary =
+    document.getElementById(
+      "lib-videos"
+    )?.style.display === "none"
+      ? document.getElementById(
+          "lib-pdfs"
+        )
+      : document.getElementById(
+          "lib-videos"
+        );
+
+
+  if (!activeLibrary) {
+    return;
+  }
+
+
+  let emptyMessage =
+    document.getElementById(
+      "public-library-empty-message"
+    );
+
+
+  if (!emptyMessage) {
+    emptyMessage =
+      document.createElement(
+        "div"
+      );
+
+    emptyMessage.id =
+      "public-library-empty-message";
+
+    emptyMessage.className =
+      "public-library-empty-message";
+
+    activeLibrary.appendChild(
+      emptyMessage
+    );
+  }
+
+
+  /*
+    Move the message into the currently
+    selected Videos or PDFs tab.
+  */
+  if (
+    emptyMessage.parentElement !==
+    activeLibrary
+  ) {
+    activeLibrary.appendChild(
+      emptyMessage
+    );
+  }
+
+
+  const visibleCards =
+    activeLibrary.querySelectorAll(
+      ".course-card:not([style*='display: none'])"
+    );
+
+
+  if (visibleCards.length > 0) {
+    emptyMessage.style.display =
+      "none";
+
+    return;
+  }
+
+
+  const label =
+    selectedSubject === "all"
+      ? "this section"
+      : selectedSubject.replace(
+          /\b\w/g,
+          function (letter) {
+            return letter.toUpperCase();
+          }
+        );
+
+
+  emptyMessage.textContent =
+    "No resources are available for " +
+    label +
+    " yet.";
+
+
+  emptyMessage.style.display =
+    "block";
+}
