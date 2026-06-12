@@ -4530,3 +4530,219 @@ body:not(.dashboard-page) .hero {
       11px;
   }
 }
+
+/* ======================================================
+   LIVE MONTHLY ENROLLMENT CHART
+====================================================== */
+
+.live-enrollment-chart {
+  display: grid;
+
+  grid-template-columns:
+    repeat(12, minmax(0, 1fr));
+
+  align-items: end;
+
+  gap: 8px;
+
+  min-height: 220px;
+
+  padding:
+    8px
+    4px
+    0;
+}
+
+
+.live-enrollment-column {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  min-width: 0;
+
+  height: 210px;
+}
+
+
+.live-enrollment-count {
+  margin-bottom: 6px;
+
+  color:
+    var(--ivory-dim);
+
+  font-family:
+    var(--mono);
+
+  font-size: 9px;
+}
+
+
+.live-enrollment-track {
+  position: relative;
+
+  width: 100%;
+  height: 160px;
+
+  overflow: hidden;
+
+  border-radius:
+    5px
+    5px
+    0
+    0;
+
+  background:
+    rgba(
+      240,
+      234,
+      214,
+      0.04
+    );
+}
+
+
+.live-enrollment-bar {
+  position: absolute;
+
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  border-radius:
+    5px
+    5px
+    0
+    0;
+
+  background:
+    rgba(
+      255,
+      212,
+      0,
+      0.64
+    );
+
+  transition:
+    height
+    0.35s
+    ease;
+}
+
+
+.live-enrollment-month {
+  margin-top: 7px;
+
+  color:
+    var(--ivory-dim);
+
+  font-family:
+    var(--mono);
+
+  font-size: 9px;
+}
+
+
+.live-dashboard-activity {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding:
+    13px
+    16px;
+
+  border-bottom:
+    1px solid
+    var(--ivory-border);
+}
+
+
+.live-dashboard-activity:last-child {
+  border-bottom:
+    none;
+}
+
+
+.live-dashboard-activity-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--yellow);
+}
+
+
+.live-dashboard-activity-text {
+  color:
+    var(--ivory);
+
+  font-size:
+    12px;
+}
+
+
+.live-dashboard-activity-time {
+  margin-top:
+    3px;
+
+  color:
+    var(--ivory-dim);
+
+  font-family:
+    var(--mono);
+
+  font-size:
+    9px;
+}
+
+
+.dashboard-empty-state {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    210px;
+
+  padding:
+    20px;
+
+  color:
+    var(--ivory-dim);
+
+  text-align:
+    center;
+}
+
+
+@media (
+  max-width: 720px
+) {
+  .live-enrollment-chart {
+    overflow-x:
+      auto;
+
+    grid-template-columns:
+      repeat(
+        12,
+        42px
+      );
+  }
+}

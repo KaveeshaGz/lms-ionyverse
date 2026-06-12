@@ -65,7 +65,8 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
-  serverTimestamp
+  serverTimestamp,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 import {
@@ -3941,7 +3942,1328 @@ window.removeFirebaseStudyNote =
   };
 
 
+/* ======================================================
+   LIVE FIREBASE ADMIN DASHBOARD
+====================================================== */
 
+let liveAdminDashboardConnected =
+  false;
+
+
+const liveAdminDashboardState = {
+  students: [],
+  videos: [],
+  consultations: [],
+  pdfRequests: []
+};
+
+
+/* ------------------------------------------------------
+   CONNECT FIRESTORE LIVE LISTENERS ONCE
+------------------------------------------------------ */
+
+function connectLiveAdminDashboard() {
+  if (
+    liveAdminDashboardConnected
+  ) {
+    return;
+  }
+
+
+  liveAdminDashboardConnected =
+    true;
+
+
+  /*
+    STUDENTS
+  */
+  onSnapshot(
+    collection(
+      db,
+      "users"
+    ),
+
+    function (snapshot) {
+      const students = [];
+
+
+      snapshot.forEach(
+        function (studentDocument) {
+          const profile =
+            studentDocument.data();
+
+
+          if (
+            profile.role ===
+            "student"
+          ) {
+            students.push({
+              id:
+                studentDocument.id,
+
+              ...profile
+            });
+          }
+        }
+      );
+
+
+      liveAdminDashboardState.students =
+        students;
+
+
+      renderLiveAdminDashboard();
+    },
+
+    function (error) {
+      console.error(
+        "Live students dashboard error:",
+        error
+      );
+    }
+  );
+
+
+  /*
+    VIDEOS
+  */
+  onSnapshot(
+    collection(
+      db,
+      "videos"
+    ),
+
+    function (snapshot) {
+      const videos = [];
+
+
+      snapshot.forEach(
+        function (videoDocument) {
+          videos.push({
+            id:
+              videoDocument.id,
+
+            ...videoDocument.data()
+          });
+        }
+      );
+
+
+      liveAdminDashboardState.videos =
+        videos;
+
+
+      renderLiveAdminDashboard();
+    },
+
+    function (error) {
+      console.error(
+        "Live videos dashboard error:",
+        error
+      );
+    }
+  );
+
+
+  /*
+    CONSULTATION REQUESTS
+  */
+  onSnapshot(
+    collection(
+      db,
+      "consultationRequests"
+    ),
+
+    function (snapshot) {
+      const consultations = [];
+
+
+      snapshot.forEach(
+        function (
+          consultationDocument
+        ) {
+          consultations.push({
+            id:
+              consultationDocument.id,
+
+            ...consultationDocument.data()
+          });
+        }
+      );
+
+
+      liveAdminDashboardState
+        .consultations =
+          consultations;
+
+
+      renderLiveAdminDashboard();
+    },
+
+    function (error) {
+      console.error(
+        "Live consultation dashboard error:",
+        error
+      );
+    }
+  );
+
+
+  /*
+    PDF REQUESTS
+  */
+  onSnapshot(
+    collection(
+      db,
+      "pdfRequests"
+    ),
+
+    function (snapshot) {
+      const pdfRequests = [];
+
+
+      snapshot.forEach(
+        function (
+          pdfRequestDocument
+        ) {
+          pdfRequests.push({
+            id:
+              pdfRequestDocument.id,
+
+            ...pdfRequestDocument.data()
+          });
+        }
+      );
+
+
+      liveAdminDashboardState
+        .pdfRequests =
+          pdfRequests;
+
+
+      renderLiveAdminDashboard();
+    },
+
+    function (error) {
+      console.error(
+        "Live PDF request dashboard error:",
+        error
+      );
+    }
+  );
+
+
+  console.log(
+    "Live Firebase admin dashboard connected."
+  );
+}
+
+
+/* ------------------------------------------------------
+   RENDER ALL LIVE DASHBOARD AREAS
+------------------------------------------------------ */
+
+function renderLiveAdminDashboard() {
+  renderLiveDashboardTopCards();
+
+  renderLiveMonthlyEnrollments();
+
+  renderLiveRecentActivity();
+
+  renderLiveDashboardStudents();
+
+  renderLiveDashboardConsultations();
+}
+
+
+/* ------------------------------------------------------
+   TOP SUMMARY CARDS
+------------------------------------------------------ */
+
+function renderLiveDashboardTopCards() {
+  const {
+    students,
+    videos,
+    consultations,
+    pdfRequests
+  } = liveAdminDashboardState;
+
+
+  const pendingStudents =
+    students.filter(
+      function (student) {
+        return (
+          student.status ===
+          "pending"
+        );
+      }
+    ).length;
+
+
+  const publishedVideos =
+    videos.filter(
+      function (video) {
+        return (
+          video.status ===
+          "published"
+        );
+      }
+    ).length;
+
+
+  const pendingConsultations =
+    consultations.filter(
+      function (request) {
+        return (
+          request.status ===
+          "pending"
+        );
+      }
+    ).length;
+
+
+  const pendingPdfRequests =
+    pdfRequests.filter(
+      function (request) {
+        return (
+          request.status ===
+          "pending"
+        );
+      }
+    ).length;
+
+
+  setDashboardText(
+    "admin-dashboard-student-count",
+    students.length
+  );
+
+
+  setDashboardText(
+    "admin-dashboard-student-note",
+    pendingStudents +
+      " pending approval"
+  );
+
+
+  setDashboardText(
+    "admin-dashboard-video-count",
+    videos.length
+  );
+
+
+  setDashboardText(
+    "admin-dashboard-video-note",
+    publishedVideos +
+      " published"
+  );
+
+
+  setDashboardText(
+    "admin-dashboard-consultation-count",
+    consultations.length
+  );
+
+
+  setDashboardText(
+    "admin-dashboard-consultation-note",
+    pendingConsultations +
+      " pending review"
+  );
+
+
+  setDashboardText(
+    "admin-dashboard-pdf-request-count",
+    pdfRequests.length
+  );
+
+
+  setDashboardText(
+    "admin-dashboard-pdf-request-note",
+    pendingPdfRequests +
+      " awaiting approval"
+  );
+}
+
+
+/* ------------------------------------------------------
+   REAL MONTHLY STUDENT ENROLLMENTS
+------------------------------------------------------ */
+
+function renderLiveMonthlyEnrollments() {
+  const container =
+    document.getElementById(
+      "admin-dashboard-enrollment-placeholder"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  const currentYear =
+    new Date().getFullYear();
+
+
+  const monthLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+
+  const monthCounts =
+    new Array(12).fill(0);
+
+
+  liveAdminDashboardState
+    .students
+    .forEach(
+      function (student) {
+        const createdDate =
+          convertFirebaseTimestamp(
+            student.createdAt
+          );
+
+
+        if (
+          !createdDate ||
+          createdDate.getFullYear() !==
+            currentYear
+        ) {
+          return;
+        }
+
+
+        monthCounts[
+          createdDate.getMonth()
+        ] += 1;
+      }
+    );
+
+
+  const maximumCount =
+    Math.max(
+      ...monthCounts,
+      1
+    );
+
+
+  container.style.display =
+    "block";
+
+
+  container.style.minHeight =
+    "220px";
+
+
+  container.innerHTML = `
+    <div class="live-enrollment-chart">
+
+      ${monthLabels
+        .map(
+          function (
+            label,
+            index
+          ) {
+            const count =
+              monthCounts[index];
+
+
+            const height =
+              Math.max(
+                count === 0
+                  ? 4
+                  : (
+                    count /
+                    maximumCount
+                  ) * 100,
+
+                4
+              );
+
+
+            return `
+              <div
+                class="live-enrollment-column">
+
+                <div
+                  class="live-enrollment-count">
+                  ${count}
+                </div>
+
+                <div
+                  class="live-enrollment-track">
+
+                  <div
+                    class="live-enrollment-bar"
+                    style="
+                      height:${height}%
+                    ">
+                  </div>
+
+                </div>
+
+                <div
+                  class="live-enrollment-month">
+                  ${label}
+                </div>
+
+              </div>
+            `;
+          }
+        )
+        .join("")}
+
+    </div>
+  `;
+}
+
+
+/* ------------------------------------------------------
+   REAL RECENT ACTIVITY
+------------------------------------------------------ */
+
+function renderLiveRecentActivity() {
+  const container =
+    document.getElementById(
+      "admin-dashboard-recent-activity"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  const activities = [];
+
+
+  liveAdminDashboardState
+    .students
+    .forEach(
+      function (student) {
+        activities.push({
+          type:
+            "student",
+
+          message:
+            "Student registered: " +
+            (
+              student.name ||
+              student.email ||
+              "Student"
+            ),
+
+          createdAt:
+            student.createdAt
+        });
+      }
+    );
+
+
+  liveAdminDashboardState
+    .videos
+    .forEach(
+      function (video) {
+        activities.push({
+          type:
+            "video",
+
+          message:
+            "Video published: " +
+            (
+              video.title ||
+              "Video lesson"
+            ),
+
+          createdAt:
+            video.createdAt
+        });
+      }
+    );
+
+
+  liveAdminDashboardState
+    .consultations
+    .forEach(
+      function (request) {
+        activities.push({
+          type:
+            "consultation",
+
+          message:
+            "Consultation request: " +
+            (
+              request.studentName ||
+              "Student"
+            ),
+
+          createdAt:
+            request.createdAt
+        });
+      }
+    );
+
+
+  liveAdminDashboardState
+    .pdfRequests
+    .forEach(
+      function (request) {
+        activities.push({
+          type:
+            "pdf",
+
+          message:
+            "PDF request: " +
+            (
+              request.studentName ||
+              "Student"
+            ),
+
+          createdAt:
+            request.createdAt
+        });
+      }
+    );
+
+
+  activities.sort(
+    function (
+      firstActivity,
+      secondActivity
+    ) {
+      return (
+        getFirebaseTimestampSeconds(
+          secondActivity.createdAt
+        ) -
+        getFirebaseTimestampSeconds(
+          firstActivity.createdAt
+        )
+      );
+    }
+  );
+
+
+  const latestActivities =
+    activities.slice(
+      0,
+      10
+    );
+
+
+  container.style.display =
+    "block";
+
+
+  container.style.padding =
+    "0";
+
+
+  container.style.overflowY =
+    "auto";
+
+
+  if (
+    latestActivities.length ===
+    0
+  ) {
+    container.innerHTML = `
+      <div class="dashboard-empty-state">
+        Recent activity will appear here.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    latestActivities
+      .map(
+        function (activity) {
+          return `
+            <div
+              class="live-dashboard-activity">
+
+              <div
+                class="live-dashboard-activity-dot">
+              </div>
+
+              <div>
+
+                <div
+                  class="live-dashboard-activity-text">
+                  ${escapeLiveDashboardText(
+                    activity.message
+                  )}
+                </div>
+
+                <div
+                  class="live-dashboard-activity-time">
+                  ${formatRelativeDashboardTime(
+                    activity.createdAt
+                  )}
+                </div>
+
+              </div>
+
+            </div>
+          `;
+        }
+      )
+      .join("");
+}
+
+
+/* ------------------------------------------------------
+   REAL STUDENT MANAGEMENT TABLE
+------------------------------------------------------ */
+
+function renderLiveDashboardStudents() {
+  const tableBody =
+    document.getElementById(
+      "admin-dashboard-students-body"
+    );
+
+
+  if (!tableBody) {
+    return;
+  }
+
+
+  const students =
+    [
+      ...liveAdminDashboardState
+        .students
+    ]
+      .sort(
+        function (
+          firstStudent,
+          secondStudent
+        ) {
+          return (
+            getFirebaseTimestampSeconds(
+              secondStudent.createdAt
+            ) -
+            getFirebaseTimestampSeconds(
+              firstStudent.createdAt
+            )
+          );
+        }
+      )
+      .slice(
+        0,
+        8
+      );
+
+
+  if (
+    students.length ===
+    0
+  ) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5">
+          No students have registered yet.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+
+  tableBody.innerHTML =
+    students
+      .map(
+        function (student) {
+          return `
+            <tr>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  student.name ||
+                  student.email ||
+                  "Student"
+                )}
+              </td>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  student.subject ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${formatDashboardDate(
+                  student.createdAt
+                )}
+              </td>
+
+              <td>
+                ${createLiveStudentBadge(
+                  student.status
+                )}
+              </td>
+
+              <td>
+                ${createLiveStudentAction(
+                  student
+                )}
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+}
+
+
+/* ------------------------------------------------------
+   REAL CONSULTATION REQUEST TABLE
+------------------------------------------------------ */
+
+function renderLiveDashboardConsultations() {
+  const tableBody =
+    document.getElementById(
+      "admin-dashboard-consultations-body"
+    );
+
+
+  if (!tableBody) {
+    return;
+  }
+
+
+  const consultations =
+    [
+      ...liveAdminDashboardState
+        .consultations
+    ]
+      .sort(
+        function (
+          firstRequest,
+          secondRequest
+        ) {
+          return (
+            getFirebaseTimestampSeconds(
+              secondRequest.createdAt
+            ) -
+            getFirebaseTimestampSeconds(
+              firstRequest.createdAt
+            )
+          );
+        }
+      )
+      .slice(
+        0,
+        8
+      );
+
+
+  if (
+    consultations.length ===
+    0
+  ) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          No consultation requests have been submitted yet.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+
+  tableBody.innerHTML =
+    consultations
+      .map(
+        function (request) {
+          return `
+            <tr>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  request.studentName ||
+                  "Student"
+                )}
+              </td>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  request.subject ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  request.preferredDate ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                Consultation
+              </td>
+
+              <td>
+                ${createLiveConsultationBadge(
+                  request.status
+                )}
+              </td>
+
+              <td>
+                ${createLiveConsultationActions(
+                  request
+                )}
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+}
+
+
+/* ------------------------------------------------------
+   STUDENT STATUS ACTION
+------------------------------------------------------ */
+
+document.addEventListener(
+  "click",
+
+  async function (event) {
+    const statusButton =
+      event.target.closest(
+        "[data-live-student-status]"
+      );
+
+
+    if (!statusButton) {
+      return;
+    }
+
+
+    const studentUid =
+      statusButton.dataset
+        .liveStudentStatus;
+
+
+    const newStatus =
+      statusButton.dataset
+        .newStatus;
+
+
+    if (
+      !studentUid ||
+      !newStatus
+    ) {
+      return;
+    }
+
+
+    const confirmed =
+      confirm(
+        "Change this student's status to " +
+        newStatus +
+        "?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    statusButton.disabled =
+      true;
+
+
+    try {
+      await updateDoc(
+        doc(
+          db,
+          "users",
+          studentUid
+        ),
+
+        {
+          status:
+            newStatus
+        }
+      );
+
+
+    } catch (error) {
+      console.error(
+        "Student dashboard status update failed:",
+        error
+      );
+
+
+      alert(
+        "The student status could not be updated."
+      );
+
+
+      statusButton.disabled =
+        false;
+    }
+  }
+);
+
+
+/* ------------------------------------------------------
+   LIVE DASHBOARD HELPERS
+------------------------------------------------------ */
+
+function setDashboardText(
+  elementId,
+  value
+) {
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+
+  if (element) {
+    element.textContent =
+      String(value);
+  }
+}
+
+
+function createLiveStudentBadge(
+  status
+) {
+  if (
+    status ===
+    "active"
+  ) {
+    return `
+      <span class="badge badge-green">
+        Active
+      </span>
+    `;
+  }
+
+
+  if (
+    status ===
+    "suspended"
+  ) {
+    return `
+      <span class="badge badge-red">
+        Suspended
+      </span>
+    `;
+  }
+
+
+  return `
+    <span class="badge badge-yellow">
+      Pending
+    </span>
+  `;
+}
+
+
+function createLiveStudentAction(
+  student
+) {
+  if (
+    student.status ===
+    "active"
+  ) {
+    return `
+      <button
+        class="act-btn danger"
+        type="button"
+        data-live-student-status="${escapeLiveDashboardText(
+          student.id
+        )}"
+        data-new-status="suspended">
+        Suspend
+      </button>
+    `;
+  }
+
+
+  return `
+    <button
+      class="act-btn"
+      type="button"
+      data-live-student-status="${escapeLiveDashboardText(
+        student.id
+      )}"
+      data-new-status="active">
+      Activate
+    </button>
+  `;
+}
+
+
+function createLiveConsultationBadge(
+  status
+) {
+  if (
+    status ===
+    "approved"
+  ) {
+    return `
+      <span class="badge badge-green">
+        Approved
+      </span>
+    `;
+  }
+
+
+  if (
+    status ===
+    "rejected"
+  ) {
+    return `
+      <span class="badge badge-red">
+        Rejected
+      </span>
+    `;
+  }
+
+
+  return `
+    <span class="badge badge-yellow">
+      Pending
+    </span>
+  `;
+}
+
+
+function createLiveConsultationActions(
+  request
+) {
+  if (
+    request.status !==
+    "pending"
+  ) {
+    return `
+      <span
+        style="
+          color:var(--ivory-dim);
+          font-size:12px;
+        ">
+        Reviewed
+      </span>
+    `;
+  }
+
+
+  return `
+    <div class="action-row">
+
+      <button
+        class="act-btn"
+        type="button"
+        data-consultation-approve="${escapeLiveDashboardText(
+          request.id
+        )}">
+        Approve
+      </button>
+
+      <button
+        class="act-btn danger"
+        type="button"
+        data-consultation-reject="${escapeLiveDashboardText(
+          request.id
+        )}">
+        Reject
+      </button>
+
+    </div>
+  `;
+}
+
+
+function convertFirebaseTimestamp(
+  timestamp
+) {
+  if (
+    !timestamp
+  ) {
+    return null;
+  }
+
+
+  if (
+    typeof timestamp.toDate ===
+    "function"
+  ) {
+    return timestamp.toDate();
+  }
+
+
+  const date =
+    new Date(
+      timestamp
+    );
+
+
+  return Number.isNaN(
+    date.getTime()
+  )
+    ? null
+    : date;
+}
+
+
+function getFirebaseTimestampSeconds(
+  timestamp
+) {
+  if (
+    timestamp?.seconds
+  ) {
+    return timestamp.seconds;
+  }
+
+
+  const date =
+    convertFirebaseTimestamp(
+      timestamp
+    );
+
+
+  return date
+    ? Math.floor(
+        date.getTime() /
+        1000
+      )
+    : 0;
+}
+
+
+function formatDashboardDate(
+  timestamp
+) {
+  const date =
+    convertFirebaseTimestamp(
+      timestamp
+    );
+
+
+  if (!date) {
+    return "—";
+  }
+
+
+  return date
+    .toLocaleDateString(
+      "en-GB"
+    );
+}
+
+
+function formatRelativeDashboardTime(
+  timestamp
+) {
+  const date =
+    convertFirebaseTimestamp(
+      timestamp
+    );
+
+
+  if (!date) {
+    return "Recently";
+  }
+
+
+  const seconds =
+    Math.max(
+      0,
+      Math.floor(
+        (
+          Date.now() -
+          date.getTime()
+        ) /
+        1000
+      )
+    );
+
+
+  if (
+    seconds <
+    60
+  ) {
+    return "Just now";
+  }
+
+
+  if (
+    seconds <
+    3600
+  ) {
+    return (
+      Math.floor(
+        seconds /
+        60
+      ) +
+      " mins ago"
+    );
+  }
+
+
+  if (
+    seconds <
+    86400
+  ) {
+    return (
+      Math.floor(
+        seconds /
+        3600
+      ) +
+      " hours ago"
+    );
+  }
+
+
+  return (
+    Math.floor(
+      seconds /
+      86400
+    ) +
+    " days ago"
+  );
+}
+
+
+function escapeLiveDashboardText(
+  value
+) {
+  return String(
+    value || ""
+  )
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 
 
@@ -4026,6 +5348,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         setupDashboardExtras();
+        connectLiveAdminDashboard();
       } catch (error) {
         console.error("Dashboard extras error:", error);
       }
