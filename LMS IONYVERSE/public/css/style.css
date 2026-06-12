@@ -3197,17 +3197,7 @@ body,
     );
 }
 
-.public-banner-image {
-  display: block;
 
-  width: 100%;
-
-  aspect-ratio:
-    4 / 5;
-
-  object-fit:
-    cover;
-}
 
 .public-banner-caption {
   padding:
@@ -4092,5 +4082,451 @@ body:not(.dashboard-page) .hero {
   .public-banner-caption {
     font-size:
       12px;
+  }
+}
+
+/* ======================================================
+   FINAL TEACHER ADVERTISEMENT IMAGE VISIBILITY FIX
+   Show full banner image without cropping sides or corners
+====================================================== */
+
+/*
+  Slightly wider advertisement area on desktop.
+*/
+.public-course-layout {
+  grid-template-columns:
+    minmax(0, 1fr)
+    300px;
+
+  gap: 28px;
+}
+
+
+/*
+  Keep each advertisement card neat while protecting
+  the image corners from being cut off.
+*/
+.public-banner-card {
+  display: block;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  padding: 5px;
+
+  border:
+    1px solid
+    rgba(240, 234, 214, 0.22);
+
+  border-radius:
+    14px;
+
+  background:
+    #111111;
+
+  box-sizing:
+    border-box;
+}
+
+
+/*
+  IMPORTANT:
+  contain = show the complete advertisement image.
+  cover = crop parts of the image.
+*/
+.public-banner-image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  aspect-ratio:
+    auto;
+
+  object-fit:
+    contain;
+
+  border-radius:
+    10px;
+
+  background:
+    #ffffff;
+}
+
+
+/*
+  Keep the title clearly separated below the image.
+*/
+.public-banner-caption {
+  padding:
+    12px
+    9px
+    8px;
+
+  color:
+    var(--ivory);
+
+  font-size:
+    12px;
+
+  font-weight:
+    500;
+
+  line-height:
+    1.45;
+}
+
+
+/* ------------------------------------------------------
+   TABLET
+------------------------------------------------------ */
+
+@media (max-width: 900px) {
+  .public-course-layout {
+    display:
+      block !important;
+  }
+
+  .public-banner-sidebar:not([hidden]) {
+    display:
+      block !important;
+
+    position:
+      static !important;
+
+    width:
+      100% !important;
+
+    margin-top:
+      30px !important;
+  }
+
+  .public-banner-list {
+    display:
+      grid !important;
+
+    grid-auto-flow:
+      column !important;
+
+    grid-auto-columns:
+      260px !important;
+
+    gap:
+      14px !important;
+
+    overflow-x:
+      auto !important;
+
+    overflow-y:
+      hidden !important;
+
+    padding:
+      4px
+      4px
+      16px !important;
+
+    scroll-snap-type:
+      x proximity;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+  .public-banner-card {
+    scroll-snap-align:
+      start;
+  }
+}
+
+
+/* ------------------------------------------------------
+   MOBILE
+------------------------------------------------------ */
+
+@media (max-width: 520px) {
+  .public-banner-list {
+    grid-auto-columns:
+      82vw !important;
+  }
+
+  .public-banner-card {
+    padding:
+      4px;
+  }
+}
+
+/* ======================================================
+   FINAL PUBLIC TEACHER ADVERTISEMENT LAYOUT
+   Full image visibility on desktop, tablet and mobile
+====================================================== */
+
+/* ------------------------------------------------------
+   DESKTOP
+------------------------------------------------------ */
+
+.public-course-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    clamp(250px, 18vw, 310px);
+
+  align-items: start;
+
+  gap: 22px;
+
+  width: 100%;
+}
+
+
+.public-course-layout.no-banners {
+  grid-template-columns:
+    minmax(0, 1fr);
+}
+
+
+.public-course-main {
+  min-width: 0;
+}
+
+
+.public-banner-sidebar {
+  position: sticky;
+
+  top: 104px;
+
+  display: block;
+
+  width: 100%;
+
+  min-width: 0;
+  max-width: 310px;
+}
+
+
+.public-banner-sidebar[hidden] {
+  display: none !important;
+}
+
+
+.public-banner-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/*
+  Each card uses its natural image height.
+  No sides or corners are cut off.
+*/
+.public-banner-card {
+  display: block;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  padding: 4px;
+
+  border:
+    1px solid
+    rgba(240, 234, 214, 0.22);
+
+  border-radius:
+    14px;
+
+  background:
+    var(--card-bg);
+
+  color:
+    var(--ivory);
+
+  text-decoration:
+    none;
+
+  box-sizing:
+    border-box;
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+
+.public-banner-card:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(255, 212, 0, 0.62);
+
+  box-shadow:
+    0 14px 28px
+    rgba(0, 0, 0, 0.34);
+}
+
+
+/*
+  IMPORTANT:
+  contain displays the complete advertisement.
+  height:auto prevents stretching.
+*/
+.public-banner-image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  max-width: 100%;
+
+  object-fit:
+    contain;
+
+  border-radius:
+    10px;
+
+  background:
+    #ffffff;
+}
+
+
+/*
+  Keep title below the image instead of covering it.
+*/
+.public-banner-caption {
+  position: static;
+
+  padding:
+    10px
+    9px
+    8px;
+
+  color:
+    var(--ivory);
+
+  font-size:
+    12px;
+
+  font-weight:
+    500;
+
+  line-height:
+    1.45;
+}
+
+
+/* ------------------------------------------------------
+   TABLET
+------------------------------------------------------ */
+
+@media (max-width: 900px) {
+
+  .public-course-layout {
+    display:
+      block !important;
+  }
+
+
+  /*
+    Show advertisements below the learning resources.
+  */
+  .public-banner-sidebar:not([hidden]) {
+    position:
+      static !important;
+
+    display:
+      block !important;
+
+    width:
+      100% !important;
+
+    max-width:
+      none !important;
+
+    margin-top:
+      32px !important;
+  }
+
+
+  /*
+    Swipeable row for tablets.
+  */
+  .public-banner-list {
+    display:
+      grid !important;
+
+    grid-auto-flow:
+      column !important;
+
+    grid-auto-columns:
+      260px !important;
+
+    grid-template-columns:
+      none !important;
+
+    gap:
+      14px !important;
+
+    overflow-x:
+      auto !important;
+
+    overflow-y:
+      hidden !important;
+
+    padding:
+      4px
+      4px
+      16px !important;
+
+    scroll-snap-type:
+      x proximity;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+
+  .public-banner-card {
+    width:
+      100% !important;
+
+    scroll-snap-align:
+      start;
+  }
+}
+
+
+/* ------------------------------------------------------
+   MOBILE
+------------------------------------------------------ */
+
+@media (max-width: 520px) {
+
+  .public-banner-sidebar:not([hidden]) {
+    margin-top:
+      26px !important;
+  }
+
+
+  .public-banner-list {
+    grid-auto-columns:
+      80vw !important;
+  }
+
+
+  .public-banner-card {
+    padding:
+      3px;
+  }
+
+
+  .public-banner-caption {
+    font-size:
+      11px;
   }
 }

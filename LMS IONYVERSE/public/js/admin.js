@@ -2185,6 +2185,9 @@ function addBannerNavItem(adminSidebar) {
   }
 }
 
+const MAX_TEACHER_BANNERS =
+  15;
+
 function addBannerManagerPanel(adminMain) {
   const panel = document.createElement("section");
 
@@ -2339,7 +2342,7 @@ function addBannerManagerPanel(adminMain) {
 
       <div class="banner-info-row">
         <span>Maximum banners</span>
-        <strong>15</strong>
+        <strong>${MAX_TEACHER_BANNERS}</strong>
       </div>
 
       <div class="banner-info-row">
@@ -2521,14 +2524,17 @@ async function handleBannerUpload(event) {
 
 
   if (
-    existingSnapshot.size >= 6
-  ) {
-    alert(
-      "A maximum of 6 banners is allowed."
-    );
+  banners.length >=
+  MAX_TEACHER_BANNERS
+) {
+  alert(
+    "A maximum of " +
+    MAX_TEACHER_BANNERS +
+    " banners is allowed."
+  );
 
-    return;
-  }
+  return;
+}
 
 
   const submitButton =

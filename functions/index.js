@@ -296,6 +296,9 @@ function mapCloudflareStreamState(
 exports.createStreamDirectUpload =
   onCall(
     {
+      invoker:
+        "public",
+
       secrets:
         streamSecrets
     },
@@ -583,6 +586,9 @@ exports.createStreamDirectUpload =
 exports.syncStreamVideoStatus =
   onCall(
     {
+      invoker:
+        "public",
+
       secrets:
         streamSecrets
     },
@@ -729,8 +735,11 @@ exports.syncStreamVideoStatus =
 ====================================================== */
 
 exports.deleteStreamVideo =
-  onCall(
+   onCall(
     {
+      invoker:
+        "public",
+
       secrets:
         streamSecrets
     },
@@ -943,8 +952,11 @@ exports.deleteStreamVideo =
 ====================================================== */
 
 exports.getStreamPlaybackToken =
-  onCall(
+   onCall(
     {
+      invoker:
+        "public",
+
       secrets:
         playbackSecrets
     },
