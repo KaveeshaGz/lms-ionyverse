@@ -14,7 +14,7 @@
 
   <link
   rel="stylesheet"
-  href="./css/style.css?v=9">
+  href="./css/style.css?v=11">
 </head>
 
 <body>
@@ -50,10 +50,15 @@
 <nav>
 
   <div
-    class="nav-logo"
-    onclick="openPublicSection('landing')">
-    Browse <span>A</span> Teacher
-  </div>
+  class="nav-logo"
+  onclick="window.location.href='./index.html'">
+
+  <img
+    class="main-navbar-logo"
+    src="
+https://firebasestorage.googleapis.com/v0/b/browse-a-teacher-lms.firebasestorage.app/o/public-assets%2Fbrowse-a-teacher-logo.png?alt=media&token=9d70c809-e72c-4f7a-bcad-ee40f48ff206    alt="Browse A Teacher Logo">
+
+</div>
 
 
   <ul class="nav-links">
@@ -221,12 +226,73 @@
       <button class="btn-large btn-yellow" onclick="showTab('courses')">Browse Courses</button>
       <button class="btn-large btn-outline" onclick="showTab('consult')">Request Consultation</button>
     </div>
-    <div class="hero-stats fade-in-4">
-      <div><div class="stat-num" style="color:var(--yellow)">2,400+</div><div class="stat-label">Students Enrolled</div></div>
-      <div><div class="stat-num" style="color:var(--pastel-pink)">180+</div><div class="stat-label">Video Lessons</div></div>
-      <div><div class="stat-num" style="color:var(--pastel-lilac)">48</div><div class="stat-label">Expert Teachers</div></div>
-      <div><div class="stat-num" style="color:var(--pastel-mint)">98%</div><div class="stat-label">Satisfaction Rate</div></div>
+   <!-- HOMEPAGE HIGHLIGHT STATISTICS -->
+<div class="hero-stats fade-in-4">
+
+  <div class="home-stat-item">
+
+    <div
+      id="homepage-student-count"
+      class="stat-num"
+      style="color:var(--yellow)">
+      Unlimited
     </div>
+
+    <div class="stat-label">
+      Students Enrolled
+    </div>
+
+  </div>
+
+
+  <div class="home-stat-item">
+
+    <div
+      id="homepage-video-count"
+      class="stat-num"
+      style="color:var(--pastel-pink)">
+      Premium
+    </div>
+
+    <div class="stat-label">
+      Video Lessons
+    </div>
+
+  </div>
+
+
+  <div class="home-stat-item">
+
+    <div
+      id="homepage-teacher-count"
+      class="stat-num"
+      style="color:var(--pastel-lilac)">
+      Qualified
+    </div>
+
+    <div class="stat-label">
+      Expert Teachers
+    </div>
+
+  </div>
+
+
+  <div class="home-stat-item">
+
+    <div
+      id="homepage-satisfaction-rate"
+      class="stat-num"
+      style="color:var(--pastel-mint)">
+      98%
+    </div>
+
+    <div class="stat-label">
+      Satisfaction Rate
+    </div>
+
+  </div>
+
+</div>
   </section>
 
  <!-- MARQUEE -->
@@ -439,46 +505,52 @@
         <div style="margin-top:4px"><span class="hand-note-ivory">your next favourite subject is here 🌸✦</span></div>
       </div>
       <div
-  id="public-subject-filters"
-  class="public-subject-filters">
+  id="library-subject-filter-buttons"
+  style="
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  ">
 
   <button
-    class="public-subject-filter active"
     type="button"
-    data-library-subject="all"
-    onclick="
-      filterPublicLibrarySubject(
-        'all',
-        this
-      )
+    class="btn-ghost library-subject-btn active"
+    data-subject-filter="all"
+    onclick="filterLibraryBySubject('all', this)"
+    style="
+      font-size:12px;
+      padding:10px 18px;
     ">
     ✦ All
   </button>
 
 
   <button
-    class="public-subject-filter"
     type="button"
-    data-library-subject="accounting"
-    onclick="
-      filterPublicLibrarySubject(
-        'accounting',
-        this
-      )
+    class="btn-ghost library-subject-btn"
+    data-subject-filter="accounting"
+    onclick="filterLibraryBySubject('accounting', this)"
+    style="
+      font-size:12px;
+      padding:10px 18px;
+      border-color:var(--yellow);
+      color:var(--yellow);
     ">
     📊 Accounting
   </button>
 
 
   <button
-    class="public-subject-filter"
     type="button"
-    data-library-subject="chemistry"
-    onclick="
-      filterPublicLibrarySubject(
-        'chemistry',
-        this
-      )
+    class="btn-ghost library-subject-btn"
+    data-subject-filter="chemistry"
+    onclick="filterLibraryBySubject('chemistry', this)"
+    style="
+      font-size:12px;
+      padding:10px 18px;
+      border-color:rgba(181,213,255,0.4);
+      color:var(--pastel-sky);
     ">
     ⚗ Chemistry
   </button>
@@ -493,62 +565,77 @@
     </div>
 
     <!-- VIDEOS SECTION -->
-    <div id="lib-videos">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;padding:14px 18px;background:rgba(240,234,214,0.04);border:1px solid var(--ivory-border);border-radius:var(--radius-sm)">
-        <span class="free-pill"><span></span>Free Access</span>
-        <div style="font-size:12px;color:var(--ivory-dim);font-weight:300">All video courses are freely viewable — no login or payment required.</div>
-        <span style="font-family:var(--hand);font-size:16px;color:var(--yellow);opacity:0.75;margin-left:auto;white-space:nowrap">watch anytime 🎬✦</span>
-      </div>
-      <div class="courses-grid">
-        <div class="course-card">
+<div id="lib-videos">
 
+  <!-- FREE ACCESS NOTICE -->
   <div
-    class="course-thumb"
-    style="background:#111810">
+    style="
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:24px;
+      padding:14px 18px;
+      background:rgba(240,234,214,0.04);
+      border:1px solid var(--ivory-border);
+      border-radius:var(--radius-sm);
+    ">
+
+    <span class="free-pill">
+      <span></span>
+      Free Access
+    </span>
 
     <div
-      class="course-thumb-inner"
-      style="color:var(--yellow)">
-      📊
+      style="
+        font-size:12px;
+        color:var(--ivory-dim);
+        font-weight:300;
+      ">
+      All video courses are freely viewable —
+      no login or payment required.
     </div>
 
-    <span class="course-badge">
-      NEW
+    <span
+      style="
+        margin-left:auto;
+        white-space:nowrap;
+        color:var(--yellow);
+        opacity:0.75;
+        font-family:var(--hand);
+        font-size:16px;
+      ">
+      watch anytime 🎬 ✦
     </span>
 
   </div>
 
-  <div class="course-body">
 
-    <div
-      class="course-subject"
-      style="color:var(--yellow)">
-      📊 Accounting
-    </div>
+<!-- FIREBASE VIDEO COURSES WILL LOAD HERE -->
+<div
+  id="public-video-course-grid"
+  class="courses-grid">
+</div>
 
-    <div class="course-title">
-      Accounting Fundamentals
-    </div>
+<div
+  id="public-video-course-grid"
+  class="courses-grid">
 
-    <div class="course-meta">
-
-      <span class="course-teacher">
-        Accounting Teacher
-      </span>
-
-    </div>
-
+  <div
+    class="public-library-empty-message"
+    style="
+      grid-column:1 / -1;
+      padding:24px;
+      border:1px dashed var(--ivory-border);
+      border-radius:var(--radius);
+      color:var(--ivory-dim);
+      text-align:center;
+    ">
+    No video courses have been uploaded yet.
   </div>
 
 </div>
-          
-          <div class="course-body">
-            <div class="course-subject" style="color:var(--pastel-pink)">⚗ Chemistry</div>
-            <div class="course-title">Organic Chemistry Mastery — A/L Complete</div>
-            <div class="course-meta"><span class="course-teacher">Ms. D. Fernando</span><span class="course-price">LKR 5,000</span></div>
-            <button class="btn-primary" style="width:100%;margin-top:16px;padding:10px" onclick="openVideoModal('Organic Chemistry Mastery — A/L Complete','Ms. D. Fernando','Chemistry')">▶ Watch Free</button>
-          </div>
-        </div>
+
+</div>
         
          
 
@@ -864,6 +951,9 @@
     </div>
   </div>
 </div>
+
+
+
 
 <script src="./js/subjects.js?v=1"></script>
 

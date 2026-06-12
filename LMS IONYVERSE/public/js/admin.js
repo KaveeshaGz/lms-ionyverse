@@ -2480,7 +2480,7 @@ function addBannerManagerPanel(adminMain) {
 
       <div class="banner-info-row">
         <span>Maximum banners</span>
-        <strong>6</strong>
+        <strong>15</strong>
       </div>
 
       <div class="banner-info-row">
@@ -2535,7 +2535,7 @@ function addBannerManagerPanel(adminMain) {
 }
 
 
-
+const MAX_TEACHER_BANNERS = 15;
 /* ======================================================
    UPLOAD BANNER TO FIREBASE
 ====================================================== */
@@ -2838,7 +2838,18 @@ async function renderAdminBannerList() {
 
 
     const banners = [];
+        if (
+  banners.length >=
+  MAX_TEACHER_BANNERS
+) {
+  alert(
+    "A maximum of " +
+    MAX_TEACHER_BANNERS +
+    " banners is allowed."
+  );
 
+  return;
+}
 
     snapshot.forEach(
       function (bannerDocument) {
