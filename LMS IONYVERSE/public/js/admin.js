@@ -488,220 +488,470 @@ function createAdminPages() {
     <!-- ==========================================
      ANALYTICS PAGE
 =========================================== -->
-<section id="admin-panel-analytics" class="admin-panel">
+<section
+  id="admin-panel-analytics"
+  class="admin-panel">
 
   <div class="section-head">
-    <div class="page-title">Analytics</div>
-    <div class="page-subtitle">
-      Review platform activity and learning trends.
+
+    <div class="page-title">
+      Analytics
     </div>
+
+    <div class="page-subtitle">
+      Live platform activity and learning trends.
+    </div>
+
   </div>
+
 
   <div class="analytics-grid">
 
     <div class="ana-card">
-      <div class="ana-label">New Students</div>
-      <div class="ana-val">124</div>
-      <div class="ana-delta">+12% this month</div>
-    </div>
 
-    <div class="ana-card">
-      <div class="ana-label">Course Views</div>
-      <div class="ana-val">3,842</div>
-      <div class="ana-delta">+8% this week</div>
-    </div>
-
-    <div class="ana-card">
-      <div class="ana-label">Consultations</div>
-      <div class="ana-val">34</div>
-      <div class="ana-delta">12 pending review</div>
-    </div>
-
-    <div class="ana-card">
-      <div class="ana-label">PDF Requests</div>
-      <div class="ana-val">21</div>
-      <div class="ana-delta">5 awaiting approval</div>
-    </div>
-
-  </div>
-
-  <div class="two-col">
-
-    <div class="admin-page-card">
-      <div class="db-recent">Monthly Enrollments</div>
-
-      <div class="analytics-chart-wrap">
-        <canvas id="monthly-enrollments-chart"></canvas>
+      <div class="ana-label">
+        Total Students
       </div>
-    </div>
 
-    <div class="admin-page-card">
-      <div class="db-recent">Top Subjects</div>
-
-     <div class="db-course-row">
-
-  <div class="db-course-name">
-    Accounting
-  </div>
-
-  <div class="db-prog-wrap">
-    <div class="db-prog-bar">
       <div
-        class="db-prog-fill"
-        style="width:72%">
+        id="analytics-student-count"
+        class="ana-val">
+        0
       </div>
-    </div>
-  </div>
 
-</div>
-
-
-<div class="db-course-row">
-
-  <div class="db-course-name">
-    Chemistry
-  </div>
-
-  <div class="db-prog-wrap">
-    <div class="db-prog-bar">
       <div
-        class="db-prog-fill"
-        style="width:63%">
+        id="analytics-student-note"
+        class="ana-delta">
+        0 active
       </div>
-    </div>
-  </div>
-
-</div>
 
     </div>
+
+
+    <div class="ana-card">
+
+      <div class="ana-label">
+        Published Videos
+      </div>
+
+      <div
+        id="analytics-video-count"
+        class="ana-val">
+        0
+      </div>
+
+      <div
+        id="analytics-video-note"
+        class="ana-delta">
+        0 published
+      </div>
+
+    </div>
+
+
+    <div class="ana-card">
+
+      <div class="ana-label">
+        Consultations
+      </div>
+
+      <div
+        id="analytics-consultation-count"
+        class="ana-val">
+        0
+      </div>
+
+      <div
+        id="analytics-consultation-note"
+        class="ana-delta">
+        0 pending
+      </div>
+
+    </div>
+
+
+    <div class="ana-card">
+
+      <div class="ana-label">
+        PDF Requests
+      </div>
+
+      <div
+        id="analytics-pdf-request-count"
+        class="ana-val">
+        0
+      </div>
+
+      <div
+        id="analytics-pdf-request-note"
+        class="ana-delta">
+        0 pending
+      </div>
+
+    </div>
+
   </div>
+
+
+  <div
+    class="two-col"
+    style="margin-bottom:32px">
+
+    <div>
+
+      <div class="db-recent">
+        Monthly Student Registrations
+      </div>
+
+      <div class="admin-page-card">
+
+        <div
+          id="analytics-monthly-enrollments">
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <div class="db-recent">
+        Subject Distribution
+      </div>
+
+      <div
+        id="analytics-subject-distribution"
+        class="admin-page-card">
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="table-wrap">
+
+    <div class="table-head-row">
+
+      <div class="table-title">
+        Recent Platform Activity
+      </div>
+
+    </div>
+
+    <div
+      id="analytics-recent-activity">
+    </div>
+
+  </div>
+
 </section>
 
 
 <!-- ==========================================
      STUDENTS PAGE
 =========================================== -->
-<section id="admin-panel-students" class="admin-panel">
+<section
+  id="admin-panel-students"
+  class="admin-panel">
 
   <div class="section-head">
-    <div class="page-title">Students</div>
-    <div class="page-subtitle">
-      Register, edit, suspend, or remove student accounts.
+
+    <div class="page-title">
+      Students
     </div>
+
+    <div class="page-subtitle">
+      Review, approve, suspend, and reactivate student accounts.
+    </div>
+
   </div>
 
-  <div class="admin-page-card">
 
-    <div class="db-recent">Register Student</div>
+  <div class="analytics-grid">
 
-    <form id="admin-student-form">
+    <div class="ana-card">
 
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label class="form-label">Full Name</label>
-          <input
-            class="form-input"
-            type="text"
-            placeholder="Student full name"
-            required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input
-            class="form-input"
-            type="email"
-            placeholder="student@email.com"
-            required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Username</label>
-          <input
-            class="form-input"
-            type="text"
-            placeholder="student username"
-            required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Temporary Password</label>
-          <input
-            class="form-input"
-            type="password"
-            placeholder="Create a strong temporary password"
-            autocomplete="new-password"
-            minlength="8"
-            data-strong-password
-            required>
-        </div>
-
+      <div class="ana-label">
+        Total Students
       </div>
 
-      <button type="submit" class="btn-large btn-yellow">
-        Register Student
-      </button>
+      <div
+        id="students-total-count"
+        class="ana-val">
+        0
+      </div>
 
-    </form>
+    </div>
+
+
+    <div class="ana-card">
+
+      <div class="ana-label">
+        Active
+      </div>
+
+      <div
+        id="students-active-count"
+        class="ana-val">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="ana-card">
+
+      <div class="ana-label">
+        Pending
+      </div>
+
+      <div
+        id="students-pending-count"
+        class="ana-val">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="ana-card">
+
+      <div class="ana-label">
+        Suspended
+      </div>
+
+      <div
+        id="students-suspended-count"
+        class="ana-val">
+        0
+      </div>
+
+    </div>
+
   </div>
+
 
   <div class="table-wrap">
 
     <div class="table-head-row">
-      <div class="table-title">Student Management</div>
+
+      <div class="table-title">
+        Student Management
+      </div>
 
       <input
+        id="students-live-search"
         class="table-search"
         type="text"
         placeholder="Search students...">
+
     </div>
 
+
     <table>
+
       <thead>
         <tr>
-          <th>Name</th>
+          <th>Student</th>
           <th>Email</th>
-          <th>Courses</th>
+          <th>Registered</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
 
-      <tbody id="firebase-students-body">
+      <tbody
+        id="firebase-students-body">
       </tbody>
+
     </table>
+
   </div>
+
 </section>
 
 
 <!-- ==========================================
      TEACHERS PAGE
 =========================================== -->
-<section id="admin-panel-teachers" class="admin-panel">
+<section
+  id="admin-panel-teachers"
+  class="admin-panel">
 
   <div class="section-head">
-    <div class="page-title">Teachers</div>
-    <div class="page-subtitle">
-      View and manage teacher records.
+
+    <div class="page-title">
+      Teachers
     </div>
+
+    <div class="page-subtitle">
+      Add and manage Accounting and Chemistry teachers.
+    </div>
+
   </div>
 
-  <div class="table-wrap">
+
+  <div class="two-col">
+
+    <div class="admin-page-card">
+
+      <div class="db-recent">
+        Add Teacher
+      </div>
+
+      <form id="teacher-create-form">
+
+        <div class="form-group">
+
+          <label class="form-label">
+            Teacher Name
+          </label>
+
+          <input
+            id="teacher-name"
+            class="form-input"
+            type="text"
+            required>
+
+        </div>
+
+
+        <div
+          class="form-group"
+          style="margin-top:16px">
+
+          <label class="form-label">
+            Subject
+          </label>
+
+          <select
+            id="teacher-subject"
+            class="form-select"
+            required>
+
+            ${window.getLmsSubjectOptions({
+              includePlaceholder: true
+            })}
+
+          </select>
+
+        </div>
+
+
+        <div
+          class="form-group"
+          style="margin-top:16px">
+
+          <label class="form-label">
+            Experience
+          </label>
+
+          <input
+            id="teacher-experience"
+            class="form-input"
+            type="text"
+            placeholder="Example: 8 years"
+            required>
+
+        </div>
+
+
+        <div
+          class="form-group"
+          style="margin-top:16px">
+
+          <label class="form-label">
+            Description
+          </label>
+
+          <textarea
+            id="teacher-description"
+            class="form-input"
+            rows="4"
+            placeholder="Short teacher profile">
+          </textarea>
+
+        </div>
+
+
+        <button
+          class="btn-primary"
+          type="submit"
+          style="margin-top:18px">
+          Add Teacher
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <div>
+
+      <div class="analytics-grid">
+
+        <div class="ana-card">
+
+          <div class="ana-label">
+            Total Teachers
+          </div>
+
+          <div
+            id="teachers-total-count"
+            class="ana-val">
+            0
+          </div>
+
+        </div>
+
+
+        <div class="ana-card">
+
+          <div class="ana-label">
+            Active
+          </div>
+
+          <div
+            id="teachers-active-count"
+            class="ana-val">
+            0
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="table-wrap"
+    style="margin-top:28px">
 
     <div class="table-head-row">
-      <div class="table-title">Teacher Directory</div>
+
+      <div class="table-title">
+        Teacher Directory
+      </div>
 
       <input
+        id="teachers-live-search"
         class="table-search"
         type="text"
         placeholder="Search teachers...">
+
     </div>
 
+
     <table>
+
       <thead>
         <tr>
-          <th>Name</th>
+          <th>Teacher</th>
           <th>Subject</th>
           <th>Experience</th>
           <th>Status</th>
@@ -709,12 +959,15 @@ function createAdminPages() {
         </tr>
       </thead>
 
-      <tbody id="firebase-teachers-body">
+      <tbody
+        id="firebase-teachers-body">
       </tbody>
-    </table>
-  </div>
-</section>
 
+    </table>
+
+  </div>
+
+</section>
 
 <!-- ==========================================
      CONSULTATIONS PAGE
@@ -1041,6 +1294,29 @@ function showAdminPanel(panelName, selectedSidebarItem) {
     panel.classList.remove("active");
   });
 
+  if (
+  panelName ===
+  "analytics"
+) {
+  renderLiveAnalyticsPage();
+}
+
+
+if (
+  panelName ===
+  "students"
+) {
+  renderLiveStudentsPage();
+}
+
+
+if (
+  panelName ===
+  "teachers"
+) {
+  renderLiveTeachersPage();
+}
+
   const selectedPanel = document.getElementById(
     "admin-panel-" + panelName
   );
@@ -1073,11 +1349,7 @@ function showAdminPanel(panelName, selectedSidebarItem) {
   }, 50);
 }
 
-    if (panelName === "analytics") {
-        setTimeout(function () {
-        initializeAnalyticsChart();
-        }, 50);
-  }
+    
   
   document.querySelectorAll(".admin-nav-item").forEach(function (item) {
     item.classList.remove("active");
@@ -1528,16 +1800,7 @@ function initializeAnalyticsChart() {
         {
           label: "Student Enrollments",
 
-          data: [
-            68,
-            92,
-            81,
-            118,
-            104,
-            146,
-            132
-          ],
-
+          
           backgroundColor: [
             "rgba(240, 234, 214, 0.16)",
             "rgba(240, 234, 214, 0.16)",
@@ -3954,7 +4217,8 @@ const liveAdminDashboardState = {
   students: [],
   videos: [],
   consultations: [],
-  pdfRequests: []
+  pdfRequests: [],
+  teachers: []
 };
 
 
@@ -4152,6 +4416,43 @@ function connectLiveAdminDashboard() {
     }
   );
 
+  /*
+  TEACHERS
+*/
+onSnapshot(
+  collection(
+    db,
+    "teachers"
+  ),
+
+  function (snapshot) {
+    const teachers = [];
+
+    snapshot.forEach(
+      function (teacherDocument) {
+        teachers.push({
+          id:
+            teacherDocument.id,
+
+          ...teacherDocument.data()
+        });
+      }
+    );
+
+    liveAdminDashboardState.teachers =
+      teachers;
+
+    renderLiveAdminDashboard();
+  },
+
+  function (error) {
+    console.error(
+      "Live teachers dashboard error:",
+      error
+    );
+  }
+);
+
 
   console.log(
     "Live Firebase admin dashboard connected."
@@ -4173,6 +4474,12 @@ function renderLiveAdminDashboard() {
   renderLiveDashboardStudents();
 
   renderLiveDashboardConsultations();
+
+  renderLiveAnalyticsPage();
+
+  renderLiveStudentsPage();
+
+  renderLiveTeachersPage();
 }
 
 
@@ -5349,6 +5656,40 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         setupDashboardExtras();
         connectLiveAdminDashboard();
+
+        const teacherCreateForm =
+  document.getElementById(
+    "teacher-create-form"
+  );
+
+
+if (teacherCreateForm) {
+  teacherCreateForm.addEventListener(
+    "submit",
+    createFirebaseTeacher
+  );
+}
+
+
+document
+  .getElementById(
+    "students-live-search"
+  )
+  ?.addEventListener(
+    "input",
+    renderLiveStudentsPage
+  );
+
+
+document
+  .getElementById(
+    "teachers-live-search"
+  )
+  ?.addEventListener(
+    "input",
+    renderLiveTeachersPage
+  );
+
       } catch (error) {
         console.error("Dashboard extras error:", error);
       }
@@ -7123,5 +7464,922 @@ document.addEventListener(
         removeButton.dataset.videoRemove
       );
     }
+  }
+);
+
+/* ======================================================
+   LIVE ANALYTICS PAGE
+====================================================== */
+
+function renderLiveAnalyticsPage() {
+  const {
+    students,
+    videos,
+    consultations,
+    pdfRequests
+  } = liveAdminDashboardState;
+
+
+  const activeStudents =
+    students.filter(function (student) {
+      return student.status === "active";
+    }).length;
+
+
+  const publishedVideos =
+    videos.filter(function (video) {
+      return video.status === "published";
+    }).length;
+
+
+  const pendingConsultations =
+    consultations.filter(function (request) {
+      return request.status === "pending";
+    }).length;
+
+
+  const pendingPdfRequests =
+    pdfRequests.filter(function (request) {
+      return request.status === "pending";
+    }).length;
+
+
+  setDashboardText(
+    "analytics-student-count",
+    students.length
+  );
+
+  setDashboardText(
+    "analytics-student-note",
+    activeStudents + " active"
+  );
+
+  setDashboardText(
+    "analytics-video-count",
+    publishedVideos
+  );
+
+  setDashboardText(
+    "analytics-video-note",
+    publishedVideos + " published"
+  );
+
+  setDashboardText(
+    "analytics-consultation-count",
+    consultations.length
+  );
+
+  setDashboardText(
+    "analytics-consultation-note",
+    pendingConsultations + " pending"
+  );
+
+  setDashboardText(
+    "analytics-pdf-request-count",
+    pdfRequests.length
+  );
+
+  setDashboardText(
+    "analytics-pdf-request-note",
+    pendingPdfRequests + " pending"
+  );
+
+
+  renderAnalyticsMonthlyEnrollments();
+
+  renderAnalyticsSubjectDistribution();
+
+  renderAnalyticsRecentActivity();
+}
+
+
+/* ------------------------------------------------------
+   ANALYTICS MONTHLY REGISTRATIONS
+------------------------------------------------------ */
+
+function renderAnalyticsMonthlyEnrollments() {
+  const container =
+    document.getElementById(
+      "analytics-monthly-enrollments"
+    );
+
+  if (!container) {
+    return;
+  }
+
+
+  const monthLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+
+  const currentYear =
+    new Date().getFullYear();
+
+
+  const counts =
+    new Array(12).fill(0);
+
+
+  liveAdminDashboardState
+    .students
+    .forEach(function (student) {
+      const date =
+        convertFirebaseTimestamp(
+          student.createdAt
+        );
+
+      if (
+        date &&
+        date.getFullYear() ===
+          currentYear
+      ) {
+        counts[
+          date.getMonth()
+        ] += 1;
+      }
+    });
+
+
+  const maximum =
+    Math.max(
+      ...counts,
+      1
+    );
+
+
+  container.innerHTML = `
+    <div class="live-enrollment-chart">
+
+      ${monthLabels
+        .map(function (label, index) {
+          const count =
+            counts[index];
+
+          const height =
+            Math.max(
+              count === 0
+                ? 4
+                : (
+                  count /
+                  maximum
+                ) * 100,
+
+              4
+            );
+
+          return `
+            <div class="live-enrollment-column">
+
+              <div class="live-enrollment-count">
+                ${count}
+              </div>
+
+              <div class="live-enrollment-track">
+
+                <div
+                  class="live-enrollment-bar"
+                  style="height:${height}%">
+                </div>
+
+              </div>
+
+              <div class="live-enrollment-month">
+                ${label}
+              </div>
+
+            </div>
+          `;
+        })
+        .join("")}
+
+    </div>
+  `;
+}
+
+
+/* ------------------------------------------------------
+   ANALYTICS SUBJECT DISTRIBUTION
+------------------------------------------------------ */
+
+function renderAnalyticsSubjectDistribution() {
+  const container =
+    document.getElementById(
+      "analytics-subject-distribution"
+    );
+
+  if (!container) {
+    return;
+  }
+
+
+  const accountingCount =
+    liveAdminDashboardState
+      .videos
+      .filter(function (video) {
+        return video.subject === "Accounting";
+      })
+      .length;
+
+
+  const chemistryCount =
+    liveAdminDashboardState
+      .videos
+      .filter(function (video) {
+        return video.subject === "Chemistry";
+      })
+      .length;
+
+
+  const total =
+    Math.max(
+      accountingCount +
+      chemistryCount,
+      1
+    );
+
+
+  const accountingPercentage =
+    Math.round(
+      (
+        accountingCount /
+        total
+      ) * 100
+    );
+
+
+  const chemistryPercentage =
+    Math.round(
+      (
+        chemistryCount /
+        total
+      ) * 100
+    );
+
+
+  container.innerHTML = `
+    <div class="db-course-row">
+
+      <div class="db-course-name">
+        Accounting
+      </div>
+
+      <div class="db-prog-wrap">
+
+        <div class="db-prog-bar">
+
+          <div
+            class="db-prog-fill"
+            style="width:${accountingPercentage}%">
+          </div>
+
+        </div>
+
+        <div class="db-prog-pct">
+          ${accountingCount} videos
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="db-course-row">
+
+      <div class="db-course-name">
+        Chemistry
+      </div>
+
+      <div class="db-prog-wrap">
+
+        <div class="db-prog-bar">
+
+          <div
+            class="db-prog-fill"
+            style="width:${chemistryPercentage}%">
+          </div>
+
+        </div>
+
+        <div class="db-prog-pct">
+          ${chemistryCount} videos
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* ------------------------------------------------------
+   ANALYTICS RECENT ACTIVITY
+------------------------------------------------------ */
+
+function renderAnalyticsRecentActivity() {
+  const target =
+    document.getElementById(
+      "analytics-recent-activity"
+    );
+
+  const source =
+    document.getElementById(
+      "admin-dashboard-recent-activity"
+    );
+
+  if (
+    !target ||
+    !source
+  ) {
+    return;
+  }
+
+  target.innerHTML =
+    source.innerHTML;
+}
+
+
+/* ======================================================
+   LIVE STUDENTS PAGE
+====================================================== */
+
+function renderLiveStudentsPage() {
+  const tableBody =
+    document.getElementById(
+      "firebase-students-body"
+    );
+
+  if (!tableBody) {
+    return;
+  }
+
+
+  const searchValue =
+    document
+      .getElementById(
+        "students-live-search"
+      )
+      ?.value
+      .trim()
+      .toLowerCase() || "";
+
+
+  const students =
+    liveAdminDashboardState
+      .students
+      .filter(function (student) {
+        const searchableText =
+          (
+            (
+              student.name ||
+              ""
+            ) +
+            " " +
+            (
+              student.email ||
+              ""
+            ) +
+            " " +
+            (
+              student.status ||
+              ""
+            )
+          )
+            .toLowerCase();
+
+        return searchableText.includes(
+          searchValue
+        );
+      })
+      .sort(function (a, b) {
+        return (
+          getFirebaseTimestampSeconds(
+            b.createdAt
+          ) -
+          getFirebaseTimestampSeconds(
+            a.createdAt
+          )
+        );
+      });
+
+
+  setDashboardText(
+    "students-total-count",
+    liveAdminDashboardState
+      .students
+      .length
+  );
+
+
+  setDashboardText(
+    "students-active-count",
+    liveAdminDashboardState
+      .students
+      .filter(function (student) {
+        return student.status === "active";
+      })
+      .length
+  );
+
+
+  setDashboardText(
+    "students-pending-count",
+    liveAdminDashboardState
+      .students
+      .filter(function (student) {
+        return student.status === "pending";
+      })
+      .length
+  );
+
+
+  setDashboardText(
+    "students-suspended-count",
+    liveAdminDashboardState
+      .students
+      .filter(function (student) {
+        return student.status === "suspended";
+      })
+      .length
+  );
+
+
+  if (
+    students.length ===
+    0
+  ) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5">
+          No matching students were found.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+
+  tableBody.innerHTML =
+    students
+      .map(function (student) {
+        return `
+          <tr>
+
+            <td>
+              ${escapeLiveDashboardText(
+                student.name ||
+                "Student"
+              )}
+            </td>
+
+            <td>
+              ${escapeLiveDashboardText(
+                student.email ||
+                "—"
+              )}
+            </td>
+
+            <td>
+              ${formatDashboardDate(
+                student.createdAt
+              )}
+            </td>
+
+            <td>
+              ${createLiveStudentBadge(
+                student.status
+              )}
+            </td>
+
+            <td>
+              ${createLiveStudentAction(
+                student
+              )}
+            </td>
+
+          </tr>
+        `;
+      })
+      .join("");
+}
+
+
+/* ======================================================
+   LIVE TEACHERS PAGE
+====================================================== */
+
+function renderLiveTeachersPage() {
+  const tableBody =
+    document.getElementById(
+      "firebase-teachers-body"
+    );
+
+  if (!tableBody) {
+    return;
+  }
+
+
+  const searchValue =
+    document
+      .getElementById(
+        "teachers-live-search"
+      )
+      ?.value
+      .trim()
+      .toLowerCase() || "";
+
+
+  const teachers =
+    liveAdminDashboardState
+      .teachers
+      .filter(function (teacher) {
+        const searchableText =
+          (
+            (
+              teacher.name ||
+              ""
+            ) +
+            " " +
+            (
+              teacher.subject ||
+              ""
+            ) +
+            " " +
+            (
+              teacher.status ||
+              ""
+            )
+          )
+            .toLowerCase();
+
+        return searchableText.includes(
+          searchValue
+        );
+      })
+      .sort(function (a, b) {
+        return (
+          getFirebaseTimestampSeconds(
+            b.createdAt
+          ) -
+          getFirebaseTimestampSeconds(
+            a.createdAt
+          )
+        );
+      });
+
+
+  setDashboardText(
+    "teachers-total-count",
+    liveAdminDashboardState
+      .teachers
+      .length
+  );
+
+
+  setDashboardText(
+    "teachers-active-count",
+    liveAdminDashboardState
+      .teachers
+      .filter(function (teacher) {
+        return teacher.status === "active";
+      })
+      .length
+  );
+
+
+  if (
+    teachers.length ===
+    0
+  ) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5">
+          No teachers have been added yet.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+
+  tableBody.innerHTML =
+    teachers
+      .map(function (teacher) {
+        return `
+          <tr>
+
+            <td>
+              ${escapeLiveDashboardText(
+                teacher.name
+              )}
+            </td>
+
+            <td>
+              ${escapeLiveDashboardText(
+                teacher.subject
+              )}
+            </td>
+
+            <td>
+              ${escapeLiveDashboardText(
+                teacher.experience
+              )}
+            </td>
+
+            <td>
+              ${
+                teacher.status ===
+                "active"
+                  ? `
+                    <span class="badge badge-green">
+                      Active
+                    </span>
+                  `
+                  : `
+                    <span class="badge badge-gray">
+                      Hidden
+                    </span>
+                  `
+              }
+            </td>
+
+            <td>
+
+              <div class="action-row">
+
+                <button
+                  class="act-btn"
+                  type="button"
+                  data-toggle-teacher="${escapeLiveDashboardText(
+                    teacher.id
+                  )}">
+                  ${
+                    teacher.status ===
+                    "active"
+                      ? "Deactivate"
+                      : "Activate"
+                  }
+                </button>
+
+                <button
+                  class="act-btn danger"
+                  type="button"
+                  data-remove-teacher="${escapeLiveDashboardText(
+                    teacher.id
+                  )}">
+                  Remove
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+        `;
+      })
+      .join("");
+}
+
+
+/* ======================================================
+   ADD TEACHER
+====================================================== */
+
+async function createFirebaseTeacher(
+  event
+) {
+  event.preventDefault();
+
+
+  const user =
+    auth.currentUser;
+
+
+  if (!user) {
+    alert(
+      "Please sign in again."
+    );
+
+    return;
+  }
+
+
+  const name =
+    document
+      .getElementById(
+        "teacher-name"
+      )
+      .value
+      .trim();
+
+
+  const subject =
+    document
+      .getElementById(
+        "teacher-subject"
+      )
+      .value;
+
+
+  const experience =
+    document
+      .getElementById(
+        "teacher-experience"
+      )
+      .value
+      .trim();
+
+
+  const description =
+    document
+      .getElementById(
+        "teacher-description"
+      )
+      .value
+      .trim();
+
+
+  if (
+    !name ||
+    !subject ||
+    !experience
+  ) {
+    alert(
+      "Please complete the teacher details."
+    );
+
+    return;
+  }
+
+
+  if (
+    !window.isAllowedLmsSubject(
+      subject
+    )
+  ) {
+    alert(
+      "Please select Accounting or Chemistry."
+    );
+
+    return;
+  }
+
+
+  try {
+    await addDoc(
+      collection(
+        db,
+        "teachers"
+      ),
+
+      {
+        name:
+          name,
+
+        subject:
+          subject,
+
+        experience:
+          experience,
+
+        description:
+          description,
+
+        status:
+          "active",
+
+        createdAt:
+          serverTimestamp(),
+
+        createdBy:
+          user.uid
+      }
+    );
+
+
+    document
+      .getElementById(
+        "teacher-create-form"
+      )
+      .reset();
+
+
+    alert(
+      "Teacher added successfully."
+    );
+
+
+  } catch (error) {
+    console.error(
+      "Teacher creation failed:",
+      error
+    );
+
+
+    alert(
+      "The teacher could not be added."
+    );
+  }
+}
+
+
+/* ======================================================
+   ACTIVATE, DEACTIVATE, OR REMOVE TEACHER
+====================================================== */
+
+document.addEventListener(
+  "click",
+
+  async function (event) {
+    const toggleButton =
+      event.target.closest(
+        "[data-toggle-teacher]"
+      );
+
+
+    if (toggleButton) {
+      const teacherId =
+        toggleButton.dataset
+          .toggleTeacher;
+
+
+      const teacher =
+        liveAdminDashboardState
+          .teachers
+          .find(function (item) {
+            return item.id ===
+              teacherId;
+          });
+
+
+      if (!teacher) {
+        return;
+      }
+
+
+      await updateDoc(
+        doc(
+          db,
+          "teachers",
+          teacherId
+        ),
+
+        {
+          status:
+            teacher.status ===
+              "active"
+              ? "hidden"
+              : "active"
+        }
+      );
+
+
+      return;
+    }
+
+
+    const removeButton =
+      event.target.closest(
+        "[data-remove-teacher]"
+      );
+
+
+    if (!removeButton) {
+      return;
+    }
+
+
+    const confirmed =
+      confirm(
+        "Remove this teacher permanently?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    await deleteDoc(
+      doc(
+        db,
+        "teachers",
+        removeButton.dataset
+          .removeTeacher
+      )
+    );
   }
 );
