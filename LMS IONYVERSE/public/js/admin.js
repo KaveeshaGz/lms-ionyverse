@@ -2185,8 +2185,7 @@ function addBannerNavItem(adminSidebar) {
   }
 }
 
-const MAX_TEACHER_BANNERS =
-  15;
+const MAX_TEACHER_BANNERS =15;
 
 function addBannerManagerPanel(adminMain) {
   const panel = document.createElement("section");
@@ -2397,7 +2396,7 @@ function addBannerManagerPanel(adminMain) {
 }
 
 
-const MAX_TEACHER_BANNERS = 15;
+
 /* ======================================================
    UPLOAD BANNER TO FIREBASE
 ====================================================== */
@@ -2523,8 +2522,8 @@ async function handleBannerUpload(event) {
     );
 
 
-  if (
-  banners.length >=
+ if (
+  existingSnapshot.size >=
   MAX_TEACHER_BANNERS
 ) {
   alert(
@@ -2703,18 +2702,7 @@ async function renderAdminBannerList() {
 
 
     const banners = [];
-        if (
-  banners.length >=
-  MAX_TEACHER_BANNERS
-) {
-  alert(
-    "A maximum of " +
-    MAX_TEACHER_BANNERS +
-    " banners is allowed."
-  );
-
-  return;
-}
+       
 
     snapshot.forEach(
       function (bannerDocument) {
