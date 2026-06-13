@@ -284,9 +284,10 @@ function createAdminPages() {
 
           <div class="form-group">
             <label class="form-label">Subject</label>
-            <select id="pdf-subject" class="form-select form-input">
-              ${window.getLmsSubjectOptions()}
-            </select>
+           <select id="pdf-subject" class="form-select form-input">
+              <option>Accounting</option>
+              <option>Chemistry</option>
+          </select>
           </div>
 
           <div class="form-group">
@@ -350,50 +351,9 @@ function createAdminPages() {
             </tr>
           </thead>
 
-          <tbody>
-            <tr>
-              <td>Accounting Revision Notes</td>
-              <td>Accounting</td>
-              <td>Mrs.Roshini</td>
-              <td>Request Required</td>
-              <td>
-                <span class="badge badge-green">Active</span>
-              </td>
-              <td>
-                <div class="action-row">
-                  <button class="act-btn" data-action="edit-pdf">
-                    Edit
-                  </button>
-                  <button class="act-btn danger" data-action="remove">
-                    Remove
-                  </button>
-                </div>
-
-              
-
-              </td>
-            </tr>
-
-            <tr>
-              <td>Chemistry Formula Sheet</td>
-              <td>Chemistry</td>
-              <td>Chemistry Teacher</td>
-              <td>Open Access</td>
-              <td>
-                <span class="badge badge-green">Active</span>
-              </td>
-              <td>
-                <div class="action-row">
-                  <button class="act-btn" data-action="edit-pdf">
-                    Edit
-                  </button>
-                  <button class="act-btn danger" data-action="remove">
-                    Remove
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
+         <tbody
+          id="firebase-admin-pdfs-body">
+         </tbody>
         </table>
 
       </div>
@@ -1097,61 +1057,115 @@ function createAdminPages() {
 <!-- ==========================================
      NOTIFICATIONS PAGE
 =========================================== -->
-<section id="admin-panel-notifications" class="admin-panel">
+<section
+  id="admin-panel-notifications"
+  class="admin-panel">
 
   <div class="section-head">
-    <div class="page-title">Notifications</div>
-    <div class="page-subtitle">
-      Send announcements and manage recent notifications.
+
+    <div class="page-title">
+      Notifications
     </div>
+
+    <div class="page-subtitle">
+      Send announcements to students and manage published notices.
+    </div>
+
   </div>
+
 
   <div class="admin-page-card">
 
-    <div class="db-recent">Create Notification</div>
+    <div class="db-recent">
+      Create Notification
+    </div>
 
     <form id="admin-notification-form">
 
-      <div class="form-group" style="margin-bottom:18px">
-        <label class="form-label">Title</label>
+      <div class="form-grid">
 
-        <input
-          class="form-input"
-          type="text"
-          placeholder="Example:New Accounts Lesson Uploaded"
-          required>
+        <div class="form-group">
+
+          <label class="form-label">
+            Title
+          </label>
+
+          <input
+            id="admin-notification-title"
+            class="form-input"
+            type="text"
+            required>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label class="form-label">
+            Audience
+          </label>
+
+          <select
+            id="admin-notification-audience"
+            class="form-select"
+            required>
+
+            <option value="students">
+              Students
+            </option>
+
+            <option value="all">
+              All Users
+            </option>
+
+          </select>
+
+        </div>
+
       </div>
 
-      <div class="form-group" style="margin-bottom:18px">
-        <label class="form-label">Message</label>
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Message
+        </label>
 
         <textarea
+          id="admin-notification-message"
           class="form-input"
           rows="5"
-          placeholder="Write the notification message..."
-          style="resize:vertical"
-          required></textarea>
+          required>
+        </textarea>
+
       </div>
 
-      <button type="submit" class="btn-large btn-yellow">
+
+      <button
+        class="btn-primary"
+        type="submit"
+        style="margin-top:18px">
         Send Notification
       </button>
 
     </form>
+
   </div>
+
 
   <div class="table-wrap">
 
     <div class="table-head-row">
-      <div class="table-title">Recent Notifications</div>
 
-      <input
-        class="table-search"
-        type="text"
-        placeholder="Search notifications...">
+      <div class="table-title">
+        Recent Notifications
+      </div>
+
     </div>
 
+
     <table>
+
       <thead>
         <tr>
           <th>Title</th>
@@ -1162,43 +1176,20 @@ function createAdminPages() {
         </tr>
       </thead>
 
-      <tbody>
-
-        <tr>
-          <td>New Chemistry Lesson Uploaded</td>
-          <td>All Students</td>
-          <td>07 Jun 2026</td>
-          <td>
-            <span class="badge badge-green">Sent</span>
-          </td>
-          <td>
-            <div class="action-row">
-
-              <button
-                class="act-btn"
-                data-action="view-notification">
-                View
-              </button>
-
-              <button
-                class="act-btn danger"
-                data-action="remove">
-                Remove
-              </button>
-
-            </div>
-          </td>
-        </tr>
-
+      <tbody
+        id="firebase-admin-notifications-body">
       </tbody>
+
     </table>
+
   </div>
+
 </section>
 
     `
   );
 
-  connectAdminPageForms();
+  
 }
 
 
@@ -1293,6 +1284,23 @@ function showAdminPanel(panelName, selectedSidebarItem) {
   document.querySelectorAll(".admin-panel").forEach(function (panel) {
     panel.classList.remove("active");
   });
+
+  if (
+  panelName ===
+  "pdfs"
+) {
+  connectFirebasePdfUploadForm();
+
+  renderLiveAdminPdfResources();
+}
+
+
+if (
+  panelName ===
+  "notifications"
+) {
+  renderLiveAdminAnnouncements();
+}
 
   if (
   panelName ===
@@ -4218,9 +4226,10 @@ const liveAdminDashboardState = {
   videos: [],
   consultations: [],
   pdfRequests: [],
-  teachers: []
+  teachers: [],
+  pdfResources: [],
+  announcements: []
 };
-
 
 /* ------------------------------------------------------
    CONNECT FIRESTORE LIVE LISTENERS ONCE
@@ -4314,10 +4323,11 @@ function connectLiveAdminDashboard() {
 
 
       liveAdminDashboardState.videos =
-        videos;
+  videos;
 
+renderLiveAdminDashboard();
 
-      renderLiveAdminDashboard();
+loadAdminVideos();
     },
 
     function (error) {
@@ -4356,12 +4366,13 @@ function connectLiveAdminDashboard() {
       );
 
 
-      liveAdminDashboardState
-        .consultations =
-          consultations;
+     liveAdminDashboardState
+  .consultations =
+    consultations;
 
+renderLiveAdminDashboard();
 
-      renderLiveAdminDashboard();
+loadAdminConsultationRequests();
     },
 
     function (error) {
@@ -4401,11 +4412,12 @@ function connectLiveAdminDashboard() {
 
 
       liveAdminDashboardState
-        .pdfRequests =
-          pdfRequests;
+  .pdfRequests =
+    pdfRequests;
 
+renderLiveAdminDashboard();
 
-      renderLiveAdminDashboard();
+loadAdminPdfRequests();
     },
 
     function (error) {
@@ -4459,6 +4471,82 @@ onSnapshot(
   );
 }
 
+/* ------------------------------------------------------
+   PDF RESOURCES
+------------------------------------------------------ */
+
+onSnapshot(
+  collection(
+    db,
+    "pdfResources"
+  ),
+
+  function (snapshot) {
+    const pdfResources = [];
+
+    snapshot.forEach(
+      function (pdfDocument) {
+        pdfResources.push({
+          id:
+            pdfDocument.id,
+
+          ...pdfDocument.data()
+        });
+      }
+    );
+
+    liveAdminDashboardState.pdfResources =
+      pdfResources;
+
+    renderLiveAdminPdfResources();
+  },
+
+  function (error) {
+    console.error(
+      "Live PDF resources error:",
+      error
+    );
+  }
+);
+
+
+/* ------------------------------------------------------
+   ANNOUNCEMENTS
+------------------------------------------------------ */
+
+onSnapshot(
+  collection(
+    db,
+    "announcements"
+  ),
+
+  function (snapshot) {
+    const announcements = [];
+
+    snapshot.forEach(
+      function (announcementDocument) {
+        announcements.push({
+          id:
+            announcementDocument.id,
+
+          ...announcementDocument.data()
+        });
+      }
+    );
+
+    liveAdminDashboardState.announcements =
+      announcements;
+
+    renderLiveAdminAnnouncements();
+  },
+
+  function (error) {
+    console.error(
+      "Live announcements error:",
+      error
+    );
+  }
+);
 
 /* ------------------------------------------------------
    RENDER ALL LIVE DASHBOARD AREAS
@@ -5572,7 +5660,305 @@ function escapeLiveDashboardText(
     .replace(/'/g, "&#039;");
 }
 
+/* ======================================================
+   LIVE FIREBASE PDF RESOURCE LIBRARY
+====================================================== */
 
+function renderLiveAdminPdfResources() {
+  const tableBody =
+    document.getElementById(
+      "firebase-admin-pdfs-body"
+    );
+
+  if (!tableBody) {
+    return;
+  }
+
+  const resources =
+    [
+      ...liveAdminDashboardState
+        .pdfResources
+    ]
+      .sort(
+        function (first, second) {
+          return (
+            getFirebaseTimestampSeconds(
+              second.createdAt
+            ) -
+            getFirebaseTimestampSeconds(
+              first.createdAt
+            )
+          );
+        }
+      );
+
+  if (
+    resources.length ===
+    0
+  ) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          No PDF resources have been uploaded yet.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  tableBody.innerHTML =
+    resources
+      .map(
+        function (resource) {
+          const isActive =
+            resource.status ===
+            "active";
+
+          return `
+            <tr>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  resource.title
+                )}
+              </td>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  resource.subject
+                )}
+              </td>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  resource.teacher
+                )}
+              </td>
+
+              <td>
+                ${
+                  resource.approvalRequired
+                    ? "Request Required"
+                    : "Open Access"
+                }
+              </td>
+
+              <td>
+                ${
+                  isActive
+                    ? `
+                      <span class="badge badge-green">
+                        Active
+                      </span>
+                    `
+                    : `
+                      <span class="badge badge-gray">
+                        Hidden
+                      </span>
+                    `
+                }
+              </td>
+
+              <td>
+
+                <div class="action-row">
+
+                  <button
+                    class="act-btn"
+                    type="button"
+                    data-toggle-pdf-resource="${escapeLiveDashboardText(
+                      resource.id
+                    )}">
+                    ${
+                      isActive
+                        ? "Hide"
+                        : "Publish"
+                    }
+                  </button>
+
+                  <button
+                    class="act-btn danger"
+                    type="button"
+                    data-remove-pdf-resource="${escapeLiveDashboardText(
+                      resource.id
+                    )}">
+                    Remove
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+}
+
+
+/* ------------------------------------------------------
+   HIDE OR PUBLISH PDF RESOURCE
+------------------------------------------------------ */
+
+async function toggleFirebasePdfResource(
+  resourceId
+) {
+  const resource =
+    liveAdminDashboardState
+      .pdfResources
+      .find(
+        function (item) {
+          return item.id ===
+            resourceId;
+        }
+      );
+
+  if (!resource) {
+    return;
+  }
+
+  try {
+    await updateDoc(
+      doc(
+        db,
+        "pdfResources",
+        resourceId
+      ),
+
+      {
+        status:
+          resource.status ===
+            "active"
+            ? "hidden"
+            : "active"
+      }
+    );
+
+  } catch (error) {
+    console.error(
+      "PDF resource status update failed:",
+      error
+    );
+
+    alert(
+      "The PDF resource status could not be updated."
+    );
+  }
+}
+
+
+/* ------------------------------------------------------
+   REMOVE PDF RESOURCE
+------------------------------------------------------ */
+
+async function removeFirebasePdfResource(
+  resourceId
+) {
+  const confirmed =
+    confirm(
+      "Remove this PDF resource permanently?"
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const resource =
+    liveAdminDashboardState
+      .pdfResources
+      .find(
+        function (item) {
+          return item.id ===
+            resourceId;
+        }
+      );
+
+  if (!resource) {
+    return;
+  }
+
+  try {
+    if (
+      resource.storagePath
+    ) {
+      try {
+        await deleteObject(
+          ref(
+            storage,
+            resource.storagePath
+          )
+        );
+
+      } catch (storageError) {
+        console.warn(
+          "PDF Storage removal warning:",
+          storageError
+        );
+      }
+    }
+
+    await deleteDoc(
+      doc(
+        db,
+        "pdfResources",
+        resourceId
+      )
+    );
+
+    alert(
+      "PDF resource removed successfully."
+    );
+
+  } catch (error) {
+    console.error(
+      "PDF resource removal failed:",
+      error
+    );
+
+    alert(
+      "The PDF resource could not be removed."
+    );
+  }
+}
+
+
+/* ------------------------------------------------------
+   PDF RESOURCE BUTTONS
+------------------------------------------------------ */
+
+document.addEventListener(
+  "click",
+
+  async function (event) {
+    const toggleButton =
+      event.target.closest(
+        "[data-toggle-pdf-resource]"
+      );
+
+    if (toggleButton) {
+      await toggleFirebasePdfResource(
+        toggleButton.dataset
+          .togglePdfResource
+      );
+
+      return;
+    }
+
+    const removeButton =
+      event.target.closest(
+        "[data-remove-pdf-resource]"
+      );
+
+    if (removeButton) {
+      await removeFirebasePdfResource(
+        removeButton.dataset
+          .removePdfResource
+      );
+    }
+  }
+);
 
 document.addEventListener("DOMContentLoaded", function () {
   onAuthStateChanged(auth, async function (user) {
@@ -5622,17 +6008,36 @@ document.addEventListener("DOMContentLoaded", function () {
         dashboard.style.display = "block";
       }
 
-      try {
+            try {
         createAdminPages();
 
+      } catch (error) {
+        console.error(
+          "Admin pages error:",
+          error
+        );
+      }
+
+
+      try {
         connectFirebasePdfUploadForm();
 
-        connectFirebaseVideoUploadForm();
+      } catch (error) {
+        console.error(
+          "PDF upload connection error:",
+          error
+        );
+      }
 
+
+      try {
         await setupStudentApprovalManager();
 
       } catch (error) {
-        console.error("Admin pages error:", error);
+        console.error(
+          "Student approval manager error:",
+          error
+        );
       }
 
       try {
@@ -5656,6 +6061,7 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         setupDashboardExtras();
         connectLiveAdminDashboard();
+        connectAdminNotificationForm();
 
         const teacherCreateForm =
   document.getElementById(
@@ -8295,6 +8701,309 @@ async function createFirebaseTeacher(
   }
 }
 
+/* ======================================================
+   FIREBASE NOTIFICATIONS MANAGER
+====================================================== */
+
+function connectAdminNotificationForm() {
+  const form =
+    document.getElementById(
+      "admin-notification-form"
+    );
+
+  if (!form) {
+    return;
+  }
+
+  if (
+    form.dataset.connected ===
+    "true"
+  ) {
+    return;
+  }
+
+  form.dataset.connected =
+    "true";
+
+  form.addEventListener(
+    "submit",
+    submitFirebaseAnnouncement
+  );
+}
+
+
+/* ------------------------------------------------------
+   SEND ANNOUNCEMENT
+------------------------------------------------------ */
+
+async function submitFirebaseAnnouncement(
+  event
+) {
+  event.preventDefault();
+
+  const user =
+    auth.currentUser;
+
+  if (!user) {
+    alert(
+      "Please sign in again."
+    );
+
+    return;
+  }
+
+  const title =
+    document
+      .getElementById(
+        "admin-notification-title"
+      )
+      .value
+      .trim();
+
+  const audience =
+    document
+      .getElementById(
+        "admin-notification-audience"
+      )
+      .value;
+
+  const message =
+    document
+      .getElementById(
+        "admin-notification-message"
+      )
+      .value
+      .trim();
+
+  if (
+    !title ||
+    !audience ||
+    !message
+  ) {
+    alert(
+      "Please complete the notification details."
+    );
+
+    return;
+  }
+
+  const form =
+    document.getElementById(
+      "admin-notification-form"
+    );
+
+  const submitButton =
+    form.querySelector(
+      'button[type="submit"]'
+    );
+
+  submitButton.disabled =
+    true;
+
+  submitButton.textContent =
+    "Sending...";
+
+  try {
+    await addDoc(
+      collection(
+        db,
+        "announcements"
+      ),
+
+      {
+        title:
+          title,
+
+        audience:
+          audience,
+
+        message:
+          message,
+
+        status:
+          "active",
+
+        createdBy:
+          user.uid,
+
+        createdAt:
+          serverTimestamp()
+      }
+    );
+
+    form.reset();
+
+    alert(
+      "Notification sent successfully."
+    );
+
+  } catch (error) {
+    console.error(
+      "Notification creation failed:",
+      error
+    );
+
+    alert(
+      "The notification could not be sent."
+    );
+
+  } finally {
+    submitButton.disabled =
+      false;
+
+    submitButton.textContent =
+      "Send Notification";
+  }
+}
+
+
+/* ------------------------------------------------------
+   SHOW LIVE ANNOUNCEMENTS
+------------------------------------------------------ */
+
+function renderLiveAdminAnnouncements() {
+  const tableBody =
+    document.getElementById(
+      "firebase-admin-notifications-body"
+    );
+
+  if (!tableBody) {
+    return;
+  }
+
+  const announcements =
+    [
+      ...liveAdminDashboardState
+        .announcements
+    ]
+      .sort(
+        function (first, second) {
+          return (
+            getFirebaseTimestampSeconds(
+              second.createdAt
+            ) -
+            getFirebaseTimestampSeconds(
+              first.createdAt
+            )
+          );
+        }
+      );
+
+  if (
+    announcements.length ===
+    0
+  ) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5">
+          No notifications have been published yet.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  tableBody.innerHTML =
+    announcements
+      .map(
+        function (announcement) {
+          return `
+            <tr>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  announcement.title
+                )}
+              </td>
+
+              <td>
+                ${escapeLiveDashboardText(
+                  announcement.audience
+                )}
+              </td>
+
+              <td>
+                ${formatDashboardDate(
+                  announcement.createdAt
+                )}
+              </td>
+
+              <td>
+                <span class="badge badge-green">
+                  Sent
+                </span>
+              </td>
+
+              <td>
+
+                <button
+                  class="act-btn danger"
+                  type="button"
+                  data-remove-announcement="${escapeLiveDashboardText(
+                    announcement.id
+                  )}">
+                  Remove
+                </button>
+
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+}
+
+
+/* ------------------------------------------------------
+   REMOVE ANNOUNCEMENT
+------------------------------------------------------ */
+
+document.addEventListener(
+  "click",
+
+  async function (event) {
+    const removeButton =
+      event.target.closest(
+        "[data-remove-announcement]"
+      );
+
+    if (!removeButton) {
+      return;
+    }
+
+    const confirmed =
+      confirm(
+        "Remove this notification permanently?"
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteDoc(
+        doc(
+          db,
+          "announcements",
+          removeButton.dataset
+            .removeAnnouncement
+        )
+      );
+
+    } catch (error) {
+      console.error(
+        "Notification removal failed:",
+        error
+      );
+
+      alert(
+        "The notification could not be removed."
+      );
+    }
+  }
+);
 
 /* ======================================================
    ACTIVATE, DEACTIVATE, OR REMOVE TEACHER
