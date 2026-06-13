@@ -6464,3 +6464,14 @@ canvas {
       );
   }
 }
+
+/* ======================================================
+   PROTECTED PDF VIEWER
+   PRINT BLOCKING
+====================================================== */
+
+@media print {
+  body.protected-pdf-open * {
+    display: none !important;
+  }
+}

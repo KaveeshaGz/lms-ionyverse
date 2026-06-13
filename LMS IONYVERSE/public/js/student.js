@@ -2536,12 +2536,27 @@ function createProtectedPdfViewer() {
     .getElementById("protected-pdf-viewer")
     .addEventListener(
       "contextmenu",
+
+
+
+      
       function (event) {
         event.preventDefault();
       }
     );
 }
-
+  document
+    .getElementById(
+      "protected-pdf-viewer"
+    )
+    .addEventListener(
+      "dragstart",
+      function (
+        event
+      ) {
+        event.preventDefault();
+      }
+    );
 
 function openProtectedPdfViewer(title) {
   createProtectedPdfViewer();
@@ -2574,11 +2589,14 @@ function openProtectedPdfViewer(title) {
 
   document.body.style.overflow =
     "hidden";
+
+    document.body.classList.add(
+  "protected-pdf-open"
+);
 }
 
 
-window.closeProtectedPdfViewer =
-  function () {
+window.closeProtectedPdfViewer =function () {
     const viewer =
       document.getElementById(
         "protected-pdf-viewer"
@@ -2590,6 +2608,10 @@ window.closeProtectedPdfViewer =
 
     document.body.style.overflow =
       "";
+
+      document.body.classList.remove(
+  "protected-pdf-open"
+);
   };
 
 
