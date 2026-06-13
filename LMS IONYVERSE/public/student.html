@@ -14,7 +14,7 @@
 
   <link
   rel="stylesheet"
-  href="./css/style.css?v=5">
+  href="./css/style.css?v=6">
 
 </head>
 
@@ -137,10 +137,12 @@
     </div>
     <div class="db-content">
       <div class="db-greeting">
-<div
-  id="student-dashboard-greeting"
-  class="db-name">
-  Welcome 🌸✦
+<div class="db-welcome-title">
+  Welcome,
+  <span id="student-dashboard-first-name">
+    Student
+  </span>
+  🌸✦
 </div>
         <div class="db-date" id="live-date">Friday, 06 Jun 2025</div>
         <div style="font-family:var(--hand);font-size:17px;color:var(--pastel-pink);opacity:0.6;margin-top:4px">let's pick up where you left off 🌸→</div>
@@ -151,11 +153,11 @@
   <div class="db-stat">
 
     <div
-      id="student-dashboard-enrolled-count"
-      class="db-stat-val"
-      style="color:var(--yellow)">
-      0
-    </div>
+  id="student-dashboard-enrolled-count"
+  class="db-stat-val"
+  style="color:var(--yellow)">
+  0
+</div>
 
     <div class="db-stat-key">
       Enrolled
@@ -167,10 +169,11 @@
   <div class="db-stat">
 
     <div
-      id="student-dashboard-video-count"
-      class="db-stat-val">
-      0
-    </div>
+  id="student-dashboard-video-count"
+  class="db-stat-val"
+  style="color:var(--pastel-pink)">
+  0
+</div>
 
     <div class="db-stat-key">
       Videos Watched
@@ -182,10 +185,11 @@
   <div class="db-stat">
 
     <div
-      id="student-dashboard-pdf-count"
-      class="db-stat-val">
-      0
-    </div>
+  id="student-dashboard-pdf-count"
+  class="db-stat-val"
+  style="color:var(--pastel-lilac)">
+  0
+</div>
 
     <div class="db-stat-key">
       PDFs Access
@@ -197,10 +201,11 @@
   <div class="db-stat">
 
     <div
-      id="student-dashboard-session-count"
-      class="db-stat-val">
-      0
-    </div>
+  id="student-dashboard-session-count"
+  class="db-stat-val"
+  style="color:var(--pastel-mint)">
+  0
+</div>
 
     <div class="db-stat-key">
       Sessions
@@ -216,15 +221,16 @@
   onclick="openStudentPanel('videos')">
           <div class="db-course-info">
             <div class="db-course-dot"></div>
-<div id="student-dashboard-continue-watching">
-  <div style="
-    padding:16px;
-    color:var(--ivory-dim);
-    font-size:12px;
-  ">
+<div
+  id="student-dashboard-continue-watching">
+
+  <div class="student-dashboard-empty">
     Your learning progress will appear here.
   </div>
-</div>          </div>
+
+</div>      
+
+</div>
           <div class="db-prog-wrap">
             <div class="db-prog-bar"><div class="db-prog-fill" style="width:62%"></div></div>
             <div class="db-prog-pct">62%</div>
@@ -257,14 +263,13 @@
         <div class="db-recent">Upcoming Consultation</div>
         <div style="border:1px solid rgba(255,212,0,0.2);background:rgba(255,212,0,0.04);padding:20px 24px;border-radius:2px;display:flex;justify-content:space-between;align-items:center">
           <div>
-<div id="student-dashboard-upcoming-session">
-  <div style="
-    padding:16px;
-    color:var(--ivory-dim);
-    font-size:12px;
-  ">
+<div
+  id="student-dashboard-upcoming-session">
+
+  <div class="student-dashboard-empty">
     Your next confirmed consultation will appear here.
   </div>
+
 </div>
             <div style="font-size:12px;color:var(--gray);font-family:var(--mono)">Mon 10 Jun · 4:00 PM · Mr. Perera</div>
           </div>
@@ -322,7 +327,12 @@
 
 <script
   type="module"
-  src="./js/student.js?v=28">
+  src="./js/student.js?v=29">
+</script>
+
+<script
+  type="module"
+  src="./js/student-dashboard-live.js?v=1">
 </script>
 
 <script
