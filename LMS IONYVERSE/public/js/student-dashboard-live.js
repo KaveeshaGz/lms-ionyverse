@@ -586,6 +586,8 @@ function renderStudentDashboard() {
   renderStudentUpcomingSession();
 
   renderStudentDashboardNotifications();
+
+  renderStudentSidebarLivePages();
 }
 
 

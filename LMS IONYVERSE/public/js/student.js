@@ -288,65 +288,45 @@ function createStudentPages() {
          MY COURSES
     =========================================== -->
 
-    <section id="student-panel-my-courses" class="student-panel">
+    <section
+  id="student-panel-my-courses"
+  class="student-panel">
+</section>
 
-      <div class="section-head">
-        <div class="page-title">My Courses</div>
+<section
+  id="student-panel-videos"
+  class="student-panel">
+</section>
 
-        <div class="page-subtitle">
-          View your enrolled courses and learning progress.
-        </div>
-      </div>
+<section
+  id="student-panel-pdf-library"
+  class="student-panel">
+</section>
 
-      <div class="student-card-grid">
+<section
+  id="student-panel-study-notes"
+  class="student-panel">
+</section>
 
-        <div class="student-card">
+<section
+  id="student-panel-request-pdf"
+  class="student-panel">
+</section>
 
-  <div class="course-subject">
-    Accounting
-  </div>
+<section
+  id="student-panel-book-consultation"
+  class="student-panel">
+</section>
 
-  <div class="course-title">
-    Financial Accounting Fundamentals
-  </div>
+<section
+  id="student-panel-my-sessions"
+  class="student-panel">
+</section>
 
-  <div class="course-teacher">
-    Module 1 of 6
-  </div>
-
-  <div class="course-progress">
-    <div
-      class="course-progress-fill"
-      style="width:40%">
-    </div>
-  </div>
-
-</div>
-
-
-<div class="student-card">
-
-  <div class="course-subject">
-    Chemistry
-  </div>
-
-  <div class="course-title">
-    Organic Chemistry Reactions
-  </div>
-
-  <div class="course-teacher">
-    Module 2 of 6
-  </div>
-
-  <div class="course-progress">
-    <div
-      class="course-progress-fill"
-      style="width:38%">
-    </div>
-  </div>
-
-</div>
-    </section>
+<section
+  id="student-panel-notifications"
+  class="student-panel">
+</section>
 
 
     <!-- ==========================================
