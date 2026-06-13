@@ -1411,10 +1411,7 @@ async function uploadFirebaseVideoResource(event) {
     !accessInput ||
     !urlInput ||
     !descriptionInput
-  ) {
-    alert("The video upload form is incomplete.");
-    return;
-  }
+  ) 
 
   const title = titleInput.value.trim();
   const subject = subjectInput.value;
