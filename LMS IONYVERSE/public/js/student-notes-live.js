@@ -17,15 +17,15 @@ import {
    STATE
 ====================================================== */
 
-let studentLiveNotes =
+let liveStudentNotes =
   [];
 
 
-let selectedStudentNoteSubject =
+let selectedNoteSubject =
   "all";
 
 
-let studentNotesListenerConnected =
+let notesListenerConnected =
   false;
 
 
@@ -59,10 +59,10 @@ function normalizeStudentNoteSubject(
 
 
 /* ======================================================
-   CREATE STUDY NOTES PANEL CONTENT AUTOMATICALLY
+   CREATE NOTES PANEL CONTENT
 ====================================================== */
 
-function ensureStudentNotesPanelLayout() {
+function ensureStudentNotesPanel() {
   const panel =
     document.getElementById(
       "student-panel-study-notes"
@@ -74,10 +74,6 @@ function ensureStudentNotesPanelLayout() {
   }
 
 
-  /*
-    If the grid already exists, do not recreate
-    the panel. This preserves the live content.
-  */
   if (
     document.getElementById(
       "student-live-notes-grid"
@@ -148,128 +144,6 @@ function ensureStudentNotesPanelLayout() {
 
 
 /* ======================================================
-   CONNECT FIRESTORE LISTENER
-====================================================== */
-
-function connectLiveStudentNotes() {
-  if (
-    studentNotesListenerConnected
-  ) {
-    renderStudentNotes(
-      selectedStudentNoteSubject
-    );
-
-    return;
-  }
-
-
-  studentNotesListenerConnected =
-    true;
-
-
-  onSnapshot(
-    collection(
-      db,
-      "studyNotes"
-    ),
-
-    function (snapshot) {
-      const notes =
-        [];
-
-
-      snapshot.forEach(
-        function (noteDocument) {
-          const note =
-            noteDocument.data();
-
-
-          /*
-            Allow active, published, or older notes
-            without a status field.
-          */
-          const isVisible =
-            !note.status ||
-            note.status ===
-              "active" ||
-            note.status ===
-              "published";
-
-
-          if (!isVisible) {
-            return;
-          }
-
-
-          notes.push({
-            id:
-              noteDocument.id,
-
-            ...note
-          });
-        }
-      );
-
-
-      notes.sort(
-        function (
-          first,
-          second
-        ) {
-          const firstTime =
-            first.createdAt?.seconds ||
-            0;
-
-
-          const secondTime =
-            second.createdAt?.seconds ||
-            0;
-
-
-          return (
-            secondTime -
-            firstTime
-          );
-        }
-      );
-
-
-      studentLiveNotes =
-        notes;
-
-
-      renderStudentNotes(
-        selectedStudentNoteSubject
-      );
-    },
-
-    function (error) {
-      console.error(
-        "Student study notes could not be loaded:",
-        error
-      );
-
-
-      const grid =
-        document.getElementById(
-          "student-live-notes-grid"
-        );
-
-
-      if (grid) {
-        grid.innerHTML = `
-          <div class="student-dashboard-empty">
-            Study notes could not be loaded.
-            Please refresh the page.
-          </div>
-        `;
-      }
-    }
-  );
-}
-
-
-/* ======================================================
    CREATE ONE NOTE CARD
 ====================================================== */
 
@@ -305,9 +179,6 @@ function createStudentNoteCard(
     );
 
 
-  /*
-    Supports older and newer field names.
-  */
   const imageUrl =
     escapeStudentNoteText(
       note.imageUrl ||
@@ -389,10 +260,14 @@ function createStudentNoteCard(
 function renderStudentNotes(
   subject
 ) {
-  ensureStudentNotesPanelLayout();
+  if (
+    !ensureStudentNotesPanel()
+  ) {
+    return;
+  }
 
 
-  selectedStudentNoteSubject =
+  selectedNoteSubject =
     normalizeStudentNoteSubject(
       subject ||
       "all"
@@ -411,7 +286,7 @@ function renderStudentNotes(
 
 
   const filteredNotes =
-    studentLiveNotes
+    liveStudentNotes
       .filter(
         function (note) {
           const noteSubject =
@@ -421,10 +296,10 @@ function renderStudentNotes(
 
 
           return (
-            selectedStudentNoteSubject ===
+            selectedNoteSubject ===
               "all" ||
             noteSubject ===
-              selectedStudentNoteSubject
+              selectedNoteSubject
           );
         }
       );
@@ -454,11 +329,121 @@ function renderStudentNotes(
 
 
 /*
-  Keep compatibility with your existing
-  openStudentPanel("study-notes") logic.
+  Keeps compatibility with student.js.
 */
 window.renderStudentNotes =
   renderStudentNotes;
+
+
+/* ======================================================
+   FIRESTORE LISTENER
+====================================================== */
+
+function connectStudentNotesFirebase() {
+  if (
+    notesListenerConnected
+  ) {
+    return;
+  }
+
+
+  notesListenerConnected =
+    true;
+
+
+  onSnapshot(
+    collection(
+      db,
+      "studyNotes"
+    ),
+
+    function (snapshot) {
+      const notes =
+        [];
+
+
+      snapshot.forEach(
+        function (noteDocument) {
+          const note =
+            noteDocument.data();
+
+
+          const visible =
+            !note.status ||
+            note.status ===
+              "active" ||
+            note.status ===
+              "published";
+
+
+          if (!visible) {
+            return;
+          }
+
+
+          notes.push({
+            id:
+              noteDocument.id,
+
+            ...note
+          });
+        }
+      );
+
+
+      notes.sort(
+        function (
+          first,
+          second
+        ) {
+          return (
+            (
+              second.createdAt
+                ?.seconds ||
+              0
+            ) -
+            (
+              first.createdAt
+                ?.seconds ||
+              0
+            )
+          );
+        }
+      );
+
+
+      liveStudentNotes =
+        notes;
+
+
+      renderStudentNotes(
+        selectedNoteSubject
+      );
+    },
+
+    function (error) {
+      console.error(
+        "Student study notes loading failed:",
+        error
+      );
+
+
+      const grid =
+        document.getElementById(
+          "student-live-notes-grid"
+        );
+
+
+      if (grid) {
+        grid.innerHTML = `
+          <div class="student-dashboard-empty">
+            Study notes could not be loaded.
+          </div>
+        `;
+      }
+    }
+  );
+}
 
 
 /* ======================================================
@@ -507,44 +492,32 @@ document.addEventListener(
 
 
 /* ======================================================
-   WATCH FOR DYNAMIC PANEL CREATION
-====================================================== */
-
-const notesPanelObserver =
-  new MutationObserver(
-    function () {
-      if (
-        ensureStudentNotesPanelLayout()
-      ) {
-        renderStudentNotes(
-          selectedStudentNoteSubject
-        );
-      }
-    }
-  );
-
-
-notesPanelObserver.observe(
-  document.body,
-
-  {
-    childList:
-      true,
-
-    subtree:
-      true
-  }
-);
-
-
-/* ======================================================
-   START
+   START SAFELY
 ====================================================== */
 
 function startStudentNotes() {
-  ensureStudentNotesPanelLayout();
+  /*
+    Wait until student.js creates the Study Notes panel.
+    No MutationObserver is used.
+  */
+  if (
+    !ensureStudentNotesPanel()
+  ) {
+    setTimeout(
+      startStudentNotes,
+      150
+    );
 
-  connectLiveStudentNotes();
+    return;
+  }
+
+
+  connectStudentNotesFirebase();
+
+
+  console.log(
+    "Student live study notes connected."
+  );
 }
 
 
