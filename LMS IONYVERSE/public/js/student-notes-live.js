@@ -58,14 +58,107 @@ function normalizeStudentNoteSubject(
 }
 
 
-/* ------------------------------------------------------
-   CONNECT LIVE FIRESTORE NOTES
------------------------------------------------------- */
+/* ======================================================
+   CREATE STUDY NOTES PANEL CONTENT AUTOMATICALLY
+====================================================== */
+
+function ensureStudentNotesPanelLayout() {
+  const panel =
+    document.getElementById(
+      "student-panel-study-notes"
+    );
+
+
+  if (!panel) {
+    return false;
+  }
+
+
+  /*
+    If the grid already exists, do not recreate
+    the panel. This preserves the live content.
+  */
+  if (
+    document.getElementById(
+      "student-live-notes-grid"
+    )
+  ) {
+    return true;
+  }
+
+
+  panel.innerHTML = `
+    <div class="section-head">
+
+      <div class="page-title">
+        Study Notes
+      </div>
+
+      <div class="page-subtitle">
+        Browse Accounting and Chemistry study notes
+        uploaded by your teachers.
+      </div>
+
+    </div>
+
+
+    <div class="student-notes-filter-row">
+
+      <button
+        class="student-note-filter active"
+        type="button"
+        data-student-note-filter="all">
+        ✦ All Notes
+      </button>
+
+
+      <button
+        class="student-note-filter"
+        type="button"
+        data-student-note-filter="accounting">
+        📊 Accounting
+      </button>
+
+
+      <button
+        class="student-note-filter"
+        type="button"
+        data-student-note-filter="chemistry">
+        ⚗ Chemistry
+      </button>
+
+    </div>
+
+
+    <div
+      id="student-live-notes-grid"
+      class="student-notes-grid">
+
+      <div class="student-dashboard-empty">
+        Study notes uploaded by your teachers
+        will appear here.
+      </div>
+
+    </div>
+  `;
+
+
+  return true;
+}
+
+
+/* ======================================================
+   CONNECT FIRESTORE LISTENER
+====================================================== */
 
 function connectLiveStudentNotes() {
   if (
     studentNotesListenerConnected
   ) {
+    renderStudentNotes(
+      selectedStudentNoteSubject
+    );
+
     return;
   }
 
@@ -92,10 +185,10 @@ function connectLiveStudentNotes() {
 
 
           /*
-            Support both "active" and "published"
-            status values.
+            Allow active, published, or older notes
+            without a status field.
           */
-          const visible =
+          const isVisible =
             !note.status ||
             note.status ===
               "active" ||
@@ -103,7 +196,7 @@ function connectLiveStudentNotes() {
               "published";
 
 
-          if (!visible) {
+          if (!isVisible) {
             return;
           }
 
@@ -167,6 +260,7 @@ function connectLiveStudentNotes() {
         grid.innerHTML = `
           <div class="student-dashboard-empty">
             Study notes could not be loaded.
+            Please refresh the page.
           </div>
         `;
       }
@@ -175,9 +269,9 @@ function connectLiveStudentNotes() {
 }
 
 
-/* ------------------------------------------------------
+/* ======================================================
    CREATE ONE NOTE CARD
------------------------------------------------------- */
+====================================================== */
 
 function createStudentNoteCard(
   note
@@ -211,10 +305,15 @@ function createStudentNoteCard(
     );
 
 
+  /*
+    Supports older and newer field names.
+  */
   const imageUrl =
     escapeStudentNoteText(
       note.imageUrl ||
       note.fileUrl ||
+      note.downloadUrl ||
+      note.url ||
       ""
     );
 
@@ -283,13 +382,16 @@ function createStudentNoteCard(
 }
 
 
-/* ------------------------------------------------------
+/* ======================================================
    RENDER NOTES
------------------------------------------------------- */
+====================================================== */
 
 function renderStudentNotes(
   subject
 ) {
+  ensureStudentNotesPanelLayout();
+
+
   selectedStudentNoteSubject =
     normalizeStudentNoteSubject(
       subject ||
@@ -352,16 +454,16 @@ function renderStudentNotes(
 
 
 /*
-  Preserve compatibility with your existing
-  student.js openStudentPanel function.
+  Keep compatibility with your existing
+  openStudentPanel("study-notes") logic.
 */
 window.renderStudentNotes =
   renderStudentNotes;
 
 
-/* ------------------------------------------------------
+/* ======================================================
    FILTER BUTTONS
------------------------------------------------------- */
+====================================================== */
 
 document.addEventListener(
   "click",
@@ -404,9 +506,47 @@ document.addEventListener(
 );
 
 
-/* ------------------------------------------------------
+/* ======================================================
+   WATCH FOR DYNAMIC PANEL CREATION
+====================================================== */
+
+const notesPanelObserver =
+  new MutationObserver(
+    function () {
+      if (
+        ensureStudentNotesPanelLayout()
+      ) {
+        renderStudentNotes(
+          selectedStudentNoteSubject
+        );
+      }
+    }
+  );
+
+
+notesPanelObserver.observe(
+  document.body,
+
+  {
+    childList:
+      true,
+
+    subtree:
+      true
+  }
+);
+
+
+/* ======================================================
    START
------------------------------------------------------- */
+====================================================== */
+
+function startStudentNotes() {
+  ensureStudentNotesPanelLayout();
+
+  connectLiveStudentNotes();
+}
+
 
 if (
   document.readyState ===
@@ -414,9 +554,9 @@ if (
 ) {
   document.addEventListener(
     "DOMContentLoaded",
-    connectLiveStudentNotes
+    startStudentNotes
   );
 
 } else {
-  connectLiveStudentNotes();
+  startStudentNotes();
 }
