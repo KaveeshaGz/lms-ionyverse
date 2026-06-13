@@ -587,8 +587,9 @@ function renderStudentDashboard() {
 
   renderStudentDashboardNotifications();
 
-  renderStudentSidebarLivePages();
+
 }
+
 
 
 /* ------------------------------------------------------

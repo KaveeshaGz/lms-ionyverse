@@ -1207,13 +1207,25 @@ window.renderStudentNotes =
 
 
     try {
-      const snapshot =
-        await getDocs(
-          collection(
-            db,
-            "studyNotes"
-          )
-        );
+      const activeStudyNotesQuery =
+  query(
+    collection(
+      db,
+      "studyNotes"
+    ),
+
+    where(
+      "status",
+      "==",
+      "active"
+    )
+  );
+
+
+const snapshot =
+  await getDocs(
+    activeStudyNotesQuery
+  );
 
 
       let notes = [];
@@ -1894,13 +1906,25 @@ async function loadStudentPdfLibrary() {
   `;
 
   try {
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "pdfResources"
-        )
-      );
+    const activePdfQuery =
+  query(
+    collection(
+      db,
+      "pdfResources"
+    ),
+
+    where(
+      "status",
+      "==",
+      "active"
+    )
+  );
+
+
+const snapshot =
+  await getDocs(
+    activePdfQuery
+  );
 
     const pdfResources = [];
 
@@ -2529,38 +2553,67 @@ function createProtectedPdfViewer() {
     `
   );
 
-  /*
-    Block easy right-click saving.
-  */
-  document
-    .getElementById("protected-pdf-viewer")
-    .addEventListener(
-      "contextmenu",
-
-
-
-      
-      function (event) {
-        event.preventDefault();
-      }
-    );
-}
-  document
-    .getElementById(
+  const protectedPdfViewer =
+    document.getElementById(
       "protected-pdf-viewer"
-    )
-    .addEventListener(
-      "dragstart",
-      function (
-        event
-      ) {
-        event.preventDefault();
-      }
     );
+
+
+  if (
+    !protectedPdfViewer
+  ) {
+    return;
+  }
+
+
+  protectedPdfViewer.addEventListener(
+    "contextmenu",
+    function (
+      event
+    ) {
+      event.preventDefault();
+    }
+  );
+
+
+  protectedPdfViewer.addEventListener(
+    "dragstart",
+    function (
+      event
+    ) {
+      event.preventDefault();
+    }
+  );
+}
+  /* ------------------------------------------------------
+   BLOCK DRAGGING FROM PROTECTED PDF VIEWER
+------------------------------------------------------ */
+
+function connectProtectedPdfDragBlocking() {
+  const viewer =
+    document.getElementById(
+      "protected-pdf-viewer"
+    );
+
+
+  if (
+    !viewer ||
+    viewer.dataset.dragBlockingConnected ===
+      "true"
+  ) {
+    return;
+  }
+
+
+  viewer.dataset.dragBlockingConnected =
+    "true";
+
+    
+}
 
 function openProtectedPdfViewer(title) {
   createProtectedPdfViewer();
-
+  connectProtectedPdfDragBlocking();
   const viewer =
     document.getElementById(
       "protected-pdf-viewer"

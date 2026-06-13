@@ -9,9 +9,10 @@ import {
 
 import {
   collection,
+  query,
+  where,
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
 
 /* ======================================================
    STATE
@@ -351,11 +352,23 @@ function connectStudentNotesFirebase() {
     true;
 
 
-  onSnapshot(
+ const activeStudyNotesQuery =
+  query(
     collection(
       db,
       "studyNotes"
     ),
+
+    where(
+      "status",
+      "==",
+      "active"
+    )
+  );
+
+
+onSnapshot(
+  activeStudyNotesQuery,
 
     function (snapshot) {
       const notes =
