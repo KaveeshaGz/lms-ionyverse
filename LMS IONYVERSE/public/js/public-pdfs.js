@@ -1,4 +1,4 @@
-﻿/* ======================================================
+/* ======================================================
    BROWSE A TEACHER LMS
    PUBLIC FIRESTORE PDF COURSE LIBRARY
 ====================================================== */
@@ -174,7 +174,7 @@ function preparePublicPdfLibrary() {
         PDF Resources
       </span>
 
-      Browse teacher-uploaded Business Studies and
+      Browse teacher-uploaded Accounting and
       Chemistry study materials. Log in to open
       available PDFs or request access.
 
@@ -188,7 +188,7 @@ function preparePublicPdfLibrary() {
         type="button"
         data-public-pdf-subject="all">
 
-        âœ¦ All PDFs
+        ✦ All PDFs
 
       </button>
 
@@ -196,9 +196,9 @@ function preparePublicPdfLibrary() {
       <button
         class="btn-ghost public-pdf-filter"
         type="button"
-        data-public-pdf-subject="Business Studies">
+        data-public-pdf-subject="Accounting">
 
-        ðŸ“Š Business Studies
+        📊 Accounting
 
       </button>
 
@@ -208,7 +208,7 @@ function preparePublicPdfLibrary() {
         type="button"
         data-public-pdf-subject="Chemistry">
 
-        âš— Chemistry
+        ⚗ Chemistry
 
       </button>
 
@@ -300,7 +300,7 @@ async function loadPublicPdfResources() {
           ) {
             return (
               resource.subject ===
-                "Business Studies"
+                "Accounting"
 
               ||
 
@@ -405,7 +405,7 @@ function renderPublicPdfResources() {
           font-size:30px;
           margin-bottom:8px;
         ">
-          ðŸ“„
+          📄
         </div>
 
         No PDF resources are available yet.
@@ -436,7 +436,7 @@ function renderPublicPdfResources() {
               <div class="course-thumb">
 
                 <div class="course-thumb-inner">
-                  ðŸ“„
+                  📄
                 </div>
 
 

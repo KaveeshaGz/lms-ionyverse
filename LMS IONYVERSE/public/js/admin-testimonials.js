@@ -1,4 +1,4 @@
-﻿/* ======================================================
+/* ======================================================
    ADMIN FIREBASE TESTIMONIALS MANAGER
 ====================================================== */
 
@@ -88,7 +88,7 @@ function createTestimonialsSidebarItem() {
       <span class="admin-nav-dot">
       </span>
 
-      ðŸ’› Testimonials
+      💛 Testimonials
 
     </div>
   `;
@@ -283,7 +283,7 @@ function createTestimonialsAdminPanel() {
               id="testimonial-icon"
               class="form-input"
               type="text"
-              value="ðŸŽ€"
+              value="🎀"
               maxlength="8">
 
           </div>
@@ -589,7 +589,7 @@ async function createFirebaseTestimonial(
       )
       .value
       .trim() ||
-    "ðŸŽ€";
+    "🎀";
 
 
   const message =
@@ -663,7 +663,7 @@ async function createFirebaseTestimonial(
         "testimonial-icon"
       )
       .value =
-        "ðŸŽ€";
+        "🎀";
 
 
     alert(
@@ -848,7 +848,7 @@ function renderAdminTestimonials(
               <td>
                 ${escapeAdminTestimonialText(
                   testimonial.grade ||
-                  "â€”"
+                  "—"
                 )}
               </td>
 
@@ -857,7 +857,7 @@ function renderAdminTestimonials(
                   testimonial.rating ||
                   5
                 )}
-                â­
+                ⭐
               </td>
 
               <td>

@@ -1,4 +1,4 @@
-﻿/* ======================================================
+/* ======================================================
    BROWSE A TEACHER LMS
    ADMIN BANK-TRANSFER SETTINGS
 ====================================================== */
@@ -101,7 +101,7 @@ function createAdminPaymentSettingsPage() {
 
         <div class="admin-nav-dot"></div>
 
-        ðŸ¦ Payment Settings
+        🏦 Payment Settings
 
       </div>
     `;
@@ -171,7 +171,7 @@ function createAdminPaymentSettingsPage() {
       <div class="section-head">
 
         <div class="section-label">
-          Payments âœ¦
+          Payments ✦
         </div>
 
         <div class="page-title">

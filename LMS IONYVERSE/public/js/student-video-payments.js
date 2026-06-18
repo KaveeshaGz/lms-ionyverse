@@ -1,4 +1,4 @@
-﻿/* ======================================================
+/* ======================================================
    BROWSE A TEACHER LMS
    STUDENT VIDEO PAYMENT-SLIP UPLOAD
 ====================================================== */
@@ -222,13 +222,13 @@ function ensureStudentPaymentModal() {
             class="student-video-payment-close"
             type="button">
 
-            Ã—
+            ×
 
           </button>
 
 
           <div class="section-label">
-            Paid Video Access âœ¦
+            Paid Video Access ✦
           </div>
 
 

@@ -1,4 +1,4 @@
-﻿/* ======================================================
+/* ======================================================
    BROWSE A TEACHER LMS
    STUDENT FIRESTORE PDF LIBRARY
 ====================================================== */
@@ -231,7 +231,7 @@ function prepareStudentPdfPanel() {
     <div class="section-head">
 
       <div class="section-label">
-        Learning Resources âœ¦
+        Learning Resources ✦
       </div>
 
 
@@ -241,7 +241,7 @@ function prepareStudentPdfPanel() {
 
 
       <div class="page-subtitle">
-        Browse Business Studies and Chemistry PDFs
+        Browse Accounting and Chemistry PDFs
         uploaded by your teachers.
       </div>
 
@@ -497,7 +497,7 @@ async function loadStudentPdfResources() {
           ) {
             return (
               resource.subject ===
-                "Business Studies"
+                "Accounting"
 
               ||
 
@@ -713,7 +713,7 @@ function renderStudentPdfResources() {
           font-size:30px;
           margin-bottom:8px;
         ">
-          ðŸ“„
+          📄
         </div>
 
         No PDF resources are available yet.
@@ -742,7 +742,7 @@ function renderStudentPdfResources() {
             <article class="student-pdf-card">
 
               <div class="student-pdf-icon">
-                ðŸ“„
+                📄
               </div>
 
 
@@ -913,7 +913,7 @@ async function openStudentPdfResource(
       <body>
         <div>
           <h2>Opening PDF...</h2>
-          <p>Please wait âœ¦</p>
+          <p>Please wait ✦</p>
         </div>
       </body>
     </html>

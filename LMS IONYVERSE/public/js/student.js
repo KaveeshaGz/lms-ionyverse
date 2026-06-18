@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //   STUDENT FIREBASE FUNCTIONS WILL GO HERE.
 
 //   Next functions to implement:
@@ -367,8 +367,8 @@ function createStudentPages() {
           <tbody>
 
   <tr>
-    <td>Financial Business Studies Fundamentals</td>
-    <td>Business Studies</td>
+    <td>Financial Accounting Fundamentals</td>
+    <td>Accounting</td>
     <td>40%</td>
 
     <td>
@@ -698,7 +698,7 @@ function createStudentPages() {
           <strong>PDF request approved</strong>
 
           <div class="course-teacher">
-            2 hours ago Â· Chemistry Notes 2026
+            2 hours ago · Chemistry Notes 2026
           </div>
         </div>
 
@@ -706,7 +706,7 @@ function createStudentPages() {
           <strong>New video added to your course</strong>
 
           <div class="course-teacher">
-            Yesterday Â· Module 5: Differentiation
+            Yesterday · Module 5: Differentiation
           </div>
         </div>
 
@@ -714,7 +714,7 @@ function createStudentPages() {
           <strong>Consultation confirmed</strong>
 
           <div class="course-teacher">
-            Exam Prep - Business Studies Â· 10 Jun 2026
+            Exam Prep - Accounting · 10 Jun 2026
           </div>
         </div>
 
@@ -1092,7 +1092,7 @@ function createStudentNotesPage() {
 
       <div class="section-head">
         <div class="section-label">
-          Learning Resources âœ¦
+          Learning Resources ✦
         </div>
 
         <div class="page-title">
@@ -1433,11 +1433,11 @@ function createStudentNoteModal() {
           type="button"
           class="student-note-modal-close"
           onclick="closeStudentNoteModal()">
-          Ã—
+          ×
         </button>
 
         <div class="section-label">
-          Study Note Preview âœ¦
+          Study Note Preview ✦
         </div>
 
         <div
@@ -1755,7 +1755,7 @@ async function submitFirebasePdfRequest(event) {
   !window.isAllowedLmsSubject(subject)
 ) {
   alert(
-    "Please select Business Studies or Chemistry."
+    "Please select Accounting or Chemistry."
   );
 
   return;
@@ -1861,7 +1861,7 @@ function ensureStudentPdfLibraryContainer() {
     `
     <div class="section-head">
       <div class="section-label">
-        Learning Resources âœ¦
+        Learning Resources ✦
       </div>
 
       <div class="page-title">
@@ -1962,7 +1962,7 @@ const snapshot =
             font-size:30px;
             margin-bottom:10px;
           ">
-            ðŸ“„
+            📄
           </div>
 
           No PDF resources are available yet.
@@ -1990,7 +1990,7 @@ const snapshot =
           <article class="student-pdf-card">
 
             <div class="student-pdf-icon">
-              ðŸ“„
+              📄
             </div>
 
             <div class="student-pdf-subject">
@@ -2514,7 +2514,7 @@ function createProtectedPdfViewer() {
 
         <div>
           <div class="section-label">
-            Secure PDF Viewer âœ¦
+            Secure PDF Viewer ✦
           </div>
 
           <div
@@ -2528,14 +2528,14 @@ function createProtectedPdfViewer() {
           type="button"
           class="protected-pdf-close"
           onclick="closeProtectedPdfViewer()">
-          Ã—
+          ×
         </button>
 
       </div>
 
 
       <div class="protected-pdf-notice">
-        View-only learning material Â· Downloading and printing are disabled.
+        View-only learning material · Downloading and printing are disabled.
       </div>
 
 
@@ -2880,7 +2880,7 @@ async function submitFirebaseConsultationRequest(
   !window.isAllowedLmsSubject(subject)
 ) {
   alert(
-    "Please select Business Studies or Chemistry."
+    "Please select Accounting or Chemistry."
   );
 
   return;
@@ -3317,7 +3317,7 @@ async function loadStudentSessions() {
                     hasMeetingDetails
                       ? escapeStudentSessionText(
                           session.scheduledDate +
-                          " Â· " +
+                          " · " +
                           session.scheduledTime
                         )
                       : "Awaiting schedule"

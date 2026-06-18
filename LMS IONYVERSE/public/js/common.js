@@ -1,4 +1,4 @@
-﻿/* ======================================================
+/* ======================================================
    WEBSITE CONTACT SETTINGS
 ====================================================== */
 
@@ -552,7 +552,7 @@ window.togglePublicMobileNav =
     );
 
     toggle.textContent =
-      isOpen ? "Ã—" : "â˜°";
+      isOpen ? "×" : "☰";
   };
 
 
@@ -579,7 +579,7 @@ window.closePublicMobileNav =
       "false"
     );
 
-    toggle.textContent = "â˜°";
+    toggle.textContent = "☰";
   };
 
 
@@ -817,6 +817,5 @@ function updatePublicLibraryEmptyMessage(
   emptyMessage.style.display =
     "block";
 }
-
 
 

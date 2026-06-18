@@ -1,4 +1,4 @@
-﻿*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box}
 :root{
   --black:#0A0A0A;
   --yellow:#FFD400;
@@ -23,7 +23,7 @@
   --radius:14px;
   --radius-sm:8px;
   --radius-pill:99px;
-  /* âœ¿ Pinterest Pastel Palette âœ¿ */
+  /* ✿ Pinterest Pastel Palette ✿ */
   --pastel-pink:#FFB3C6;
   --pastel-lilac:#D4BBFF;
   --pastel-mint:#B5EAD7;
@@ -405,7 +405,7 @@ select option{background:var(--black)}
 /* ANIMATIONS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-/* âœ¦ PINTEREST / CUTE TEEN AESTHETIC âœ¦ */
+/* ✦ PINTEREST / CUTE TEEN AESTHETIC ✦ */
 /* hand-written accent labels */
 .hand-note{font-family:var(--hand);font-size:18px;color:var(--yellow);opacity:0.7;letter-spacing:0.02em;line-height:1}
 .hand-note-ivory{font-family:var(--hand);font-size:17px;color:var(--ivory);opacity:0.45;letter-spacing:0.01em}
@@ -437,7 +437,7 @@ select option{background:var(--black)}
 .nav-logo:hover em,.nav-logo em{font-style:normal}
 .nav-logo:hover span{letter-spacing:0.02em;transition:letter-spacing 0.3s}
 
-/* âœ¿ PINTEREST CUTE ICON STICKERS âœ¿ */
+/* ✿ PINTEREST CUTE ICON STICKERS ✿ */
 .pin-sticker{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:18px;flex-shrink:0;transition:transform 0.25s}
 .pin-sticker:hover{transform:rotate(-8deg) scale(1.15)}
 .pin-sticker-sm{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:14px;flex-shrink:0}
@@ -497,7 +497,7 @@ select option{background:var(--black)}
 .fade-in-4{animation:fadeUp 0.6s ease 0.3s forwards;opacity:0}
 
 
-/* âœ¿ Pastel page glow blobs for all pages âœ¿ */
+/* ✿ Pastel page glow blobs for all pages ✿ */
 #page-courses section, #page-freevideos section, #page-consult section {
   position:relative;overflow:hidden;
 }
@@ -506,14 +506,14 @@ select option{background:var(--black)}
 #page-freevideos section::before{content:'';position:absolute;top:-60px;right:-80px;width:360px;height:360px;background:radial-gradient(circle,rgba(255,203,164,0.05) 0%,transparent 68%);pointer-events:none;border-radius:50%;z-index:0}
 #page-consult section::before{content:'';position:absolute;top:-60px;left:-80px;width:360px;height:360px;background:radial-gradient(circle,rgba(255,179,198,0.06) 0%,transparent 68%);pointer-events:none;border-radius:50%;z-index:0}
 
-/* âœ¿ Cute pastel accent on booking form wrap âœ¿ */
+/* ✿ Cute pastel accent on booking form wrap ✿ */
 .booking-form-wrap{border-top:3px solid rgba(255,179,198,0.35)!important}
 .consultation-types .cons-type:nth-child(1):hover,.consultation-types .cons-type:nth-child(1).active{border-color:rgba(255,179,198,0.5)!important;background:rgba(255,179,198,0.05)!important}
 .consultation-types .cons-type:nth-child(2):hover,.consultation-types .cons-type:nth-child(2).active{border-color:rgba(212,187,255,0.5)!important;background:rgba(212,187,255,0.05)!important}
 .consultation-types .cons-type:nth-child(3):hover,.consultation-types .cons-type:nth-child(3).active{border-color:rgba(181,234,215,0.5)!important;background:rgba(181,234,215,0.05)!important}
 .consultation-types .cons-type:nth-child(4):hover,.consultation-types .cons-type:nth-child(4).active{border-color:rgba(255,203,164,0.5)!important;background:rgba(255,203,164,0.05)!important}
 
-/* âœ¿ Pastel tint on admin analytics cards âœ¿ */
+/* ✿ Pastel tint on admin analytics cards ✿ */
 .analytics-grid .ana-card:nth-child(2){border-color:rgba(212,187,255,0.2);background:rgba(212,187,255,0.03)}
 .analytics-grid .ana-card:nth-child(2) .ana-val{color:var(--pastel-lilac)}
 .analytics-grid .ana-card:nth-child(3){border-color:rgba(181,234,215,0.2);background:rgba(181,234,215,0.03)}
@@ -521,7 +521,7 @@ select option{background:var(--black)}
 .analytics-grid .ana-card:nth-child(4){border-color:rgba(255,203,164,0.2);background:rgba(255,203,164,0.03)}
 .analytics-grid .ana-card:nth-child(4) .ana-val{color:var(--pastel-peach)}
 
-/* âœ¿ Pastel tint on DB stat cards âœ¿ */
+/* ✿ Pastel tint on DB stat cards ✿ */
 .db-stats .db-stat:nth-child(2){border-color:rgba(255,179,198,0.2)}
 .db-stats .db-stat:nth-child(2) .db-stat-val{color:var(--pastel-pink)}
 .db-stats .db-stat:nth-child(3){border-color:rgba(212,187,255,0.2)}
@@ -529,10 +529,10 @@ select option{background:var(--black)}
 .db-stats .db-stat:nth-child(4){border-color:rgba(181,234,215,0.2)}
 .db-stats .db-stat:nth-child(4) .db-stat-val{color:var(--pastel-mint)}
 
-/* âœ¿ Cute login card pink top accent âœ¿ */
+/* ✿ Cute login card pink top accent ✿ */
 .login-card-glow{border-top:3px solid rgba(255,179,198,0.4)!important}
 
-/* âœ¿ Pastel course card subject glow on hover âœ¿ */
+/* ✿ Pastel course card subject glow on hover ✿ */
 .course-card:hover .course-subject{opacity:1}
 
 @media(max-width:768px){
@@ -591,7 +591,7 @@ select option{background:var(--black)}
 }
 
 /* =========================================================
-   FLOATING TRANSPARENT SCROLLBARS â€” GLOBAL
+   FLOATING TRANSPARENT SCROLLBARS — GLOBAL
    ========================================================= */
 
 /* Firefox */
@@ -884,7 +884,7 @@ body,
 
 /* Arrow showing that card is clickable */
 #admin-panel-dashboard .ana-card::after {
-  content: "â†’";
+  content: "→";
 
   position: absolute;
   right: 18px;
@@ -1183,7 +1183,7 @@ body,
 }
 
 /* =========================================================
-   COURSE LIBRARY â€” RIGHT-SIDE BANNER LAYOUT
+   COURSE LIBRARY — RIGHT-SIDE BANNER LAYOUT
    ========================================================= */
 
 .course-library-layout {
@@ -1352,7 +1352,7 @@ body,
 }
 
 /* =========================================================
-   COURSE LIBRARY â€” RIGHT-SIDE BANNERS
+   COURSE LIBRARY — RIGHT-SIDE BANNERS
    ========================================================= */
 
 .course-library-layout {
@@ -1587,7 +1587,7 @@ body,
 }
 
 /* =========================================================
-   ADMIN â€” SEPARATE BANNER ADVERTISEMENTS PAGE
+   ADMIN — SEPARATE BANNER ADVERTISEMENTS PAGE
    ========================================================= */
 
 .banner-page-heading {
@@ -1844,7 +1844,7 @@ body,
 }
 
 /* =========================================================
-   ADMIN PANEL VISIBILITY â€” FINAL SAFETY RULE
+   ADMIN PANEL VISIBILITY — FINAL SAFETY RULE
    ========================================================= */
 
 .admin-main > .admin-panel {
@@ -4697,7 +4697,7 @@ canvas {
 
 
 /* ======================================================
-   PUBLIC WEBSITE â€” MEDIUM AND SPLIT WINDOWS
+   PUBLIC WEBSITE — MEDIUM AND SPLIT WINDOWS
 ====================================================== */
 
 @media (max-width: 1280px) {
@@ -4920,7 +4920,7 @@ canvas {
 
 
 /* ======================================================
-   ADMIN DASHBOARD â€” SPLIT WINDOWS
+   ADMIN DASHBOARD — SPLIT WINDOWS
 ====================================================== */
 
 @media (max-width: 1320px) {
@@ -5146,7 +5146,7 @@ canvas {
 
 
 /* ======================================================
-   STUDENT DASHBOARD â€” SPLIT WINDOWS
+   STUDENT DASHBOARD — SPLIT WINDOWS
 ====================================================== */
 
 @media (max-width: 1180px) {
@@ -5289,7 +5289,7 @@ canvas {
 
 
 /* ======================================================
-   BANNER, NOTES AND FORMS â€” SPLIT WINDOWS
+   BANNER, NOTES AND FORMS — SPLIT WINDOWS
 ====================================================== */
 
 @media (max-width: 1100px) {

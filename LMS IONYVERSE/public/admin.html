@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -77,9 +77,9 @@
   <!-- ADMIN LOGIN GATE
   <div id="admin-login-gate" style="min-height:calc(100vh - 128px);display:flex;align-items:center;justify-content:center;padding:48px">
     <div style="width:100%;max-width:420px">
-      <div class="section-label" style="margin-bottom:12px">Admin Portal ðŸ”</div>
+      <div class="section-label" style="margin-bottom:12px">Admin Portal 🔐</div>
       <div style="font-family:var(--serif);font-size:32px;letter-spacing:-0.02em;margin-bottom:4px;color:var(--ivory)">Admin Login</div>
-      <div style="font-family:var(--hand);font-size:16px;color:var(--pastel-lilac);opacity:0.55;margin-bottom:24px">authorised personnel only ðŸ”’</div>
+      <div style="font-family:var(--hand);font-size:16px;color:var(--pastel-lilac);opacity:0.55;margin-bottom:24px">authorised personnel only 🔒</div>
       <p style="font-size:13px;color:var(--ivory-dim);font-weight:300;margin-bottom:40px">Restricted access. Platform management tools.</p>
       <div style="background:var(--card-bg);border:1px solid rgba(255,212,0,0.2);border-radius:var(--radius);padding:36px">
         <div class="form-group" style="margin-bottom:20px">
@@ -88,7 +88,7 @@
         </div>
         <div class="form-group" style="margin-bottom:28px">
           <label class="form-label">Password</label>
-          <input class="form-input" id="adm-password" type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
+          <input class="form-input" id="adm-password" type="password" placeholder="••••••••">
         </div>
         <button class="btn-large btn-yellow" style="width:100%" onclick="adminLogin()">Access Admin Panel</button>
       </div>
@@ -101,29 +101,29 @@
       <!-- <div class="admin-logo">Browse <span>A</span> Teacher<br><span style="font-family:var(--mono);font-size:10px;color:var(--gray);font-family:var(--mono)">Admin Panel</span></div> -->
       <div class="admin-nav-group">
         <div class="admin-nav-label">Overview</div>
-        <div class="admin-nav-item active"><div class="admin-nav-dot"></div>ðŸ  Dashboard</div>
-        <div class="admin-nav-item"><div class="admin-nav-dot"></div>ðŸ“Š Analytics</div>
+        <div class="admin-nav-item active"><div class="admin-nav-dot"></div>🏠 Dashboard</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>📊 Analytics</div>
       </div>
       <div class="admin-nav-group">
         <div class="admin-nav-label">Users</div>
-        <div class="admin-nav-item"><div class="admin-nav-dot"></div>ðŸ‘©â€ðŸŽ“ Students</div>
-        <div class="admin-nav-item"><div class="admin-nav-dot"></div>ðŸ‘©â€ðŸ« Teachers</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>👩‍🎓 Students</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>👩‍🏫 Teachers</div>
       </div>
       <div class="admin-nav-group">
         <div class="admin-nav-label">Content</div>
-        <div class="admin-nav-item"><div class="admin-nav-dot"></div>ðŸŽ¬ Upload Video</div>
-        <div class="admin-nav-item"><div class="admin-nav-dot"></div>â–¶ Videos</div>
-        <div class="admin-nav-item"><div class="admin-nav-dot"></div>ðŸ“„ PDFs</div>
-        <div class="admin-nav-item"><div class="admin-nav-dot"></div>ðŸ“¥ PDF Requests</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>🎬 Upload Video</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>▶ Videos</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>📄 PDFs</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>📥 PDF Requests</div>
       </div>
       <div class="admin-nav-group">
         <div class="admin-nav-label">Sessions</div>
-        <div class="admin-nav-item"><div class="admin-nav-dot"></div>ðŸŒŸ Consultations</div>
-        <div class="admin-nav-item"><div class="admin-nav-dot"></div>ðŸ”” Notifications</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>🌟 Consultations</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>🔔 Notifications</div>
       </div>
       <div class="admin-nav-group">
         <div class="admin-nav-label">Account</div>
-        <div class="admin-nav-item" onclick="adminLogout()" style="color:#EF9A9A;cursor:pointer"><div class="admin-nav-dot" style="background:#EF9A9A"></div>ðŸšª Sign Out</div>
+        <div class="admin-nav-item" onclick="adminLogout()" style="color:#EF9A9A;cursor:pointer"><div class="admin-nav-dot" style="background:#EF9A9A"></div>🚪 Sign Out</div>
       </div>
     </div>
     <div class="admin-main">
@@ -180,7 +180,7 @@
   <div class="ana-card">
 
     <div class="ana-label">
-      ðŸŒŸ Consultations
+      🌟 Consultations
     </div>
 
     <div
@@ -201,7 +201,7 @@
   <div class="ana-card">
 
     <div class="ana-label">
-      ðŸ“¥ PDF Requests
+      📥 PDF Requests
     </div>
 
     <div
@@ -310,7 +310,7 @@
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">Video Title</label>
-              <input class="form-input" type="text" placeholder="e.g. Integration Techniques â€” Part 1">
+              <input class="form-input" type="text" placeholder="e.g. Integration Techniques — Part 1">
             </div>
             <div class="form-group">
               <label class="form-label">Subject</label>
@@ -321,7 +321,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">Access Level</label>
-              <select class="form-select form-input"><option value="free">Free â€” All Students</option><option value="paid">Paid Students Only</option></select>
+              <select class="form-select form-input"><option value="free">Free — All Students</option><option value="paid">Paid Students Only</option></select>
             </div>
           </div>
           <div class="form-group" style="margin-bottom:24px">
@@ -381,4 +381,3 @@
 
 </body>
 </html>
-

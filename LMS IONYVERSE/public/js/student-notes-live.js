@@ -1,4 +1,4 @@
-﻿/* ======================================================
+/* ======================================================
    LIVE FIREBASE STUDY NOTES FOR STUDENT PANEL
 ====================================================== */
 
@@ -92,7 +92,7 @@ function ensureStudentNotesPanel() {
       </div>
 
       <div class="page-subtitle">
-        Browse Business Studies and Chemistry study notes
+        Browse Accounting and Chemistry study notes
         uploaded by your teachers.
       </div>
 
@@ -105,15 +105,15 @@ function ensureStudentNotesPanel() {
         class="student-note-filter active"
         type="button"
         data-student-note-filter="all">
-        âœ¦ All Notes
+        ✦ All Notes
       </button>
 
 
       <button
         class="student-note-filter"
         type="button"
-        data-student-note-filter="business studies">
-        ðŸ“Š Business Studies
+        data-student-note-filter="accounting">
+        📊 Accounting
       </button>
 
 
@@ -121,7 +121,7 @@ function ensureStudentNotesPanel() {
         class="student-note-filter"
         type="button"
         data-student-note-filter="chemistry">
-        âš— Chemistry
+        ⚗ Chemistry
       </button>
 
     </div>
@@ -212,7 +212,7 @@ function createStudentNoteCard(
             `
             : `
               <div class="student-note-placeholder">
-                ðŸ“
+                📝
               </div>
             `
         }

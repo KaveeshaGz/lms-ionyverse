@@ -1,4 +1,4 @@
-﻿/* ======================================================
+/* ======================================================
    PUBLIC FIREBASE TESTIMONIALS
 ====================================================== */
 
@@ -52,7 +52,7 @@ function createPublicTestimonialStars(
     safeRating
   )
     .fill(
-      "<span>â˜…</span>"
+      "<span>★</span>"
     )
     .join("");
 }
@@ -93,7 +93,7 @@ function createPublicTestimonialCard(
   const icon =
     escapePublicTestimonialText(
       testimonial.icon ||
-      "ðŸŽ€"
+      "🎀"
     );
 
 
@@ -128,7 +128,7 @@ function createPublicTestimonialCard(
       <div
         class="quote-mark"
         aria-hidden="true">
-        â€
+        ”
       </div>
 
 
