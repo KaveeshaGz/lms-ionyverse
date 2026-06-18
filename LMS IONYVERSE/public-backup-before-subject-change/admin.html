@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Portal | Browse A Teacher</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=Caveat:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <link
+  rel="stylesheet"
+  href="./css/style.css?v=3">
+
+</head>
+
+<body class="dashboard-page">
+
+
+<!-- NAVIGATION BAR -->
+<nav>
+  <div class="nav-logo" onclick="window.location.href='./index.html'">
+    Browse <span>A</span> Teacher
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="./index.html#landing">Home</a></li>
+    <li><a href="./index.html#courses">Courses</a></li>
+    <li><a href="./index.html#consult">Consult</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    <button class="btn-ghost"
+      onclick="window.location.href='./student.html'">
+      Login
+    </button>
+
+    <button class="btn-primary"
+      onclick="window.location.href='./index.html#landing'">
+      Get Started
+    </button>
+  </div>
+</nav>
+
+
+
+<!-- PAGE TABS
+<div class="page-tabs">
+  <button class="tab-btn"
+    onclick="showTab('landing')">
+    Landing
+  </button>
+
+  <button class="tab-btn"
+    onclick="showTab('courses')">
+    Course Library
+  </button>
+
+  <button class="tab-btn"
+    onclick="showTab('consult')">
+    Consultation
+  </button>
+
+
+
+  
+</div> -->
+
+
+
+<!-- ===== ADMIN LOGIN AND DASHBOARD ===== -->
+<div id="page-admin" class="page-view active">
+  <!-- ADMIN LOGIN GATE
+  <div id="admin-login-gate" style="min-height:calc(100vh - 128px);display:flex;align-items:center;justify-content:center;padding:48px">
+    <div style="width:100%;max-width:420px">
+      <div class="section-label" style="margin-bottom:12px">Admin Portal 🔐</div>
+      <div style="font-family:var(--serif);font-size:32px;letter-spacing:-0.02em;margin-bottom:4px;color:var(--ivory)">Admin Login</div>
+      <div style="font-family:var(--hand);font-size:16px;color:var(--pastel-lilac);opacity:0.55;margin-bottom:24px">authorised personnel only 🔒</div>
+      <p style="font-size:13px;color:var(--ivory-dim);font-weight:300;margin-bottom:40px">Restricted access. Platform management tools.</p>
+      <div style="background:var(--card-bg);border:1px solid rgba(255,212,0,0.2);border-radius:var(--radius);padding:36px">
+        <div class="form-group" style="margin-bottom:20px">
+          <label class="form-label">Admin Username</label>
+          <input class="form-input" id="adm-username" type="text" placeholder="admin">
+        </div>
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="adm-password" type="password" placeholder="••••••••">
+        </div>
+        <button class="btn-large btn-yellow" style="width:100%" onclick="adminLogin()">Access Admin Panel</button>
+      </div>
+    </div>
+  </div> -->
+  <!-- ADMIN DASHBOARD (hidden until login) -->
+  <div id="admin-dashboard">
+  <div class="admin-wrap">
+    <div class="admin-side">
+      <!-- <div class="admin-logo">Browse <span>A</span> Teacher<br><span style="font-family:var(--mono);font-size:10px;color:var(--gray);font-family:var(--mono)">Admin Panel</span></div> -->
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Overview</div>
+        <div class="admin-nav-item active"><div class="admin-nav-dot"></div>🏠 Dashboard</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>📊 Analytics</div>
+      </div>
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Users</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>👩‍🎓 Students</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>👩‍🏫 Teachers</div>
+      </div>
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Content</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>🎬 Upload Video</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>▶ Videos</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>📄 PDFs</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>📥 PDF Requests</div>
+      </div>
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Sessions</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>🌟 Consultations</div>
+        <div class="admin-nav-item"><div class="admin-nav-dot"></div>🔔 Notifications</div>
+      </div>
+      <div class="admin-nav-group">
+        <div class="admin-nav-label">Account</div>
+        <div class="admin-nav-item" onclick="adminLogout()" style="color:#EF9A9A;cursor:pointer"><div class="admin-nav-dot" style="background:#EF9A9A"></div>🚪 Sign Out</div>
+      </div>
+    </div>
+    <div class="admin-main">
+      <div class="section-head">
+        <div class="page-title">Admin Dashboard</div>
+        <div class="page-subtitle">Overview of platform activity and management</div>
+      </div>
+
+      <!-- ADMIN DASHBOARD LIVE COUNTS -->
+<div class="analytics-grid">
+
+  <div class="ana-card">
+
+    <div class="ana-label">
+      Total Students
+    </div>
+
+    <div
+      id="admin-dashboard-student-count"
+      class="ana-val">
+      0
+    </div>
+
+    <div
+      id="admin-dashboard-student-note"
+      class="ana-delta">
+      No live data yet
+    </div>
+
+  </div>
+
+
+  <div class="ana-card">
+
+    <div class="ana-label">
+      Total Videos
+    </div>
+
+    <div
+      id="admin-dashboard-video-count"
+      class="ana-val">
+      0
+    </div>
+
+    <div
+      id="admin-dashboard-video-note"
+      class="ana-delta">
+      No live data yet
+    </div>
+
+  </div>
+
+
+  <div class="ana-card">
+
+    <div class="ana-label">
+      🌟 Consultations
+    </div>
+
+    <div
+      id="admin-dashboard-consultation-count"
+      class="ana-val">
+      0
+    </div>
+
+    <div
+      id="admin-dashboard-consultation-note"
+      class="ana-delta">
+      No live data yet
+    </div>
+
+  </div>
+
+
+  <div class="ana-card">
+
+    <div class="ana-label">
+      📥 PDF Requests
+    </div>
+
+    <div
+      id="admin-dashboard-pdf-request-count"
+      class="ana-val">
+      0
+    </div>
+
+    <div
+      id="admin-dashboard-pdf-request-note"
+      class="ana-delta">
+      No live data yet
+    </div>
+
+  </div>
+
+</div>
+
+      <div
+  class="two-col"
+  style="margin-bottom:32px">
+
+  <!-- MONTHLY ENROLLMENTS -->
+  <div>
+
+    <div
+      class="db-recent"
+      style="margin-bottom:16px">
+      Monthly Enrollments
+    </div>
+
+    <div class="admin-page-card">
+
+      <div
+        id="admin-dashboard-enrollment-placeholder"
+        style="
+          min-height:220px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:var(--ivory-dim);
+          text-align:center;
+        ">
+        Monthly enrollment statistics will appear here.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- RECENT ACTIVITY -->
+  <div>
+
+    <div
+      class="db-recent"
+      style="margin-bottom:16px">
+      Recent Activity
+    </div>
+
+    <div
+      id="admin-dashboard-recent-activity"
+      class="admin-page-card"
+      style="
+        min-height:220px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:var(--ivory-dim);
+        text-align:center;
+      ">
+      Recent activity will appear here.
+    </div>
+
+  </div>
+
+</div>
+
+      <div class="table-wrap">
+        <div class="table-head-row">
+          <div class="table-title">Student Management</div>
+          <input class="table-search" type="text" placeholder="Search students...">
+        </div>
+        <table>
+          <thead><tr><th>Student</th><th>Subject</th><th>Enrolled</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="admin-dashboard-students-body">
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:32px">
+        <div class="db-recent" style="margin-bottom:16px">Consultation Requests</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Student</th><th>Subject</th><th>Date & Time</th><th>Type</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="admin-dashboard-consultations-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-top:40px">
+        <div class="db-recent" style="margin-bottom:16px">Upload Video</div>
+        <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:2px;padding:36px;max-width:640px">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.08em;margin-bottom:24px">NEW VIDEO UPLOAD</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Video Title</label>
+              <input class="form-input" type="text" placeholder="e.g. Integration Techniques — Part 1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subject</label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Teacher</label>
+              <input class="form-input" type="text" placeholder="e.g. Mr. R. Perera">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Access Level</label>
+              <select class="form-select form-input"><option value="free">Free — All Students</option><option value="paid">Paid Students Only</option></select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:24px">
+            <label class="form-label">Video URL / Embed Link</label>
+            <input class="form-input" type="url" placeholder="https://youtube.com/embed/...">
+          </div>
+          <div class="form-group" style="margin-bottom:28px">
+            <label class="form-label">Description (optional)</label>
+            <textarea class="form-input" rows="3" placeholder="Brief description of this lesson..." style="resize:none"></textarea>
+          </div>
+          <div style="display:flex;gap:12px">
+            <button class="btn-large btn-yellow">Publish Video</button>
+            <button class="btn-ghost btn-large" style="padding:14px 28px">Save as Draft</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end admin-dashboard -->
+</div>
+
+
+<script src="./js/common.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="./js/password-toggle.js?v=3"></script>
+
+<script src="./js/subjects.js?v=1"></script>
+
+<script
+  type="module"
+  src="./js/admin.js?v=27">
+</script>
+
+<script
+  type="module"
+  src="./js/admin-testimonials.js?v=1">
+</script>
+
+<script
+  type="module"
+  src="./js/admin-videos.js?v=1">
+</script>
+
+<script
+  type="module"
+  src="./js/admin-payment-settings.js?v=2">
+</script>
+
+<script
+  type="module"
+  src="./js/admin-video-payments.js?v=1">
+</script>
+
+
+
+</body>
+</html>

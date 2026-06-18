@@ -1,4 +1,4 @@
-/* ======================================================
+﻿/* ======================================================
    LIVE FIREBASE STUDENT DASHBOARD
 ====================================================== */
 
@@ -1031,12 +1031,12 @@ function renderStudentUpcomingSession() {
           ${escapeStudentDashboardText(
             upcomingSession.scheduledDate
           )}
-          ·
+          Â·
           ${escapeStudentDashboardText(
             upcomingSession.scheduledTime ||
             "Time to be confirmed"
           )}
-          ·
+          Â·
           ${escapeStudentDashboardText(
             upcomingSession.teacherName ||
             "Teacher to be assigned"
@@ -1509,4 +1509,5 @@ function escapeStudentDashboardText(
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
 

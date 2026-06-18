@@ -1,13 +1,13 @@
-/* ======================================================
+﻿/* ======================================================
    LMS SUBJECT CONFIGURATION
    Add new subjects here later when required.
 ====================================================== */
 
 window.LMS_SUBJECTS = [
   {
-    label: "Accounting",
-    value: "Accounting",
-    slug: "accounting"
+    label: "Business Studies",
+    value: "Business Studies",
+    slug: "business studies"
   },
 
   {

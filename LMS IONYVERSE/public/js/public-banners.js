@@ -1,4 +1,4 @@
-/* ======================================================
+﻿/* ======================================================
    PUBLIC FIREBASE BANNER ADVERTISEMENTS
 ====================================================== */
 
@@ -119,7 +119,7 @@ function ensurePublicBannerLayout() {
     <div class="public-banner-sidebar-head">
 
       <div class="section-label">
-        Featured Classes ✦
+        Featured Classes âœ¦
       </div>
 
       <div class="public-banner-sidebar-title">

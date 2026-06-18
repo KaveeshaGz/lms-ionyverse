@@ -1,4 +1,4 @@
-/* ======================================================
+﻿/* ======================================================
    BROWSE A TEACHER LMS
    STUDENT CLOUDFLARE VIDEO LIBRARY
 ====================================================== */
@@ -410,7 +410,7 @@ function replaceStudentVideoPanel() {
       </div>
 
       <div class="page-subtitle">
-        Watch published Accounting and Chemistry lessons.
+        Watch published Business Studies and Chemistry lessons.
       </div>
 
     </div>
@@ -952,7 +952,7 @@ function renderStudentVideos() {
           font-size:30px;
           margin-bottom:8px;
         ">
-          🎬
+          ðŸŽ¬
         </div>
 
         No published videos are available yet.
@@ -1103,7 +1103,7 @@ function createStudentStreamModal() {
               type="button"
               data-student-video-action="close-player">
 
-              ×
+              Ã—
 
             </button>
 
@@ -1333,13 +1333,13 @@ function createStudentPurchaseModal() {
               right:16px;
             ">
 
-            ×
+            Ã—
 
           </button>
 
 
           <div class="section-label">
-            Paid Video Access ✦
+            Paid Video Access âœ¦
           </div>
 
 

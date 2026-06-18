@@ -1,4 +1,4 @@
-/* ======================================================
+﻿/* ======================================================
    BROWSE A TEACHER LMS
    ADMIN CLOUDFLARE VIDEO MANAGER
 ====================================================== */
@@ -146,7 +146,7 @@ function replaceOldVideoUploadForm() {
           id="video-title"
           class="form-input"
           type="text"
-          placeholder="Example: Accounting Fundamentals — Part 01"
+          placeholder="Example: Business Studies Fundamentals â€” Part 01"
           maxlength="160"
           required>
       </div>
@@ -162,8 +162,8 @@ function replaceOldVideoUploadForm() {
           class="form-select form-input"
           required>
 
-          <option value="Accounting">
-            Accounting
+          <option value="Business Studies">
+            Business Studies
           </option>
 
           <option value="Chemistry">
@@ -200,11 +200,11 @@ function replaceOldVideoUploadForm() {
           required>
 
           <option value="free">
-            Free — Available to approved students
+            Free â€” Available to approved students
           </option>
 
           <option value="paid">
-            Paid — Bank-slip approval required
+            Paid â€” Bank-slip approval required
           </option>
 
         </select>
@@ -726,11 +726,11 @@ async function uploadAdminCloudflareVideo(
 
 
   if (
-    subject !== "Accounting" &&
+    subject !== "Business Studies" &&
     subject !== "Chemistry"
   ) {
     alert(
-      "Please select Accounting or Chemistry."
+      "Please select Business Studies or Chemistry."
     );
 
     return;

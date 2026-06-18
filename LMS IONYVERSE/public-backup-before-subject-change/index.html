@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Browse A Teacher</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=Caveat:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <link
+  rel="stylesheet"
+  href="./css/style.css?v=16">
+</head>
+
+<body>
+
+
+<!-- NAVIGATION BAR -->
+<!-- <nav>
+  <div class="nav-logo" onclick="window.location.href='./index.html'">
+    Browse <span>A</span> Teacher
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="./index.html#landing">Home</a></li>
+    <li><a href="./index.html#courses">Courses</a></li>
+    <li><a href="./index.html#consult">Consult</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    <button class="btn-ghost"
+      onclick="window.location.href='./student.html'">
+      Login
+    </button>
+
+    <button class="btn-primary"
+      onclick="window.location.href='./index.html#landing'">
+      Get Started
+    </button>
+  </div>
+</nav> -->
+<!-- PUBLIC NAV -->
+<!-- MAIN NAVIGATION -->
+<!-- NAV -->
+<nav>
+
+  <div
+  class="nav-logo"
+  onclick="window.location.href='./index.html'">
+
+  <img
+    class="main-navbar-logo"
+    src="
+https://firebasestorage.googleapis.com/v0/b/browse-a-teacher-lms.firebasestorage.app/o/public-assets%2Fbrowse-a-teacher-logo.png?alt=media&token=9d70c809-e72c-4f7a-bcad-ee40f48ff206    alt="Browse A Teacher Logo">
+
+</div>
+
+
+  <ul class="nav-links">
+    <li>
+      <button
+        type="button"
+        onclick="openPublicSection('landing')">
+        Home
+      </button>
+    </li>
+
+    <li>
+      <button
+        type="button"
+        onclick="openPublicSection('courses')">
+        Courses
+      </button>
+    </li>
+
+    <li>
+      <button
+        type="button"
+        onclick="openPublicSection('notes')">
+        Notes
+      </button>
+    </li>
+
+    <li>
+      <button
+        type="button"
+        onclick="openPublicSection('consult')">
+        Consult
+      </button>
+    </li>
+  </ul>
+
+
+  <div class="nav-cta">
+
+    <button
+      class="btn-ghost"
+      type="button"
+      onclick="window.location.href='./login.html'">
+      Login
+    </button>
+
+    <button
+      class="btn-primary"
+      type="button"
+      onclick="window.location.href='./signup.html'">
+      Get Started
+    </button>
+
+  </div>
+
+
+  <button
+    id="public-nav-toggle"
+    class="public-nav-toggle"
+    type="button"
+    aria-label="Open navigation"
+    aria-expanded="false"
+    onclick="togglePublicMobileNav()">
+    ☰
+  </button>
+
+</nav>
+
+
+<div
+  id="public-mobile-nav"
+  class="public-mobile-nav">
+
+  <button
+    type="button"
+    onclick="openPublicSection('landing'); closePublicMobileNav();">
+    Home
+  </button>
+
+  <button
+    type="button"
+    onclick="openPublicSection('courses'); closePublicMobileNav();">
+    Courses
+  </button>
+
+  <button
+    type="button"
+    onclick="openPublicSection('notes'); closePublicMobileNav();">
+    Notes
+  </button>
+
+  <button
+    type="button"
+    onclick="openPublicSection('consult'); closePublicMobileNav();">
+    Consult
+  </button>
+
+  <div class="public-mobile-nav-actions">
+
+    <button
+      class="btn-ghost"
+      type="button"
+      onclick="window.location.href='./login.html'">
+      Login
+    </button>
+
+    <button
+      class="btn-primary"
+      type="button"
+      onclick="window.location.href='./signup.html'">
+      Get Started
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- PAGE TABS
+<div class="page-tabs">
+  <button class="tab-btn active"
+    onclick="showTab('landing')">
+    Landing
+  </button>
+
+  <button class="tab-btn"
+    onclick="showTab('courses')">
+    Course Library
+  </button>
+
+  <button class="tab-btn"
+    onclick="showTab('consult')">
+    Consultation
+  </button>
+
+  <button class="tab-btn"
+    onclick="showTab('student')">
+    Login
+  </button>
+
+  
+</div> -->
+
+
+
+<!-- ===== LANDING PAGE ===== -->
+<div id="page-landing" class="page-view active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-blob-pink"></div>
+    <div class="hero-blob-mint"></div>
+    <span class="hero-sparkle" style="color:var(--pastel-pink)">🌸</span>
+    <span class="hero-sparkle" style="color:var(--pastel-lilac)">✦</span>
+    <span class="hero-sparkle" style="color:var(--yellow)">⭐</span>
+    <span class="hero-sparkle" style="color:var(--pastel-mint)">✿</span>
+    <span class="hero-sparkle" style="color:var(--pastel-peach)">🌟</span>
+    <span class="deco-float" style="top:40%;right:12%;animation-delay:1s;font-size:16px">🎀</span>
+   <span class="deco-float" style="top:25%;right:44%;animation-delay:3s;font-size:13px">📚</span>
+    <span class="deco-float" style="top:60%;right:35%;animation-delay:5s;font-size:12px">🌼</span>
+    <div class="hero-tag fade-in"><span></span>Est. 2020 · Premium Learning ✨</div>
+    <h1 class="fade-in-2">Learn Smarter<br>with <em>Browse</em><br>A Teacher.</h1>
+    <p class="hero-sub fade-in-3">Connect with expert educators, access premium learning resources, and book personalised consultation sessions — all in one place.</p>
+    <div class="hero-actions fade-in-4">
+      <button class="btn-large btn-yellow" onclick="showTab('courses')">Browse Courses</button>
+      <button class="btn-large btn-outline" onclick="showTab('consult')">Request Consultation</button>
+    </div>
+   <!-- HOMEPAGE HIGHLIGHT STATISTICS -->
+<div class="hero-stats fade-in-4">
+
+  <div class="home-stat-item">
+
+    <div
+      id="homepage-student-count"
+      class="stat-num"
+      style="color:var(--yellow)">
+      Unlimited
+    </div>
+
+    <div class="stat-label">
+      Students Enrolled
+    </div>
+
+  </div>
+
+
+  <div class="home-stat-item">
+
+    <div
+      id="homepage-video-count"
+      class="stat-num"
+      style="color:var(--pastel-pink)">
+      Premium
+    </div>
+
+    <div class="stat-label">
+      Video Lessons
+    </div>
+
+  </div>
+
+
+  <div class="home-stat-item">
+
+    <div
+      id="homepage-teacher-count"
+      class="stat-num"
+      style="color:var(--pastel-lilac)">
+      Qualified
+    </div>
+
+    <div class="stat-label">
+      Expert Teachers
+    </div>
+
+  </div>
+
+
+  <div class="home-stat-item">
+
+    <div
+      id="homepage-satisfaction-rate"
+      class="stat-num"
+      style="color:var(--pastel-mint)">
+      98%
+    </div>
+
+    <div class="stat-label">
+      Satisfaction Rate
+    </div>
+
+  </div>
+
+</div>
+  </section>
+
+ <!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-pink">
+        📊
+      </span>
+      Accounting
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-mint">
+        ⚗
+      </span>
+      Chemistry
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-lilac">
+        ✦
+      </span>
+      Accounting
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-peach">
+        🌿
+      </span>
+      Chemistry
+    </span>
+
+
+    <!-- Repeated items keep the scrolling animation smooth -->
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-pink">
+        📊
+      </span>
+      Accounting
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-mint">
+        ⚗
+      </span>
+      Chemistry
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-lilac">
+        ✦
+      </span>
+      Accounting
+    </span>
+
+    <span class="marquee-item">
+      <span class="marquee-dot mdot-peach">
+        🌿
+      </span>
+      Chemistry
+    </span>
+
+  </div>
+</div>
+
+  <!-- FEATURES -->
+  <section>
+    <div class="section-label">Why Browse A Teacher 🌸</div>
+    <div class="section-title">Everything you need<br>to <em style="font-style:italic;color:var(--yellow)">actually</em> learn. <span style="color:var(--yellow);font-style:normal;font-size:0.55em;vertical-align:middle;letter-spacing:0.02em;opacity:0.7">✦</span></div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-pink">🎬</div>
+        <div class="feature-num">01</div>
+        <div class="feature-title">Video Learning</div>
+        <div class="feature-desc">HD lessons organised by subject and topic. Resume anytime, track your progress, and never miss a beat.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-lilac">📄</div>
+        <div class="feature-num">02</div>
+        <div class="feature-title">PDF Resources</div>
+        <div class="feature-desc">Secure, watermarked study materials delivered right to your dashboard. Request access in seconds.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-mint">🌟</div>
+        <div class="feature-num">03</div>
+        <div class="feature-title">1-on-1 Consultation</div>
+        <div class="feature-desc">Book personal sessions with expert teachers for targeted exam prep, subject guidance, and career advice.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-peach">🔒</div>
+        <div class="feature-num">04</div>
+        <div class="feature-title">Secure Environment</div>
+        <div class="feature-desc">JWT-protected access, role-based controls, and anti-download measures keep your learning safe.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-sky">🎓</div>
+        <div class="feature-num">05</div>
+        <div class="feature-title">Expert Teachers</div>
+        <div class="feature-desc">Hand-picked educators with proven track records. Real expertise, real results, real guidance.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-circle fic-yellow">💬</div>
+        <div class="feature-num">06</div>
+        <div class="feature-title">WhatsApp Support</div>
+        <div class="feature-desc">Get help instantly. Purchase courses, ask questions, and book sessions — all via WhatsApp.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-label">Student Stories 💛 ✦</div>
+    <div class="section-title">Real results,<br>real students.</div>
+    <div
+  id="public-testimonials-grid"
+  class="testimonials-grid">
+
+  <div style="
+    grid-column:1/-1;
+    color:var(--ivory-dim);
+    font-size:13px;
+  ">
+    Student testimonials will appear here.
+  </div>
+
+</div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="section-label">Questions 💭</div>
+    <div class="section-title">Frequently asked.</div>
+    <div style="margin-top:8px;margin-bottom:4px"><span class="hand-note-ivory">everything you've been wondering ✦</span></div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>How do I purchase a course?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">Simply click "Purchase" on any course, and you'll be connected to our team via WhatsApp. Share your details, confirm payment, and you're enrolled — usually within the hour.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Can I download the PDF materials?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">PDFs are provided in a secure viewer only. Downloading, printing, and copying are disabled to protect teacher content. Every page is watermarked with your name.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>How do consultation sessions work?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">Fill in the booking form with your subject, preferred date, and time. Your request goes to the admin team who will confirm via WhatsApp within 24 hours.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Is there a free trial?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">Some introductory lessons are available for free. Message us on WhatsApp to find out what's currently available for your subject area.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Which subjects are available?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a">We currently offer Accounting and Chemistry. Additional subjects may be added later.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Browse <span>A</span> Teacher</div>
+        <p class="footer-desc">Premium learning resources and expert consultation for students who are serious about results.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#">Browse Courses</a></li>
+          <li><a href="#">Consultation</a></li>
+          <li><a href="#">PDF Library</a></li>
+          <li><a href="#">Student Dashboard</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Teachers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <ul class="footer-links">
+          <li><a href="#">WhatsApp Support</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 Browse A Teacher · All rights reserved</div>
+      <div class="footer-copy">Made with care in Sri Lanka 🌸 ✦</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ===== COURSE LIBRARY ===== -->
+<div id="page-courses" class="page-view">
+  <section>
+    <div class="courses-header">
+      <div>
+        <div class="section-label">All Subjects 📚</div>
+        <div class="section-title">Course <em style="font-style:italic;color:var(--pastel-pink)">Library</em> <span style="font-size:0.45em;vertical-align:middle">📚</span></div>
+        <div style="margin-top:4px"><span class="hand-note-ivory">your next favourite subject is here 🌸✦</span></div>
+      </div>
+      
+    </div>
+
+    <!-- Library Sub-Tabs -->
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--ivory-border);margin-bottom:40px">
+      <button id="lib-tab-videos" class="lib-tab active-lib" onclick="switchLib('videos')" style="padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--yellow);background:none;border:none;cursor:pointer;border-bottom:2px solid var(--yellow);margin-bottom:-1px">▶ Video Courses</button>
+      <button id="lib-tab-pdfs" class="lib-tab" onclick="switchLib('pdfs')" style="padding:12px 24px;font-size:12px;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase;color:var(--ivory-dim);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px">📄 PDF Resources</button>
+    </div>
+
+    <!-- VIDEOS SECTION -->
+<div id="lib-videos">
+
+  <!-- FREE ACCESS NOTICE -->
+  <div
+    style="
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:24px;
+      padding:14px 18px;
+      background:rgba(240,234,214,0.04);
+      border:1px solid var(--ivory-border);
+      border-radius:var(--radius-sm);
+    ">
+
+    <span class="free-pill">
+      <span></span>
+      Free Access
+    </span>
+
+    <div
+      style="
+        font-size:12px;
+        color:var(--ivory-dim);
+        font-weight:300;
+      ">
+      All video courses are freely viewable —
+      no login or payment required.
+    </div>
+
+    <span
+      style="
+        margin-left:auto;
+        white-space:nowrap;
+        color:var(--yellow);
+        opacity:0.75;
+        font-family:var(--hand);
+        font-size:16px;
+      ">
+      watch anytime 🎬 ✦
+    </span>
+
+  </div>
+
+
+<!-- FIREBASE VIDEO COURSES WILL LOAD HERE -->
+<div
+  id="public-video-course-grid"
+  class="courses-grid">
+</div>
+
+<div
+  id="public-video-course-grid"
+  class="courses-grid">
+
+  <div
+    class="public-library-empty-message"
+    style="
+      grid-column:1 / -1;
+      padding:24px;
+      border:1px dashed var(--ivory-border);
+      border-radius:var(--radius);
+      color:var(--ivory-dim);
+      text-align:center;
+    ">
+    No video courses have been uploaded yet.
+  </div>
+
+</div>
+
+</div>
+        
+         
+
+   <!-- PDFS SECTION -->
+<div id="lib-pdfs" style="display:none">
+
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:24px;
+    padding:12px 16px;
+    background:rgba(239,154,154,0.06);
+    border:1px solid rgba(239,154,154,0.18);
+    border-radius:2px;
+  ">
+
+    <div style="
+      width:7px;
+      height:7px;
+      background:#EF9A9A;
+      border-radius:50%;
+      flex-shrink:0;
+    ">
+    </div>
+
+    <div style="
+      font-size:12px;
+      color:rgba(255,255,255,0.65);
+      font-weight:300;
+    ">
+      Uploaded PDF learning resources will appear here.
+    </div>
+
+  </div>
+
+
+  <div
+    id="public-pdf-grid"
+    class="courses-grid">
+
+    <div style="
+      grid-column:1/-1;
+      padding:22px;
+      color:var(--ivory-dim);
+      font-size:13px;
+      border:1px dashed var(--ivory-border);
+      border-radius:var(--radius);
+      text-align:center;
+    ">
+      No PDF resources are available yet.
+    </div>
+
+  </div>
+
+</div>
+  </section>
+</div>
+<!-- ===== CONSULTATION PAGE ===== -->
+<div id="page-consult" class="page-view">
+  <section>
+    <div class="section-label">Book a Session 🌟</div>
+    <div class="section-title">One-on-one<br><em style="font-style:italic;color:var(--pastel-lilac)">Consultation.</em> <span style="font-size:0.45em;vertical-align:middle">🌟</span></div>
+    <p class="section-sub">Get targeted help from expert teachers. Whether it's exam prep, a tricky topic, or career guidance — we're here. 🌸</p>
+    <div class="booking-grid">
+      <div class="booking-form-wrap">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:0.08em;margin-bottom:24px">01 / BOOK YOUR SESSION 📅</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" type="text" placeholder="Enter your name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <select class="form-select form-input">
+             <option>Accounting</option>
+             <option>Chemistry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Date</label>
+            <input class="form-input" type="date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Time</label>
+            <input class="form-input" type="time">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:24px">
+          <label class="form-label">Session Type</label>
+          <select class="form-select form-input">
+            <option>One-on-One Subject Help</option>
+            <option>Exam Preparation</option>
+            <option>Career Guidance</option>
+            <option>Topic Deep-Dive</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label">Message (optional)</label>
+          <textarea class="form-input" rows="3" placeholder="Tell us what you'd like to focus on..." style="resize:none"></textarea>
+        </div>
+        <button class="btn-large btn-yellow" style="width:100%" onclick="whatsappConsult()">Submit via WhatsApp</button>
+      </div>
+      <div class="booking-info">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:0.08em;margin-bottom:24px">02 / SESSION TYPES ✨</div>
+        <div class="consultation-types">
+          <div class="cons-type active">
+            <div class="cons-dot"></div>
+            <div><div class="cons-title">🌟 One-on-One Help</div><div class="cons-sub">Targeted support on any topic or subject</div></div>
+          </div>
+          <div class="cons-type" onclick="this.classList.toggle('active')">
+            <div class="cons-dot"></div>
+            <div><div class="cons-title">📝 Exam Preparation</div><div class="cons-sub">Structured revision and past paper practice</div></div>
+          </div>
+          <div class="cons-type" onclick="this.classList.toggle('active')">
+            <div class="cons-dot"></div>
+            <div><div class="cons-title">🎓 Career Guidance</div><div class="cons-sub">University selection, subject choices, path planning</div></div>
+          </div>
+          <div class="cons-type" onclick="this.classList.toggle('active')">
+            <div class="cons-dot"></div>
+            <div><div class="cons-title">🔍 Topic Deep-Dive</div><div class="cons-sub">Master one difficult topic in a focused session</div></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);padding:24px;border-radius:2px;margin-top:24px">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--ivory-dim);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px">✿ How it works</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:12px;align-items:flex-start"><div style="font-family:var(--mono);font-size:11px;color:var(--yellow);flex-shrink:0;margin-top:2px">01</div><div style="font-size:13px;color:var(--gray);font-weight:300">Fill in your booking form with subject and time preference.</div></div>
+            <div style="display:flex;gap:12px;align-items:flex-start"><div style="font-family:var(--mono);font-size:11px;color:var(--yellow);flex-shrink:0;margin-top:2px">02</div><div style="font-size:13px;color:var(--gray);font-weight:300">Your request is reviewed by our team within 24 hours.</div></div>
+            <div style="display:flex;gap:12px;align-items:flex-start"><div style="font-family:var(--mono);font-size:11px;color:var(--yellow);flex-shrink:0;margin-top:2px">03</div><div style="font-size:13px;color:var(--gray);font-weight:300">Confirmation and session details sent via WhatsApp.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== NOTES PAGE ===== -->
+<div id="page-notes" class="page-view">
+
+  <section class="notes-page">
+
+    <div class="section-label">
+      Study Notes 📚
+    </div>
+
+    <div class="section-title">
+      Visual notes for<br>
+      smarter revision.
+    </div>
+
+    <p class="section-sub">
+      Browse quick image-based study notes with simple explanations.
+      Select a subject and open any note to view the full image.
+    </p>
+
+    <div class="notes-filter-row">
+
+  <button
+    type="button"
+    class="btn-ghost notes-filter-btn active"
+    data-public-note-filter="all">
+    ✦ All Notes
+  </button>
+
+  <button
+    type="button"
+    class="btn-ghost notes-filter-btn"
+    data-public-note-filter="accounting">
+    📊 Accounting
+  </button>
+
+  <button
+    type="button"
+    class="btn-ghost notes-filter-btn"
+    data-public-note-filter="chemistry">
+    ⚗ Chemistry
+  </button>
+
+</div>
+
+    <div
+  id="public-notes-grid"
+  class="notes-grid">
+
+  <div style="
+    grid-column:1/-1;
+    color:var(--ivory-dim);
+    font-size:13px;
+  ">
+    Published study notes will appear here.
+  </div>
+
+</div>
+
+  </section>
+</div>
+
+
+<!-- ===== NOTE IMAGE POPUP ===== -->
+<div id="note-modal" class="note-modal">
+
+  <div class="note-modal-card">
+
+    <button
+      class="note-modal-close"
+      onclick="closeNoteImage()">
+      ✕
+    </button>
+
+    <div
+      id="note-modal-title"
+      class="note-modal-title">
+      Note Preview
+    </div>
+
+    <img
+      id="note-modal-image"
+      class="note-modal-image"
+      src=""
+      alt="Note preview">
+
+  </div>
+</div>
+
+<!-- ===== WHATSAPP BUTTON ===== -->
+<div class="wa-float">
+  <div class="wa-tooltip">Chat on WhatsApp</div>
+  <button class="wa-btn" onclick="whatsappSupport()" aria-label="Contact us on WhatsApp">
+    <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+  </button>
+</div>
+
+<!-- ===== VIDEO MODAL ===== -->
+<div id="video-modal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px">
+  <div style="background:var(--card-bg);border:1px solid var(--ivory-border);border-radius:var(--radius);width:100%;max-width:780px;position:relative">
+    <div style="background:var(--gray-mid);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ivory-border)">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px" id="vmodal-subject"></div>
+        <div style="font-size:14px;font-weight:500" id="vmodal-title"></div>
+      </div>
+      <button onclick="closeVideoModal()" style="background:transparent;border:1px solid var(--border);color:var(--gray);width:32px;height:32px;border-radius:2px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <!-- Video area mockup -->
+    <div style="background:#000;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0a0a0a 0%,#111 100%)"></div>
+      <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:12px">
+        <div style="width:64px;height:64px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--black);cursor:pointer" onclick="this.innerHTML='⏸'">▶</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--gray);letter-spacing:0.06em">CLICK TO PLAY</div>
+      </div>
+      <!-- fake progress bar -->
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px;background:linear-gradient(transparent,rgba(0,0,0,0.8))">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.6)">0:00</div>
+          <div style="flex:1;height:3px;background:rgba(255,255,255,0.15);border-radius:2px;cursor:pointer;position:relative">
+            <div style="width:0%;height:100%;background:var(--yellow);border-radius:2px"></div>
+          </div>
+          <div style="font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.6)" id="vmodal-dur">--:--</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div style="font-size:12px;color:var(--gray);font-weight:300" id="vmodal-teacher"></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:7px;height:7px;background:var(--ivory);border-radius:50%;opacity:0.5"></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--pastel-mint);opacity:0.85;letter-spacing:0.06em">🎉 FREE ACCESS — NO LOGIN REQUIRED</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PDF MODAL ===== -->
+<div id="pdf-modal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:24px">
+  <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:2px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;position:relative">
+    <div style="background:var(--gray-mid);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px">PDF Preview</div>
+        <div id="modal-title" style="font-size:14px;font-weight:500"></div>
+      </div>
+      <button onclick="closePdfModal()" style="background:transparent;border:1px solid var(--border);color:var(--gray);width:32px;height:32px;border-radius:2px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <!-- Secure preview mockup -->
+    <div style="background:#1A1A18;min-height:280px;display:flex;align-items:center;justify-content:center;padding:32px;border-bottom:1px solid var(--border)">
+      <div style="width:300px;background:#FAFAFA;border-radius:2px;padding:36px;position:relative;min-height:220px">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-family:var(--mono);font-size:11px;color:rgba(255,150,0,0.18);white-space:nowrap;pointer-events:none;letter-spacing:0.1em;font-weight:700;text-transform:uppercase">PREVIEW ONLY · BROWSE A TEACHER</div>
+        <div style="height:10px;background:#CCC;border-radius:2px;margin-bottom:14px;width:55%"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px;width:80%"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:14px;width:65%"></div>
+        <div style="height:48px;background:#EBEBEB;border-radius:2px;margin-bottom:14px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:10px;color:#999;font-family:monospace">[ Diagram — Paid Access Only ]</span>
+        </div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px;width:90%"></div>
+        <div style="height:7px;background:#E0E0E0;border-radius:2px;margin-bottom:8px"></div>
+        <div style="position:absolute;bottom:10px;right:10px;background:rgba(255,200,0,0.88);color:#111;font-size:8px;font-family:monospace;padding:3px 7px;border-radius:2px;font-weight:700;letter-spacing:0.06em">🔒 SECURED</div>
+      </div>
+    </div>
+    <!-- Purchase info -->
+    <div style="padding:28px 32px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <div>
+          <div id="modal-teacher" style="font-size:12px;color:var(--gray);font-family:var(--mono);margin-bottom:4px"></div>
+          <div id="modal-subject" style="font-size:11px;color:var(--yellow);font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase"></div>
+        </div>
+        <div id="modal-price" style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--yellow)"></div>
+      </div>
+      <div style="background:var(--black);border:1px solid var(--border);border-radius:2px;padding:16px 20px;margin-bottom:24px;font-size:12px;color:var(--gray);line-height:1.7;font-weight:300">
+        🌸 After purchase, admin will grant you secure access to the full PDF. It will appear in your Student Dashboard within a few hours. The document is watermarked and download-protected.
+      </div>
+      <button class="btn-large btn-yellow" style="width:100%" onclick="buyPdfWhatsapp()">Purchase via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script src="./js/subjects.js?v=1"></script>
+
+<script src="./js/password-toggle.js?v=3"></script>
+
+<script src="./js/common.js?v=6"></script>
+
+<script
+  type="module"
+  src="./js/public-notes.js?v=2">
+</script>
+
+<script
+  type="module"
+  src="./js/public-banners.js?v=3">
+</script>
+
+<script
+  type="module"
+  src="./js/public-videos.js?v=1">
+</script>
+
+<script
+  type="module"
+  src="./js/public-pdfs.js?v=2">
+</script>
+
+<script
+  type="module"
+  src="./js/public-testimonials.js?v=3">
+</script>
+
+</body>
+</html>

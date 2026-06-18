@@ -1,4 +1,4 @@
-/*
+﻿/*
   ADMIN FIREBASE FUNCTIONS WILL GO HERE.
 
   Next functions to implement:
@@ -143,7 +143,7 @@ function createAdminPages() {
               id="video-title"
               class="form-input"
               type="text"
-              placeholder="Example: Integration Techniques — Part 01"
+              placeholder="Example: Integration Techniques â€” Part 01"
               required>
           </div>
 
@@ -167,7 +167,7 @@ function createAdminPages() {
           <div class="form-group">
             <label class="form-label">Access Level</label>
             <select id="video-access" class="form-select form-input">
-              <option value="free">Free — All Students</option>
+              <option value="free">Free â€” All Students</option>
               <option value="paid">Paid Students Only</option>
             </select>
           </div>
@@ -285,7 +285,7 @@ function createAdminPages() {
           <div class="form-group">
             <label class="form-label">Subject</label>
            <select id="pdf-subject" class="form-select form-input">
-              <option>Accounting</option>
+              <option>Business Studies</option>
               <option>Chemistry</option>
           </select>
           </div>
@@ -303,8 +303,8 @@ function createAdminPages() {
           <div class="form-group">
             <label class="form-label">Approval Required</label>
             <select id="pdf-approval" class="form-select form-input">
-              <option value="yes">Yes — Student Must Request Access</option>
-              <option value="no">No — Available Immediately</option>
+              <option value="yes">Yes â€” Student Must Request Access</option>
+              <option value="no">No â€” Available Immediately</option>
             </select>
           </div>
 
@@ -747,7 +747,7 @@ function createAdminPages() {
     </div>
 
     <div class="page-subtitle">
-      Add and manage Accounting and Chemistry teachers.
+      Add and manage Business Studies and Chemistry teachers.
     </div>
 
   </div>
@@ -1435,7 +1435,7 @@ async function uploadFirebaseVideoResource(event) {
   }
 
   if (!window.isAllowedLmsSubject(subject)) {
-    alert("Please select Accounting or Chemistry.");
+    alert("Please select Business Studies or Chemistry.");
     return;
   }
 
@@ -1549,7 +1549,7 @@ function ensureAdminModalExists() {
             type="button"
             class="admin-modal-close"
             onclick="closeAdminModal()">
-            ×
+            Ã—
           </button>
 
         </div>
@@ -2404,7 +2404,7 @@ function setupDashboardCardMouseAnimation() {
 }
 
 /* =========================================================
-   ADMIN PANEL — TEACHER BANNER MANAGER
+   ADMIN PANEL â€” TEACHER BANNER MANAGER
    ========================================================= */
 
 function setupBannerManager() {
@@ -2443,7 +2443,7 @@ function addBannerNavItem(adminSidebar) {
 
     <div class="admin-nav-dot"></div>
 
-    🖼️ Banner Advertisements
+    ðŸ–¼ï¸ Banner Advertisements
   </div>
 `;
 
@@ -2470,7 +2470,7 @@ function addBannerManagerPanel(adminMain) {
 
     <div>
       <div class="section-label">
-        Promotions ✦
+        Promotions âœ¦
       </div>
 
       <div class="page-title">
@@ -2509,7 +2509,7 @@ function addBannerManagerPanel(adminMain) {
         </div>
 
         <div class="banner-upload-icon">
-          🖼️
+          ðŸ–¼ï¸
         </div>
       </div>
 
@@ -2563,7 +2563,7 @@ function addBannerManagerPanel(adminMain) {
 
           <div class="banner-image-guide">
             <strong>Recommended:</strong>
-            720 × 900 px · JPG, PNG or WebP · Below 1 MB
+            720 Ã— 900 px Â· JPG, PNG or WebP Â· Below 1 MB
           </div>
 
         </div>
@@ -2594,7 +2594,7 @@ function addBannerManagerPanel(adminMain) {
     <div class="banner-info-card">
 
       <div class="banner-info-icon">
-        ✦
+        âœ¦
       </div>
 
       <div class="banner-info-title">
@@ -3278,7 +3278,7 @@ function escapeAdminBannerText(value) {
 
 
 /* ======================================================
-   ADMIN PANEL — STUDY NOTES MANAGER
+   ADMIN PANEL â€” STUDY NOTES MANAGER
    Temporary localStorage version.
    Firebase will replace this later.
 ====================================================== */
@@ -3322,7 +3322,7 @@ function addNotesNavItem(adminSidebar) {
 
     <div class="admin-nav-item">
       <span class="admin-nav-dot"></span>
-      📝 Study Notes
+      ðŸ“ Study Notes
     </div>
   `;
 
@@ -3347,7 +3347,7 @@ function addNotesManagerPanel(adminMain) {
   panel.innerHTML = `
     <div class="section-head">
       <div class="section-label">
-        Learning Content ✦
+        Learning Content âœ¦
       </div>
 
       <h1 class="page-title">
@@ -3499,7 +3499,7 @@ function addNotesManagerPanel(adminMain) {
           font-size:30px;
           margin-bottom:14px;
         ">
-          📝
+          ðŸ“
         </div>
 
         <div style="
@@ -3749,7 +3749,7 @@ async function handleStudyNoteUpload(event) {
     !window.isAllowedLmsSubject(subject)
   ) {
     alert(
-      "Please select Accounting or Chemistry."
+      "Please select Business Studies or Chemistry."
     );
 
     return;
@@ -5097,7 +5097,7 @@ function renderLiveDashboardStudents() {
               <td>
                 ${escapeLiveDashboardText(
                   student.subject ||
-                  "—"
+                  "â€”"
                 )}
               </td>
 
@@ -5202,14 +5202,14 @@ function renderLiveDashboardConsultations() {
               <td>
                 ${escapeLiveDashboardText(
                   request.subject ||
-                  "—"
+                  "â€”"
                 )}
               </td>
 
               <td>
                 ${escapeLiveDashboardText(
                   request.preferredDate ||
-                  "—"
+                  "â€”"
                 )}
               </td>
 
@@ -5563,7 +5563,7 @@ function formatDashboardDate(
 
 
   if (!date) {
-    return "—";
+    return "â€”";
   }
 
 
@@ -6875,7 +6875,7 @@ async function uploadFirebasePdfResource(event) {
   !window.isAllowedLmsSubject(subject)
 ) {
   alert(
-    "Please select Accounting or Chemistry."
+    "Please select Business Studies or Chemistry."
   );
 
   return;
@@ -8090,11 +8090,11 @@ function renderAnalyticsSubjectDistribution() {
   }
 
 
-  const accountingCount =
+  const business studiesCount =
     liveAdminDashboardState
       .videos
       .filter(function (video) {
-        return video.subject === "Accounting";
+        return video.subject === "Business Studies";
       })
       .length;
 
@@ -8110,16 +8110,16 @@ function renderAnalyticsSubjectDistribution() {
 
   const total =
     Math.max(
-      accountingCount +
+      business studiesCount +
       chemistryCount,
       1
     );
 
 
-  const accountingPercentage =
+  const business studiesPercentage =
     Math.round(
       (
-        accountingCount /
+        business studiesCount /
         total
       ) * 100
     );
@@ -8138,7 +8138,7 @@ function renderAnalyticsSubjectDistribution() {
     <div class="db-course-row">
 
       <div class="db-course-name">
-        Accounting
+        Business Studies
       </div>
 
       <div class="db-prog-wrap">
@@ -8147,13 +8147,13 @@ function renderAnalyticsSubjectDistribution() {
 
           <div
             class="db-prog-fill"
-            style="width:${accountingPercentage}%">
+            style="width:${business studiesPercentage}%">
           </div>
 
         </div>
 
         <div class="db-prog-pct">
-          ${accountingCount} videos
+          ${business studiesCount} videos
         </div>
 
       </div>
@@ -8353,7 +8353,7 @@ function renderLiveStudentsPage() {
             <td>
               ${escapeLiveDashboardText(
                 student.email ||
-                "—"
+                "â€”"
               )}
             </td>
 
@@ -8637,7 +8637,7 @@ async function createFirebaseTeacher(
     )
   ) {
     alert(
-      "Please select Accounting or Chemistry."
+      "Please select Business Studies or Chemistry."
     );
 
     return;

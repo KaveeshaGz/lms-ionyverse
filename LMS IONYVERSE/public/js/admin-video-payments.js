@@ -1,4 +1,4 @@
-/* ======================================================
+﻿/* ======================================================
    BROWSE A TEACHER LMS
    ADMIN VIDEO PAYMENT APPROVALS
 ====================================================== */
@@ -171,7 +171,7 @@ function createAdminVideoPaymentsPage() {
     navItem.innerHTML = `
       <div class="admin-nav-dot"></div>
 
-      🧾 Video Payments
+      ðŸ§¾ Video Payments
     `;
 
 
@@ -231,7 +231,7 @@ function createAdminVideoPaymentsPage() {
       <div class="section-head">
 
         <div class="section-label">
-          Payments ✦
+          Payments âœ¦
         </div>
 
         <div class="page-title">
@@ -554,7 +554,7 @@ function ensureAdminSlipModal() {
               class="admin-video-slip-close"
               type="button">
 
-              ×
+              Ã—
 
             </button>
 
@@ -1166,7 +1166,7 @@ async function viewAdminVideoPaymentSlip(
     )
 
     +
-    " · " +
+    " Â· " +
     formatAdminPaymentLkr(
       request.amountLkr
     );

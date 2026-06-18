@@ -1,4 +1,4 @@
-/* ======================================================
+﻿/* ======================================================
    BROWSE A TEACHER LMS
    PUBLIC FIRESTORE VIDEO COURSE LIBRARY
 ====================================================== */
@@ -210,7 +210,7 @@ function ensurePublicVideoLibrary() {
         Video Courses
       </span>
 
-      Browse published Accounting and Chemistry
+      Browse published Business Studies and Chemistry
       video lessons. Log in to watch free lessons
       or request access to paid lessons.
 
@@ -224,7 +224,7 @@ function ensurePublicVideoLibrary() {
         type="button"
         data-public-video-subject="all">
 
-        ✦ All Videos
+        âœ¦ All Videos
 
       </button>
 
@@ -232,9 +232,9 @@ function ensurePublicVideoLibrary() {
       <button
         class="btn-ghost public-video-filter"
         type="button"
-        data-public-video-subject="Accounting">
+        data-public-video-subject="Business Studies">
 
-        📊 Accounting
+        ðŸ“Š Business Studies
 
       </button>
 
@@ -244,7 +244,7 @@ function ensurePublicVideoLibrary() {
         type="button"
         data-public-video-subject="Chemistry">
 
-        ⚗ Chemistry
+        âš— Chemistry
 
       </button>
 
@@ -348,7 +348,7 @@ async function loadPublicVideos() {
 
               (
                 video.subject ===
-                  "Accounting"
+                  "Business Studies"
 
                 ||
 
@@ -454,7 +454,7 @@ function renderPublicVideos() {
           font-size:30px;
           margin-bottom:8px;
         ">
-          🎬
+          ðŸŽ¬
         </div>
 
         No published video courses are available yet.
@@ -490,7 +490,7 @@ function renderPublicVideos() {
               <div class="course-thumb">
 
                 <div class="course-thumb-inner">
-                  🎬
+                  ðŸŽ¬
                 </div>
 
 
