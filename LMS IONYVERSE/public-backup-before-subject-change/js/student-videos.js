@@ -410,7 +410,7 @@ function replaceStudentVideoPanel() {
       </div>
 
       <div class="page-subtitle">
-        Watch published Accounting and Chemistry lessons.
+        Watch published Business Studies and Chemistry lessons.
       </div>
 
     </div>

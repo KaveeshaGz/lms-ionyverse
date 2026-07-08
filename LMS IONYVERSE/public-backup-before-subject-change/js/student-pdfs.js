@@ -241,7 +241,7 @@ function prepareStudentPdfPanel() {
 
 
       <div class="page-subtitle">
-        Browse Accounting and Chemistry PDFs
+        Browse Business Studies and Chemistry PDFs
         uploaded by your teachers.
       </div>
 
@@ -497,7 +497,7 @@ async function loadStudentPdfResources() {
           ) {
             return (
               resource.subject ===
-                "Accounting"
+                "Business Studies"
 
               ||
 

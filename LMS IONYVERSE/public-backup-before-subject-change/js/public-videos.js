@@ -210,7 +210,7 @@ function ensurePublicVideoLibrary() {
         Video Courses
       </span>
 
-      Browse published Accounting and Chemistry
+      Browse published Business Studies and Chemistry
       video lessons. Log in to watch free lessons
       or request access to paid lessons.
 
@@ -232,9 +232,9 @@ function ensurePublicVideoLibrary() {
       <button
         class="btn-ghost public-video-filter"
         type="button"
-        data-public-video-subject="Accounting">
+        data-public-video-subject="Business Studies">
 
-        📊 Accounting
+        📊 Business Studies
 
       </button>
 
@@ -348,7 +348,7 @@ async function loadPublicVideos() {
 
               (
                 video.subject ===
-                  "Accounting"
+                  "Business Studies"
 
                 ||
 

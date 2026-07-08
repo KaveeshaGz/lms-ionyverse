@@ -367,8 +367,8 @@ function createStudentPages() {
           <tbody>
 
   <tr>
-    <td>Financial Accounting Fundamentals</td>
-    <td>Accounting</td>
+    <td>Financial Business Studies Fundamentals</td>
+    <td>Business Studies</td>
     <td>40%</td>
 
     <td>
@@ -714,7 +714,7 @@ function createStudentPages() {
           <strong>Consultation confirmed</strong>
 
           <div class="course-teacher">
-            Exam Prep - Accounting · 10 Jun 2026
+            Exam Prep - Business Studies · 10 Jun 2026
           </div>
         </div>
 
@@ -1755,7 +1755,7 @@ async function submitFirebasePdfRequest(event) {
   !window.isAllowedLmsSubject(subject)
 ) {
   alert(
-    "Please select Accounting or Chemistry."
+    "Please select Business Studies or Chemistry."
   );
 
   return;
@@ -2880,7 +2880,7 @@ async function submitFirebaseConsultationRequest(
   !window.isAllowedLmsSubject(subject)
 ) {
   alert(
-    "Please select Accounting or Chemistry."
+    "Please select Business Studies or Chemistry."
   );
 
   return;

@@ -174,7 +174,7 @@ function preparePublicPdfLibrary() {
         PDF Resources
       </span>
 
-      Browse teacher-uploaded Accounting and
+      Browse teacher-uploaded Business Studies and
       Chemistry study materials. Log in to open
       available PDFs or request access.
 
@@ -196,9 +196,9 @@ function preparePublicPdfLibrary() {
       <button
         class="btn-ghost public-pdf-filter"
         type="button"
-        data-public-pdf-subject="Accounting">
+        data-public-pdf-subject="Business Studies">
 
-        📊 Accounting
+        📊 Business Studies
 
       </button>
 
@@ -300,7 +300,7 @@ async function loadPublicPdfResources() {
           ) {
             return (
               resource.subject ===
-                "Accounting"
+                "Business Studies"
 
               ||
 
