@@ -92,7 +92,7 @@ function ensureStudentNotesPanel() {
       </div>
 
       <div class="page-subtitle">
-        Browse Accounting and Chemistry study notes
+        Browse Business Studies and Chemistry study notes
         uploaded by your teachers.
       </div>
 
@@ -112,8 +112,8 @@ function ensureStudentNotesPanel() {
       <button
         class="student-note-filter"
         type="button"
-        data-student-note-filter="accounting">
-        📊 Accounting
+        data-student-note-filter="business studies">
+        📊 Business Studies
       </button>
 
 

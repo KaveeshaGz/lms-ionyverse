@@ -285,7 +285,7 @@ function createAdminPages() {
           <div class="form-group">
             <label class="form-label">Subject</label>
            <select id="pdf-subject" class="form-select form-input">
-              <option>Accounting</option>
+              <option>Business Studies</option>
               <option>Chemistry</option>
           </select>
           </div>
@@ -747,7 +747,7 @@ function createAdminPages() {
     </div>
 
     <div class="page-subtitle">
-      Add and manage Accounting and Chemistry teachers.
+      Add and manage Business Studies and Chemistry teachers.
     </div>
 
   </div>
@@ -1435,7 +1435,7 @@ async function uploadFirebaseVideoResource(event) {
   }
 
   if (!window.isAllowedLmsSubject(subject)) {
-    alert("Please select Accounting or Chemistry.");
+    alert("Please select Business Studies or Chemistry.");
     return;
   }
 
@@ -3749,7 +3749,7 @@ async function handleStudyNoteUpload(event) {
     !window.isAllowedLmsSubject(subject)
   ) {
     alert(
-      "Please select Accounting or Chemistry."
+      "Please select Business Studies or Chemistry."
     );
 
     return;
@@ -6875,7 +6875,7 @@ async function uploadFirebasePdfResource(event) {
   !window.isAllowedLmsSubject(subject)
 ) {
   alert(
-    "Please select Accounting or Chemistry."
+    "Please select Business Studies or Chemistry."
   );
 
   return;
@@ -8090,11 +8090,11 @@ function renderAnalyticsSubjectDistribution() {
   }
 
 
-  const accountingCount =
+  const business studiesCount =
     liveAdminDashboardState
       .videos
       .filter(function (video) {
-        return video.subject === "Accounting";
+        return video.subject === "Business Studies";
       })
       .length;
 
@@ -8110,16 +8110,16 @@ function renderAnalyticsSubjectDistribution() {
 
   const total =
     Math.max(
-      accountingCount +
+      business studiesCount +
       chemistryCount,
       1
     );
 
 
-  const accountingPercentage =
+  const business studiesPercentage =
     Math.round(
       (
-        accountingCount /
+        business studiesCount /
         total
       ) * 100
     );
@@ -8138,7 +8138,7 @@ function renderAnalyticsSubjectDistribution() {
     <div class="db-course-row">
 
       <div class="db-course-name">
-        Accounting
+        Business Studies
       </div>
 
       <div class="db-prog-wrap">
@@ -8147,13 +8147,13 @@ function renderAnalyticsSubjectDistribution() {
 
           <div
             class="db-prog-fill"
-            style="width:${accountingPercentage}%">
+            style="width:${business studiesPercentage}%">
           </div>
 
         </div>
 
         <div class="db-prog-pct">
-          ${accountingCount} videos
+          ${business studiesCount} videos
         </div>
 
       </div>
@@ -8637,7 +8637,7 @@ async function createFirebaseTeacher(
     )
   ) {
     alert(
-      "Please select Accounting or Chemistry."
+      "Please select Business Studies or Chemistry."
     );
 
     return;

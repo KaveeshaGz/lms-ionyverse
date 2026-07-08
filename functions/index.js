@@ -111,7 +111,7 @@ function isAllowedSubject(
   subject
 ) {
   return (
-    subject === "Accounting" ||
+    subject === "Business Studies" ||
     subject === "Chemistry"
   );
 }
@@ -379,7 +379,7 @@ exports.createStreamDirectUpload =
       ) {
         throw new HttpsError(
           "invalid-argument",
-          "Only Accounting and Chemistry are available."
+          "Only Business Studies and Chemistry are available."
         );
       }
 
