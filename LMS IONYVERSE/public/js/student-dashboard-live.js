@@ -576,20 +576,37 @@ function connectStudentAnnouncements() {
    MAIN RENDER FUNCTION
 ====================================================== */
 
-function renderStudentDashboard() {
-  renderStudentDashboardName();
-
-  renderStudentDashboardCounts();
-
-  renderStudentContinueWatching();
-
-  renderStudentUpcomingSession();
-
-  renderStudentDashboardNotifications();
-
-
+  function renderStudentDashboard() {
+   renderStudentDashboardName();
+   renderStudentDashboardDate();
+    renderStudentDashboardCounts();
+    renderStudentContinueWatching();
+    renderStudentUpcomingSession();
+    renderStudentDashboardNotifications();
+    renderStudentSidebarLivePages();
 }
 
+function renderStudentDashboardDate() {
+  const target = document.getElementById(
+    "student-dashboard-date"
+  );
+
+  if (!target) {
+    return;
+  }
+
+  const today = new Date();
+
+  target.textContent = today.toLocaleDateString(
+    "en-GB",
+    {
+      weekday: "long",
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+}
 
 
 /* ------------------------------------------------------
