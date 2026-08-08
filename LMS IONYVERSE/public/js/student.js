@@ -249,18 +249,10 @@ function createStudentPages() {
     "#student-dashboard .db-content"
   );
 
-  if (!content) {
-    console.error("Student content area was not found.");
-    return;
-  }
-
-  /*
-    Prevent duplicate panels after refreshing or rerunning.
-  */
-  if (document.getElementById("student-panel-dashboard")) {
-    return;
-  }
-
+   if (!content) {
+      console.error("Student content area was not found.");
+     return;
+   }
   /*
     Keep the existing dashboard overview.
   */
@@ -275,461 +267,413 @@ function createStudentPages() {
     dashboardPanel.appendChild(node);
   });
 
-  content.appendChild(dashboardPanel);
-
-
+   content.appendChild(dashboardPanel);
   /*
-    Add the missing pages.
+      Add the missing pages.
   */
   content.insertAdjacentHTML(
-    "beforeend",
-    `
-    <!-- ==========================================
-         MY COURSES
-    =========================================== -->
-
-    <section
-  id="student-panel-my-courses"
-  class="student-panel">
-</section>
-
-<section
-  id="student-panel-videos"
-  class="student-panel">
-</section>
-
-<section
-  id="student-panel-pdf-library"
-  class="student-panel">
-</section>
-
-<section
-  id="student-panel-study-notes"
-  class="student-panel">
-</section>
-
-<section
-  id="student-panel-request-pdf"
-  class="student-panel">
-</section>
-
-<section
-  id="student-panel-book-consultation"
-  class="student-panel">
-</section>
-
-<section
-  id="student-panel-my-sessions"
-  class="student-panel">
-</section>
-
-<section
-  id="student-panel-notifications"
-  class="student-panel">
-</section>
 
 
-    <!-- ==========================================
-         VIDEOS
-    =========================================== -->
+//     <!-- ==========================================
+//          VIDEOS
+//     =========================================== -->
 
-    <section id="student-panel-videos" class="student-panel">
+//     <section id="student-panel-videos" class="student-panel">
 
-      <div class="section-head">
-        <div class="page-title">Videos</div>
+//       <div class="section-head">
+//         <div class="page-title">Videos</div>
 
-        <div class="page-subtitle">
-          Watch your lesson videos and continue learning.
-        </div>
-      </div>
+//         <div class="page-subtitle">
+//           Watch your lesson videos and continue learning.
+//         </div>
+//       </div>
 
-      <div class="table-wrap">
+//       <div class="table-wrap">
 
-        <div class="table-head-row">
-          <div class="table-title">Available Videos</div>
+//         <div class="table-head-row">
+//           <div class="table-title">Available Videos</div>
 
-          <input
-            class="table-search"
-            type="text"
-            placeholder="Search videos...">
-        </div>
+//           <input
+//             class="table-search"
+//             type="text"
+//             placeholder="Search videos...">
+//         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Lesson</th>
-              <th>Subject</th>
-              <th>Progress</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+//         <table>
+//           <thead>
+//             <tr>
+//               <th>Lesson</th>
+//               <th>Subject</th>
+//               <th>Progress</th>
+//               <th>Action</th>
+//             </tr>
+//           </thead>
 
-          <tbody>
+//           <tbody>
 
-  <tr>
-    <td>Financial Business Studies Fundamentals</td>
-    <td>Business Studies</td>
-    <td>40%</td>
+//   <tr>
+//     <td>Financial Business Studies Fundamentals</td>
+//     <td>Business Studies</td>
+//     <td>40%</td>
 
-    <td>
-      <button
-        class="act-btn"
-        data-student-action="watch-video">
-        Watch
-      </button>
-    </td>
-  </tr>
-
-
-  <tr>
-    <td>Organic Chemistry Reactions</td>
-    <td>Chemistry</td>
-    <td>38%</td>
-
-    <td>
-      <button
-        class="act-btn"
-        data-student-action="watch-video">
-        Watch
-      </button>
-    </td>
-  </tr>
-
-</tbody>
-        </table>
-      </div>
-    </section>
+//     <td>
+//       <button
+//         class="act-btn"
+//         data-student-action="watch-video">
+//         Watch
+//       </button>
+//     </td>
+//   </tr>
 
 
-    <!-- ==========================================
-         PDF LIBRARY
-    =========================================== -->
+//   <tr>
+//     <td>Organic Chemistry Reactions</td>
+//     <td>Chemistry</td>
+//     <td>38%</td>
 
-    <section id="student-panel-pdf-library" class="student-panel">
+//     <td>
+//       <button
+//         class="act-btn"
+//         data-student-action="watch-video">
+//         Watch
+//       </button>
+//     </td>
+//   </tr>
 
-      <div class="section-head">
-        <div class="page-title">PDF Library</div>
+// </tbody>
+//         </table>
+//       </div>
+//     </section>
 
-        <div class="page-subtitle">
-          View your approved study materials.
-        </div>
-      </div>
+
+//     <!-- ==========================================
+//          PDF LIBRARY
+//     =========================================== -->
+
+//     <section id="student-panel-pdf-library" class="student-panel">
+
+//       <div class="section-head">
+//         <div class="page-title">PDF Library</div>
+
+//         <div class="page-subtitle">
+//           View your approved study materials.
+//         </div>
+//       </div>
 
       
-    </section>
-
-
-    <!-- ==========================================
-         REQUEST PDF
-    =========================================== -->
-
-    <section id="student-panel-request-pdf" class="student-panel">
-
-      <div class="section-head">
-        <div class="page-title">Request PDF</div>
-
-        <div class="page-subtitle">
-          Send a PDF access request to the admin.
-        </div>
-      </div>
-
-      <form
-        id="student-pdf-request-form"
-        class="student-page-card">
-
-        <div class="form-grid">
-
-          <div class="form-group">
-            <label class="form-label">
-              PDF Name
-            </label>
-
-            <input
-              id="student-pdf-request-name"
-              class="form-input"
-              type="text"
-              placeholder=""
-              required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              Subject
-            </label>
-
-            <select
-              id="student-pdf-request-subject"
-              class="form-select">
-              ${window.getLmsSubjectOptions()}
-            </select>
-          </div>
-
-        </div>
-
-        <div class="form-group" style="margin-bottom:20px">
-          <label class="form-label">
-            Reason
-          </label>
-
-          <textarea
-            id="student-pdf-request-reason"
-            class="form-input"
-            rows="5"
-            placeholder="Enter a short message"
-            required></textarea>
-        </div>
-
-        <button
-          class="btn-large btn-yellow"
-          type="submit">
-          Send PDF Request
-        </button>
-
-      </form>
-
-      <div
-  class="table-wrap"
-  style="margin-top:28px">
-
-  <div class="table-head-row">
-    <div class="table-title">
-      My PDF Requests
-    </div>
-
-    <button
-      id="refresh-student-pdf-requests"
-      class="act-btn"
-      type="button">
-      Refresh
-    </button>
-  </div>
-
-  <table>
-    <thead>
-      <tr>
-        <th>PDF Resource</th>
-        <th>Subject</th>
-        <th>Requested Date</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-
-    <tbody id="student-pdf-request-history">
-    </tbody>
-  </table>
-
-</div>
-
-    </section>
-
-
-    <!-- ==========================================
-         BOOK CONSULTATION
-    =========================================== -->
-
-    <section
-      id="student-panel-book-consultation"
-      class="student-panel">
-
-      <div class="section-head">
-        <div class="page-title">Book Consultation</div>
-
-        <div class="page-subtitle">
-          Request a private learning-support session.
-        </div>
-      </div>
-
-      <form
-        id="student-consultation-form"
-        class="student-page-card">
-
-        <div class="form-grid">
+//     </section>
+
+
+//     <!-- ==========================================
+//          REQUEST PDF
+//     =========================================== -->
+
+//     <section id="student-panel-request-pdf" class="student-panel">
+
+//       <div class="section-head">
+//         <div class="page-title">Request PDF</div>
+
+//         <div class="page-subtitle">
+//           Send a PDF access request to the admin.
+//         </div>
+//       </div>
+
+//       <form
+//         id="student-pdf-request-form"
+//         class="student-page-card">
+
+//         <div class="form-grid">
+
+//           <div class="form-group">
+//             <label class="form-label">
+//               PDF Name
+//             </label>
+
+//             <input
+//               id="student-pdf-request-name"
+//               class="form-input"
+//               type="text"
+//               placeholder=""
+//               required>
+//           </div>
+
+//           <div class="form-group">
+//             <label class="form-label">
+//               Subject
+//             </label>
+
+//             <select
+//               id="student-pdf-request-subject"
+//               class="form-select">
+//               ${window.getLmsSubjectOptions()}
+//             </select>
+//           </div>
+
+//         </div>
+
+//         <div class="form-group" style="margin-bottom:20px">
+//           <label class="form-label">
+//             Reason
+//           </label>
+
+//           <textarea
+//             id="student-pdf-request-reason"
+//             class="form-input"
+//             rows="5"
+//             placeholder="Enter a short message"
+//             required></textarea>
+//         </div>
+
+//         <button
+//           class="btn-large btn-yellow"
+//           type="submit">
+//           Send PDF Request
+//         </button>
+
+//       </form>
+
+//       <div
+//   class="table-wrap"
+//   style="margin-top:28px">
+
+//   <div class="table-head-row">
+//     <div class="table-title">
+//       My PDF Requests
+//     </div>
+
+//     <button
+//       id="refresh-student-pdf-requests"
+//       class="act-btn"
+//       type="button">
+//       Refresh
+//     </button>
+//   </div>
+
+//   <table>
+//     <thead>
+//       <tr>
+//         <th>PDF Resource</th>
+//         <th>Subject</th>
+//         <th>Requested Date</th>
+//         <th>Status</th>
+//       </tr>
+//     </thead>
+
+//     <tbody id="student-pdf-request-history">
+//     </tbody>
+//   </table>
+
+// </div>
+
+//     </section>
+
+
+//     <!-- ==========================================
+//          BOOK CONSULTATION
+//     =========================================== -->
+
+//     <section
+//       id="student-panel-book-consultation"
+//       class="student-panel">
+
+//       <div class="section-head">
+//         <div class="page-title">Book Consultation</div>
+
+//         <div class="page-subtitle">
+//           Request a private learning-support session.
+//         </div>
+//       </div>
+
+//       <form
+//         id="student-consultation-form"
+//         class="student-page-card">
+
+//         <div class="form-grid">
 
-          <div class="form-group">
-            <label class="form-label">
-              Subject
-            </label>
-
-            <select
-              id="student-consultation-subject"
-              class="form-select">
-               ${window.getLmsSubjectOptions()}
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              Preferred Date
-            </label>
-
-            <input
-              id="student-consultation-date"
-              class="form-input"
-              type="date"
-              required>
-          </div>
-
-        </div>
-
-        <div class="form-group" style="margin-bottom:20px">
-          <label class="form-label">
-            Message
-          </label>
-
-          <textarea
-            id="student-consultation-message"
-            class="form-input"
-            rows="5"
-            placeholder="Tell the teacher what you need help with"
-            required></textarea>
-        </div>
-
-        <button
-          class="btn-large btn-yellow"
-          type="submit">
-          Request Consultation
-        </button>
-
-      </form>
-
-      <div
-  class="table-wrap"
-  style="margin-top:28px">
-
-  <div class="table-head-row">
-    <div class="table-title">
-      My Consultation Requests
-    </div>
-
-    <button
-      id="refresh-student-consultations"
-      class="act-btn"
-      type="button">
-      Refresh
-    </button>
-  </div>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Subject</th>
-        <th>Preferred Date</th>
-        <th>Requested Date</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-
-    <tbody id="student-consultation-history">
-    </tbody>
-  </table>
-
-</div>
-
-    </section>
-
-
-    <!-- ==========================================
-         MY SESSIONS
-    =========================================== -->
-
-    <section id="student-panel-my-sessions" class="student-panel">
-
-      <div class="section-head">
-        <div class="page-title">My Sessions</div>
-
-        <div class="page-subtitle">
-          View consultation schedules and meeting links.
-        </div>
-      </div>
-
-      <div class="table-wrap">
-
-        <div class="table-head-row">
-
-  <div class="table-title">
-    Consultation Sessions
-  </div>
-
-  <button
-    id="refresh-student-sessions"
-    class="act-btn"
-    type="button">
-    Refresh
-  </button>
-
-</div>
-        <table>
-          <thead>
-            <tr>
-              <th>Session</th>
-              <th>Date</th>
-              <th>Teacher</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody id="student-session-history">
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-
-    <!-- ==========================================
-         NOTIFICATIONS
-    =========================================== -->
-
-    <section
-      id="student-panel-notifications"
-      class="student-panel">
-
-      <div class="section-head">
-        <div class="page-title">Notifications</div>
-
-        <div class="page-subtitle">
-          View course updates and admin messages.
-        </div>
-      </div>
-
-      <div class="student-scroll-list">
-
-        <div class="student-note-row">
-          <strong>PDF request approved</strong>
-
-          <div class="course-teacher">
-            2 hours ago · Chemistry Notes 2026
-          </div>
-        </div>
-
-        <div class="student-note-row">
-          <strong>New video added to your course</strong>
-
-          <div class="course-teacher">
-            Yesterday · Module 5: Differentiation
-          </div>
-        </div>
-
-        <div class="student-note-row">
-          <strong>Consultation confirmed</strong>
-
-          <div class="course-teacher">
-            Exam Prep - Business Studies · 10 Jun 2026
-          </div>
-        </div>
-
-      </div>
-    </section>
-    `
-  );
+//           <div class="form-group">
+//             <label class="form-label">
+//               Subject
+//             </label>
+
+//             <select
+//               id="student-consultation-subject"
+//               class="form-select">
+//                ${window.getLmsSubjectOptions()}
+//             </select>
+//           </div>
+
+//           <div class="form-group">
+//             <label class="form-label">
+//               Preferred Date
+//             </label>
+
+//             <input
+//               id="student-consultation-date"
+//               class="form-input"
+//               type="date"
+//               required>
+//           </div>
+
+//         </div>
+
+//         <div class="form-group" style="margin-bottom:20px">
+//           <label class="form-label">
+//             Message
+//           </label>
+
+//           <textarea
+//             id="student-consultation-message"
+//             class="form-input"
+//             rows="5"
+//             placeholder="Tell the teacher what you need help with"
+//             required></textarea>
+//         </div>
+
+//         <button
+//           class="btn-large btn-yellow"
+//           type="submit">
+//           Request Consultation
+//         </button>
+
+//       </form>
+
+//       <div
+//   class="table-wrap"
+//   style="margin-top:28px">
+
+//   <div class="table-head-row">
+//     <div class="table-title">
+//       My Consultation Requests
+//     </div>
+
+//     <button
+//       id="refresh-student-consultations"
+//       class="act-btn"
+//       type="button">
+//       Refresh
+//     </button>
+//   </div>
+
+//   <table>
+//     <thead>
+//       <tr>
+//         <th>Subject</th>
+//         <th>Preferred Date</th>
+//         <th>Requested Date</th>
+//         <th>Status</th>
+//       </tr>
+//     </thead>
+
+//     <tbody id="student-consultation-history">
+//     </tbody>
+//   </table>
+
+// </div>
+
+//     </section>
+
+
+//     <!-- ==========================================
+//          MY SESSIONS
+//     =========================================== -->
+
+//     <section id="student-panel-my-sessions" class="student-panel">
+
+//       <div class="section-head">
+//         <div class="page-title">My Sessions</div>
+
+//         <div class="page-subtitle">
+//           View consultation schedules and meeting links.
+//         </div>
+//       </div>
+
+//       <div class="table-wrap">
+
+//         <div class="table-head-row">
+
+//   <div class="table-title">
+//     Consultation Sessions
+//   </div>
+
+//   <button
+//     id="refresh-student-sessions"
+//     class="act-btn"
+//     type="button">
+//     Refresh
+//   </button>
+
+// </div>
+//         <table>
+//           <thead>
+//             <tr>
+//               <th>Session</th>
+//               <th>Date</th>
+//               <th>Teacher</th>
+//               <th>Status</th>
+//               <th>Action</th>
+//             </tr>
+//           </thead>
+
+//           <tbody id="student-session-history">
+//           </tbody>
+//         </table>
+//       </div>
+//     </section>
+
+
+//     <!-- ==========================================
+//          NOTIFICATIONS
+//     =========================================== -->
+
+//     <section
+//       id="student-panel-notifications"
+//       class="student-panel">
+
+//       <div class="section-head">
+//         <div class="page-title">Notifications</div>
+
+//         <div class="page-subtitle">
+//           View course updates and admin messages.
+//         </div>
+//       </div>
+
+//       <div class="student-scroll-list">
+
+//         <div class="student-note-row">
+//           <strong>PDF request approved</strong>
+
+//           <div class="course-teacher">
+//             2 hours ago · Chemistry Notes 2026
+//           </div>
+//         </div>
+
+//         <div class="student-note-row">
+//           <strong>New video added to your course</strong>
+
+//           <div class="course-teacher">
+//             Yesterday · Module 5: Differentiation
+//           </div>
+//         </div>
+
+//         <div class="student-note-row">
+//           <strong>Consultation confirmed</strong>
+
+//           <div class="course-teacher">
+//             Exam Prep - Business Studies · 10 Jun 2026
+//           </div>
+//         </div>
+
+//       </div>
+//     </section>
+//     `
+   );
 }
 
 
 /* ======================================================
    SIDEBAR NAVIGATION
 ====================================================== */
-
-function connectStudentSidebar() {
+  function connectStudentSidebar() {
   const sidebar = document.querySelector(
     "#student-dashboard .db-sidebar"
   );
@@ -742,62 +686,17 @@ function connectStudentSidebar() {
   sidebar.addEventListener("click", function (event) {
     const item = event.target.closest(".db-nav-item");
 
-    if (!item) {
+    if (!item || !sidebar.contains(item)) {
       return;
     }
 
-    const text = item.textContent
-      .trim()
-      .toLowerCase();
+    const panelName = item.dataset.studentPanel;
 
-    if (text.includes("sign out")) {
+    if (!panelName) {
       return;
     }
 
-    if (text.includes("dashboard")) {
-      showStudentPanel("dashboard", item);
-      return;
-    }
-
-    if (text.includes("my courses")) {
-      showStudentPanel("my-courses", item);
-      return;
-    }
-
-    if (text.includes("videos")) {
-      showStudentPanel("videos", item);
-      return;
-    }
-
-    if (text.includes("pdf library")) {
-  showStudentPanel("pdf-library", item);
-  return;
-}
-
-if (text.includes("study notes")) {
-  showStudentPanel("study-notes", item);
-  renderStudentNotes("all");
-  return;
-}
-
-if (text.includes("request pdf")) {
-  showStudentPanel("request-pdf", item);
-  return;
-}
-
-    if (text.includes("book consultation")) {
-      showStudentPanel("book-consultation", item);
-      return;
-    }
-
-    if (text.includes("my sessions")) {
-      showStudentPanel("my-sessions", item);
-      return;
-    }
-
-    if (text.includes("notifications")) {
-      showStudentPanel("notifications", item);
-    }
+    showStudentPanel(panelName, item);
   });
 }
 

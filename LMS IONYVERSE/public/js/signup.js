@@ -67,17 +67,17 @@ signupForm.addEventListener(
     }
 
 
-    if (
-        typeof window.isStrongPassword !== "function" ||
-        !window.isStrongPassword(password)
-        ) {
-    showSignupMessage(
-        "Use at least 8 characters with an uppercase letter, lowercase letter, number, and symbol.",
-        "error"
-    );
+    const strongPassword =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
-    return;
-    }
+if (!strongPassword.test(password)) {
+  showSignupMessage(
+    "Use at least 8 characters with an uppercase letter, lowercase letter, number, and symbol.",
+    "error"
+  );
+
+  return;
+}
 
 
     if (password !== confirmPassword) {
