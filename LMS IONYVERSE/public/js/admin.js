@@ -6161,33 +6161,35 @@ async function setupStudentApprovalManager() {
   approvalSection.style.marginBottom = "28px";
 
   approvalSection.innerHTML = `
-    <div class="table-head-row">
+  <div class="table-head-row">
 
-      <div>
-        <div class="table-title">
-          Pending Student Registrations
-        </div>
-
-        <div style="
-          color:var(--ivory-dim);
-          font-size:12px;
-          margin-top:4px;
-        ">
-          Approve students who registered through the Sign Up page.
-        </div>
+    <div>
+      <div class="table-title">
+        Pending Student Registrations
       </div>
 
-      <button
-        id="refresh-pending-students"
-        class="act-btn"
-        type="button">
-        Refresh
-      </button>
-
+      <div style="
+        color:var(--ivory-dim);
+        font-size:12px;
+        margin-top:4px;
+      ">
+        Review students who registered through the Sign Up page.
+      </div>
     </div>
 
+    <button
+      id="refresh-pending-students"
+      class="act-btn"
+      type="button">
+      Refresh
+    </button>
+
+  </div>
+
+  <div class="table-wrap">
 
     <table>
+
       <thead>
         <tr>
           <th>Student Name</th>
@@ -6199,8 +6201,11 @@ async function setupStudentApprovalManager() {
 
       <tbody id="pending-students-table-body">
       </tbody>
+
     </table>
-  `;
+
+  </div>
+`;
 
   /*
     Add the approvals table near the top of the Students page.
@@ -6227,25 +6232,46 @@ async function setupStudentApprovalManager() {
 
 
   approvalSection.addEventListener(
-    "click",
-    async function (event) {
-      const button = event.target.closest(
+  "click",
+  async function (event) {
+
+    const approveButton =
+      event.target.closest(
         "[data-approve-student]"
       );
 
-      if (!button) {
-        return;
-      }
+    if (approveButton) {
 
       const studentUid =
-        button.dataset.approveStudent;
+        approveButton.dataset.approveStudent;
 
       await approveStudentAccount(
         studentUid,
-        button
+        approveButton
+      );
+
+      return;
+    }
+
+
+    const rejectButton =
+      event.target.closest(
+        "[data-reject-student]"
+      );
+
+    if (rejectButton) {
+
+      const studentUid =
+        rejectButton.dataset.rejectStudent;
+
+      await rejectStudentAccount(
+        studentUid,
+        rejectButton
       );
     }
-  );
+
+  }
+);
 
 
   await loadPendingStudentApprovals();
@@ -6334,15 +6360,28 @@ async function loadPendingStudentApprovals() {
             </td>
 
             <td>
-              <button
-                class="act-btn"
-                type="button"
-                data-approve-student="${escapeApprovalText(
-                  student.uid
-                )}">
-                Approve
-              </button>
-            </td>
+  <div class="action-row">
+
+    <button
+      class="act-btn"
+      type="button"
+      data-approve-student="${escapeApprovalText(
+        student.uid
+      )}">
+      Approve
+    </button>
+
+    <button
+      class="act-btn danger"
+      type="button"
+      data-reject-student="${escapeApprovalText(
+        student.uid
+      )}">
+      Reject
+    </button>
+
+  </div>
+</td>
 
           </tr>
         `;
@@ -6421,6 +6460,66 @@ async function approveStudentAccount(
   }
 }
 
+
+/* ------------------------------------------------------
+   REJECT ONE STUDENT
+------------------------------------------------------ */
+
+async function rejectStudentAccount(
+  studentUid,
+  button
+) {
+
+  const confirmed = confirm(
+    "Reject this student registration?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Rejecting...";
+
+  try {
+
+    const studentReference = doc(
+      db,
+      "users",
+      studentUid
+    );
+
+    await updateDoc(
+      studentReference,
+      {
+        status: "rejected",
+        reviewedAt: serverTimestamp(),
+        reviewedBy:
+          auth.currentUser?.uid || ""
+      }
+    );
+
+    alert(
+      "Student registration rejected."
+    );
+
+    await loadPendingStudentApprovals();
+
+  } catch (error) {
+
+    console.error(
+      "Student rejection failed:",
+      error
+    );
+
+    alert(
+      "The student could not be rejected. Check the browser Console."
+    );
+
+    button.disabled = false;
+    button.textContent = "Reject";
+  }
+}
 
 /* ------------------------------------------------------
    SAFE TEXT OUTPUT
@@ -7298,12 +7397,13 @@ async function updateFirebaseConsultationStatus(
 
 
     /*
-      Collect session details before approval.
-    */
-    const teacherName = prompt(
-      "Enter the teacher name:",
-      "Teacher"
-    );
+  Collect session details before approval.
+*/
+
+const teacherName = prompt(
+  "Enter the teacher name:",
+  "Teacher"
+);
 
     if (!teacherName) {
       button.disabled = false;
