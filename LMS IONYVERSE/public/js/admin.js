@@ -8090,7 +8090,7 @@ function renderAnalyticsSubjectDistribution() {
   }
 
 
-  const business studiesCount =
+  const businessstudiesCount =
     liveAdminDashboardState
       .videos
       .filter(function (video) {
@@ -8110,16 +8110,16 @@ function renderAnalyticsSubjectDistribution() {
 
   const total =
     Math.max(
-      business studiesCount +
+      businessstudiesCount +
       chemistryCount,
       1
     );
 
 
-  const business studiesPercentage =
+  const businessstudiesPercentage =
     Math.round(
       (
-        business studiesCount /
+        businessstudiesCount /
         total
       ) * 100
     );
@@ -8147,13 +8147,13 @@ function renderAnalyticsSubjectDistribution() {
 
           <div
             class="db-prog-fill"
-            style="width:${business studiesPercentage}%">
+            style="width:${businessstudiesPercentage}%">
           </div>
 
         </div>
 
         <div class="db-prog-pct">
-          ${business studiesCount} videos
+          ${businessstudiesCount} videos
         </div>
 
       </div>
